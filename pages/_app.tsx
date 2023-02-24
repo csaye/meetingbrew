@@ -13,8 +13,8 @@ export default function App(props: AppProps) {
   return (
     <>
       <Head>
-        <title>Meeting Brew</title>
         <link rel="icon" href="/favicon.ico" />
+        <title>MeetingBrew</title>
       </Head>
       <Component {...pageProps} />
     </>
