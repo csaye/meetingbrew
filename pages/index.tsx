@@ -10,6 +10,27 @@ export default function Index() {
   const [title, setTitle] = useState('');
   const [id, setId] = useState('');
 
+  // creates a new meeting in firebase
+  async function createMeeting() {
+    const meetingsRef = collection(db, 'meetings');
+    // check id
+    if (id) {
+      const meetingRef = doc(meetingsRef, id);
+      const meetingDoc = await getDoc(meetingRef);
+      // if id exists
+      if (meetingDoc.exists()) {
+        window.alert('Meeting ID taken. Please choose another.');
+        return;
+      }
+    }
+    // get meeting id
+    const meetingId = id ? id : doc(meetingsRef).id.slice(0, 6);
+    const meetingRef = doc(meetingsRef, meetingId);
+    // create meeting
+    const meeting: Meeting = { title, id: meetingId };
+    await setDoc(meetingRef, meeting);
+  }
+
   return (
     <div className={styles.container}>
       <Header />
