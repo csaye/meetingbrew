@@ -1,3 +1,8 @@
+:root {
+  --redorange: #fa3737;
+  --redorangeHover: #ef0606;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -19,6 +24,10 @@ body,
 a {
   color: inherit;
   text-decoration: none;
+}
+
+button {
+  cursor: pointer;
 }
 
 button,
