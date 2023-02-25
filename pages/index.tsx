@@ -12,7 +12,31 @@ export default function Index() {
 
   return (
     <div className={styles.container}>
-      <h1>MeetingBrew</h1>
+      <Header />
+      <div className={styles.content}>
+        <h1>New Meeting</h1>
+        <form onSubmit={e => {
+          e.preventDefault();
+        }}>
+          <input
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            placeholder="Title"
+            required
+          />
+          <div>
+            MeetingBrew.com/
+            <input
+              value={id}
+              onChange={e => setId(e.target.value)}
+              placeholder="ID (optional)"
+            />
+          </div>
+          <button>
+            Create
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
