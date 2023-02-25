@@ -6,8 +6,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'DM Sans', sans-serif;
+  background: #fafafa;
 }
 
 html,
@@ -21,8 +21,8 @@ a {
   text-decoration: none;
 }
 
-button {
-  cursor: pointer;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+button,
+input,
+textarea {
+  font-family: 'DM Sans', sans-serif;
 }
