@@ -9,6 +9,13 @@ import TimezoneSelect from 'react-timezone-select';
 
 const reservedIds = ['about'];
 
+const earliestOptions = Array(24).fill(null).map((v, i) => (
+  { value: i, label: `${i % 12 || 12}${i < 12 ? 'am' : 'pm'}` })
+);
+const latestOptions = Array(24).fill(null).map((v, i) => (
+  { value: i + 1, label: `${((i + 1) % 12) || 12}${(i + 1) % 24 < 12 ? 'am' : 'pm'}` })
+);
+
 export default function Index() {
   const db = getFirestore();
 
