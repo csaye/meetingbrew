@@ -49,3 +49,10 @@ function getTimezoneFuzzy(timezone: string) {
   return matchTimezones.map(tz => ({ tz, score: tzScore(now, tz) }))
     .sort((a, b) => b.score - a.score)[0].tz.name;
 }
+
+// returns current timezone string
+export function getCurrentTimezone() {
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  if (timezones.map(tz => tz.name).includes(timezone)) return timezone;
+  return getTimezoneFuzzy(timezone);
+}
