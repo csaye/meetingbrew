@@ -56,3 +56,10 @@ export function getCurrentTimezone() {
   if (timezones.map(tz => tz.name).includes(timezone)) return timezone;
   return getTimezoneFuzzy(timezone);
 }
+
+// converts a string timezone into a utc offset in minutes
+export function timezoneToOffset(timezone: string) {
+  const timezoneData = timezones.find(tz => tz.name === timezone);
+  if (timezoneData) return timezoneData.offset * 60;
+  return null;
+}
