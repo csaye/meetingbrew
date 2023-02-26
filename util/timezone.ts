@@ -53,6 +53,7 @@ function getTimezoneFuzzy(timezone: string) {
 // returns current timezone string
 export function getCurrentTimezone() {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  if (!timezone) return defaultTimezone;
   if (timezones.map(tz => tz.name).includes(timezone)) return timezone;
   return getTimezoneFuzzy(timezone);
 }
