@@ -37,7 +37,13 @@ export default function MeetingPage() {
   return (
     <div className={styles.container}>
       <Header />
-      <h1>{meetingId}</h1>
+      {
+        meeting === undefined ? <p>Loading...</p> :
+          !meeting ? <p>No meeting found</p> :
+            <div className={styles.content}>
+              <h1>{meeting.title}</h1>
+            </div>
+      }
     </div>
   );
 }
