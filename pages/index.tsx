@@ -5,6 +5,7 @@ import { Meeting } from '@/util/types';
 import { collection, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import Router from 'next/router';
 import { useState } from 'react';
+import Select from 'react-select';
 import TimezoneSelect from 'react-timezone-select';
 
 const reservedIds = ['about'];
@@ -22,6 +23,8 @@ export default function Index() {
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
   const [title, setTitle] = useState('');
   const [id, setId] = useState('');
+  const [earliest, setEarliest] = useState(earliestOptions[9]);
+  const [latest, setLatest] = useState(latestOptions[16]);
 
   // creates a new meeting in firebase
   async function createMeeting() {
@@ -46,7 +49,14 @@ export default function Index() {
     const meetingId = id ? id : doc(meetingsRef).id.slice(0, 6);
     const meetingRef = doc(meetingsRef, meetingId);
     // create meeting
-    const meeting: Meeting = { title, id: meetingId, timezone };
+    const meeting: Meeting = {
+      id: meetingId,
+      title,
+      timezone,
+      earliest: earliest.value,
+      latest: latest.value,
+      days: []
+    };
     await setDoc(meetingRef, meeting);
     Router.push(`/${meetingId}`);
   }
@@ -60,11 +70,13 @@ export default function Index() {
           e.preventDefault();
           createMeeting();
         }}>
+          <p>Timezone</p>
           <TimezoneSelect
             value={timezone}
             onChange={tz => setTimezone(tz.value)}
-            instanceId="timezone-select"
+            instanceId="select-timezone"
           />
+          <p>No earlier than</p>
           <Select
             value={earliest}
             onChange={option => {
@@ -77,6 +89,7 @@ export default function Index() {
             options={earliestOptions}
             instanceId="select-earliest"
           />
+          <p>No later than</p>
           <Select
             value={latest}
             onChange={option => {
