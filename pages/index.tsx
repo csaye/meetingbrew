@@ -1,14 +1,18 @@
 import Header from '@/components/Header';
 import styles from '@/styles/pages/Index.module.scss';
+import { getCurrentTimezone } from '@/util/timezone';
 import { Meeting } from '@/util/types';
 import { collection, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import Router from 'next/router';
 import { useState } from 'react';
+import TimezoneSelect from 'react-timezone-select';
 
 const reservedIds = ['about'];
 
 export default function Index() {
   const db = getFirestore();
 
+  const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
   const [title, setTitle] = useState('');
   const [id, setId] = useState('');
 
@@ -35,8 +39,9 @@ export default function Index() {
     const meetingId = id ? id : doc(meetingsRef).id.slice(0, 6);
     const meetingRef = doc(meetingsRef, meetingId);
     // create meeting
-    const meeting: Meeting = { title, id: meetingId };
+    const meeting: Meeting = { title, id: meetingId, timezone };
     await setDoc(meetingRef, meeting);
+    Router.push(`/${meetingId}`);
   }
 
   return (
@@ -46,7 +51,13 @@ export default function Index() {
         <h1>New Meeting</h1>
         <form onSubmit={e => {
           e.preventDefault();
+          createMeeting();
         }}>
+          <TimezoneSelect
+            value={timezone}
+            onChange={tz => setTimezone(tz.value)}
+            instanceId="timezone-select"
+          />
           <input
             value={title}
             onChange={e => setTitle(e.target.value)}
