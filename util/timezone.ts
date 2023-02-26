@@ -31,3 +31,21 @@ function tzScore(now: Spacetime, tz: { name: string, label: string }) {
   }
   return score;
 }
+
+// returns closest match for given timezone string
+function getTimezoneFuzzy(timezone: string) {
+  // parse current time in given timezone
+  let now: Spacetime;
+  try {
+    now = spacetime.now(timezone);
+  } catch (err) {
+    return defaultTimezone;
+  }
+  // filter timezones
+  const nowOffset = now.timezone().current.offset;
+  let matchTimezones = timezones.filter(tz => tz.offset === nowOffset);
+  if (!matchTimezones.length) return defaultTimezone;
+  // get best timezone match
+  return matchTimezones.map(tz => ({ tz, score: tzScore(now, tz) }))
+    .sort((a, b) => b.score - a.score)[0].tz.name;
+}
