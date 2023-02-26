@@ -48,7 +48,7 @@ export default function MeetingPage() {
               <TimezoneSelect
                 value={timezone}
                 onChange={tz => setTimezone(tz.value)}
-                instanceId="timezone-select"
+                instanceId="select-timezone"
               />
             </div>
       }
