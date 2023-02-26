@@ -65,6 +65,30 @@ export default function Index() {
             onChange={tz => setTimezone(tz.value)}
             instanceId="timezone-select"
           />
+          <Select
+            value={earliest}
+            onChange={option => {
+              if (option === null) return;
+              if (option.value >= latest.value) {
+                setLatest(latestOptions[option.value]);
+              }
+              setEarliest(option);
+            }}
+            options={earliestOptions}
+            instanceId="select-earliest"
+          />
+          <Select
+            value={latest}
+            onChange={option => {
+              if (option === null) return;
+              if (option.value <= earliest.value) {
+                setEarliest(earliestOptions[option.value - 1])
+              }
+              setLatest(option);
+            }}
+            options={latestOptions}
+            instanceId="select-latest"
+          />
           <input
             value={title}
             onChange={e => setTitle(e.target.value)}
