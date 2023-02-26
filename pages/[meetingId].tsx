@@ -1,9 +1,11 @@
 import Header from '@/components/Header';
 import styles from '@/styles/pages/MeetingPage.module.scss';
+import { getCurrentTimezone } from '@/util/timezone';
 import { Meeting } from '@/util/types';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import TimezoneSelect from 'react-timezone-select';
 
 export default function MeetingPage() {
   const db = getFirestore();
@@ -12,6 +14,7 @@ export default function MeetingPage() {
   const { meetingId } = router.query;
 
   const [meeting, setMeeting] = useState<Meeting | null>();
+  const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
 
   // get meeting on start
   useEffect(() => {
@@ -42,6 +45,11 @@ export default function MeetingPage() {
           !meeting ? <p>No meeting found</p> :
             <div className={styles.content}>
               <h1>{meeting.title}</h1>
+              <TimezoneSelect
+                value={timezone}
+                onChange={tz => setTimezone(tz.value)}
+                instanceId="timezone-select"
+              />
             </div>
       }
     </div>
