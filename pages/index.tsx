@@ -4,6 +4,8 @@ import { Meeting } from '@/util/types';
 import { collection, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 
+const reservedIds = ['about'];
+
 export default function Index() {
   const db = getFirestore();
 
@@ -15,10 +17,16 @@ export default function Index() {
     const meetingsRef = collection(db, 'meetings');
     // check id
     if (id) {
-      const meetingRef = doc(meetingsRef, id);
-      const meetingDoc = await getDoc(meetingRef);
-      // if id exists
-      if (meetingDoc.exists()) {
+      // check id availability
+      const idReserved = reservedIds.includes(id);
+      let idTaken = false;
+      if (!idReserved) {
+        const meetingRef = doc(meetingsRef, id);
+        const meetingDoc = await getDoc(meetingRef);
+        idTaken = meetingDoc.exists();
+      }
+      // if id not available
+      if (idReserved || idTaken) {
         window.alert('Meeting ID taken. Please choose another.');
         return;
       }
