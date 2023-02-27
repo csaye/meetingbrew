@@ -60,27 +60,32 @@ export default function Index() {
     <div className={styles.container}>
       <Header />
       <div className={styles.content}>
-        <h1>New Meeting</h1>
+        <input
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+          placeholder="Event Title"
+          required
+        />
         <form onSubmit={e => {
           e.preventDefault();
           createMeeting();
         }}>
-          <p>Timezone</p>
-          <TimezoneSelect
-            value={timezone}
-            onChange={tz => setTimezone(tz.value)}
-            instanceId="select-timezone"
-          />
-          <TimeRangeSlider
-            timeRange={timeRange}
-            setTimeRange={setTimeRange}
-          />
-          <input
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-            placeholder="Title"
-            required
-          />
+          <div>
+            <h1>Which dates?</h1>
+          </div>
+          <div>
+            <h1>Which times?</h1>
+            <p>Timezone</p>
+            <TimezoneSelect
+              value={timezone}
+              onChange={tz => setTimezone(tz.value)}
+              instanceId="select-timezone"
+            />
+            <TimeRangeSlider
+              timeRange={timeRange}
+              setTimeRange={setTimeRange}
+            />
+          </div>
           <div>
             MeetingBrew.com/
             <input
