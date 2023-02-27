@@ -54,6 +54,24 @@ export default function Calendar(props: Props) {
         activeIntervals.push(mmt.format('YYYY-MM-DD HH:mm'));
       }
     }
+    if (minHour === undefined || maxHour === undefined) throw 'undefined hours';
+    // set up days
+    const newDays: Day[] = [];
+    for (const date of newDates) {
+      const ivs: Interval[] = [];
+      for (let hour = minHour; hour <= maxHour; hour++) {
+        // skip if no matching hour
+        if (!activeIntervals.some(i => parseInt(i.split(' ')[1].split(':')[0]) === hour)) continue;
+        // add interval
+        const hourPadded = hour.toString().padStart(2, '0');
+        const mmt = moment.tz(`${date} ${hourPadded}:00:00`, currentTimezone);
+        const active = activeIntervals.includes(mmt.format('YYYY-MM-DD HH:mm'));
+        ivs.push({ index: active ? index : -1, moment: mmt, active });
+        if (active) index++;
+      }
+      const mmt = moment.tz(date, currentTimezone);
+      newDays.push({ moment: mmt, intervals: ivs });
+    }
   }, [days, dragAdd, dragEnd, dragStart, selectedIndices]);
 
   return (
