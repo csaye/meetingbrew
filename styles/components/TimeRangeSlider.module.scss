@@ -1,0 +1,12 @@
+.container {
+  >.timeRange {
+    color: #222;
+    font-size: 24px;
+    font-weight: 500;
+
+    >span {
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+}
