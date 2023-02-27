@@ -4,6 +4,30 @@
 
     >h1 {
       margin: 0;
+      color: #222;
+      font-weight: 700;
+      font-size: 36px;
+    }
+
+    >.inviteButton {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0f0f0;
+      border: 1px solid #d0d0d0;
+      color: #666;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 0 24px 0 18px;
+
+      >img {
+        margin-right: 6px;
+      }
+
+      &:hover {
+        background: #d6d6d6;
+      }
     }
   }
 }
