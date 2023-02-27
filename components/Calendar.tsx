@@ -72,6 +72,21 @@ export default function Calendar(props: Props) {
       const mmt = moment.tz(date, currentTimezone);
       newDays.push({ moment: mmt, intervals: ivs });
     }
+    // get times
+    const newTimes: Moment[] = [];
+    for (let hour = minHour; hour <= maxHour + 1; hour++) {
+      // skip if no matching hour
+      if (
+        hour !== maxHour + 1 &&
+        !activeIntervals.some(i => parseInt(i.split(' ')[1].split(':')[0]) === hour)
+      ) continue;
+      const hourPadded = hour.toString().padStart(2, '0');
+      const mmt = moment.tz(`${newDates[0]} ${hourPadded}:00:00`, currentTimezone);
+      newTimes.push(mmt);
+    }
+    // update calendar values
+    setTimes(newTimes);
+    setDays(newDays);
   }, [days, dragAdd, dragEnd, dragStart, selectedIndices]);
 
   return (
