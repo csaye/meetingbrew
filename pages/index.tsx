@@ -55,7 +55,7 @@ export default function Index() {
       timezone,
       earliest: earliest.value,
       latest: latest.value,
-      days: []
+      dates: []
     };
     await setDoc(meetingRef, meeting);
     Router.push(`/${meetingId}`);

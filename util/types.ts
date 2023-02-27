@@ -2,7 +2,7 @@ export type Meeting = {
   id: string;
   title: string;
   timezone: string;
-  days: string[];
+  dates: string[];
   earliest: number;
   latest: number;
 };
