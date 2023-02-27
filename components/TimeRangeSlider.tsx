@@ -46,6 +46,47 @@ export default function TimeRangeSlider(props: Props) {
         <span>{latest < 12 || latest === 24 ? 'AM' : 'PM'}</span>
       </p>
       <Slider
+        sx={{
+          width: 330,
+          height: 12,
+          color: '#f93636',
+          '& .MuiSlider-thumb': {
+            transition: 'none',
+            height: 24,
+            width: 24,
+            borderRadius: 0,
+            '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
+              boxShadow: 'inherit'
+            }
+          },
+          '& .MuiSlider-track': {
+            transition: 'none'
+          },
+          '& .MuiSlider-rail': {
+            color: '#e0e0e0',
+            opacity: 1,
+            borderRadius: 0
+          },
+          '& .MuiSlider-mark': {
+            backgroundColor: '#fafafa',
+            height: 12,
+            borderRadius: 0,
+            '&.MuiSlider-markActive': {
+              opacity: 1,
+              backgroundColor: 'currentColor'
+            }
+          },
+          '& .MuiSlider-markLabel': {
+            fontFamily: 'DM Sans, sans-serif',
+            fontSize: 12,
+            marginTop: '4px',
+            color: '#666',
+            fontWeight: 500,
+            '&.MuiSlider-markLabelActive': {
+              color: '#222'
+            }
+          }
+        }}
         max={maxValue}
         value={timeRange}
         onChange={handleChange}
