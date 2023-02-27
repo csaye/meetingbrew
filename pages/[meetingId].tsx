@@ -1,3 +1,4 @@
+import Calendar from '@/components/Calendar';
 import Header from '@/components/Header';
 import styles from '@/styles/pages/MeetingPage.module.scss';
 import { getCurrentTimezone } from '@/util/timezone';
@@ -48,7 +49,14 @@ export default function MeetingPage() {
               <TimezoneSelect
                 value={timezone}
                 onChange={tz => setTimezone(tz.value)}
-                instanceId="select-timezone"
+                instanceId="select-currenttimezone"
+              />
+              <Calendar
+                timezone={meeting.timezone}
+                currentTimezone={timezone}
+                dates={meeting.dates}
+                earliest={meeting.earliest}
+                latest={meeting.latest}
               />
             </div>
       }
