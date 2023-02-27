@@ -38,6 +38,22 @@ export default function TimeRangeSlider(props: Props) {
 
   return (
     <div className={styles.container}>
+      <p className={styles.timeRange}>
+        {earliest % 12 || 12}{' '}
+        <span>{earliest < 12 ? 'AM' : 'PM'}</span>
+        {' – '}
+        {latest % 12 || 12}{' '}
+        <span>{latest < 12 || latest === 24 ? 'AM' : 'PM'}</span>
+      </p>
+      <Slider
+        max={maxValue}
+        value={timeRange}
+        onChange={handleChange}
+        valueLabelDisplay="off"
+        disableSwap
+        marks={marks}
+      />
+      <p>Slide the begin and end times left and right.</p>
     </div>
   );
 }
