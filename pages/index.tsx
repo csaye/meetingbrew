@@ -1,8 +1,10 @@
 import Header from '@/components/Header';
+import TimeRangeSlider from '@/components/TimeRangeSlider';
 import styles from '@/styles/pages/Index.module.scss';
 import { getCurrentTimezone } from '@/util/timezone';
 import { Meeting } from '@/util/types';
 import { collection, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import Image from 'next/image';
 import Router from 'next/router';
 import { useState } from 'react';
 import TimezoneSelect from 'react-timezone-select';
@@ -15,8 +17,9 @@ export default function Index() {
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
   const [title, setTitle] = useState('');
   const [id, setId] = useState('');
-  const [earliest, setEarliest] = useState(earliestOptions[9]);
-  const [latest, setLatest] = useState(latestOptions[16]);
+
+  const [timeRange, setTimeRange] = useState<number[]>([9, 17]);
+  const [earliest, latest] = timeRange;
 
   // creates a new meeting in firebase
   async function createMeeting() {
@@ -45,8 +48,8 @@ export default function Index() {
       id: meetingId,
       title,
       timezone,
-      earliest: earliest.value,
-      latest: latest.value,
+      earliest,
+      latest,
       dates: []
     };
     await setDoc(meetingRef, meeting);
@@ -68,6 +71,10 @@ export default function Index() {
             onChange={tz => setTimezone(tz.value)}
             instanceId="select-timezone"
           />
+          <TimeRangeSlider
+            timeRange={timeRange}
+            setTimeRange={setTimeRange}
+          />
           <input
             value={title}
             onChange={e => setTitle(e.target.value)}
@@ -83,7 +90,8 @@ export default function Index() {
             />
           </div>
           <button>
-            Create
+            <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
+            Create Event
           </button>
         </form>
       </div>
