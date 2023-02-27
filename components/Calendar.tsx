@@ -143,6 +143,57 @@ export default function Calendar(props: Props) {
 
   return (
     <div className={styles.container}>
+      <div className={styles.times}>
+        {
+          times && times.map((time, i) =>
+            <div className={styles.time} key={i}>
+              {time.format('h A')}
+            </div>
+          )
+        }
+      </div>
+      <div className={styles.content}>
+        <div className={styles.headings}>
+          {
+            days.map((day, i) =>
+              <div className={styles.heading} key={i}>
+                <h1>{day.moment.format('ddd')}</h1>
+                <h2>{day.moment.format('MMM D')}</h2>
+              </div>
+            )
+          }
+        </div>
+        <div className={styles.days}>
+          {
+            days.map((day, i) =>
+              <div className={styles.day} key={i}>
+                {
+                  day.intervals.map((interval, j) =>
+                    <div
+                      className={
+                        interval.active ? (intervalSelected(i, j, interval.index) ?
+                          `${styles.interval} ${styles.selected}` :
+                          styles.interval) :
+                          `${styles.interval} ${styles.inactive}`}
+                      key={j}
+                      onMouseDown={() => {
+                        if (!interval.active) return;
+                        setDragAdd(!selectedIndices.includes(interval.index));
+                        setDragStart([i, j]);
+                        setDragEnd([i, j]);
+                      }}
+                      onMouseOver={() => {
+                        if (!dragStart) return;
+                        setDragEnd([i, j]);
+                      }}
+                    />
+                  )
+                }
+              </div>
+            )
+          }
+        </div>
+      </div>
     </div>
   );
 }
