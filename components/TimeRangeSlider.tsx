@@ -20,6 +20,22 @@ export default function TimeRangeSlider(props: Props) {
 
   const [earliest, latest] = timeRange;
 
+  // handles time range slider value change
+  function handleChange(e: Event, val: number | number[], thumb: number) {
+    if (!Array.isArray(val)) return;
+    if (val[1] - val[0] < minDistance) {
+      if (thumb === 0) {
+        const clamped = Math.min(val[0], maxValue - minDistance);
+        setTimeRange([clamped, clamped + minDistance]);
+      } else {
+        const clamped = Math.max(val[1], minDistance);
+        setTimeRange([clamped - minDistance, clamped]);
+      }
+    } else {
+      setTimeRange(val);
+    }
+  }
+
   return (
     <div className={styles.container}>
     </div>
