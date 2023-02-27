@@ -89,6 +89,27 @@ export default function Calendar(props: Props) {
     setDays(newDays);
   }, [dates, earliest, latest, timezone, currentTimezone]);
 
+  // returns whether given interval is currently selected
+  function intervalSelected(dayIndex: number, intIndex: number, index: number) {
+    if (!dragAdd && dragStart && dragEnd) {
+      const maxDayIndex = Math.max(dragStart[0], dragEnd[0]);
+      const minDayIndex = Math.min(dragStart[0], dragEnd[0]);
+      const maxIntIndex = Math.max(dragStart[1], dragEnd[1]);
+      const minIntIndex = Math.min(dragStart[1], dragEnd[1]);
+      if (dayIndex >= minDayIndex && dayIndex <= maxDayIndex &&
+        intIndex >= minIntIndex && intIndex <= maxIntIndex) return false;
+    }
+    if (selectedIndices.includes(index)) return true;
+    if (!dragStart || !dragEnd) return false;
+    const maxDayIndex = Math.max(dragStart[0], dragEnd[0]);
+    const minDayIndex = Math.min(dragStart[0], dragEnd[0]);
+    const maxIntIndex = Math.max(dragStart[1], dragEnd[1]);
+    const minIntIndex = Math.min(dragStart[1], dragEnd[1]);
+    if (dayIndex < minDayIndex || dayIndex > maxDayIndex) return false;
+    if (intIndex < minIntIndex || intIndex > maxIntIndex) return false;
+    return true;
+  }
+
   // called on drag end
   const finishDrag = useCallback(() => {
     if (!dragStart || !dragEnd) return;
