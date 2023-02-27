@@ -1,3 +1,4 @@
+import DatesPicker from '@/components/DatesPicker';
 import Header from '@/components/Header';
 import TimeRangeSlider from '@/components/TimeRangeSlider';
 import styles from '@/styles/pages/Index.module.scss';
@@ -15,14 +16,19 @@ export default function Index() {
   const db = getFirestore();
 
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState('New Meeting');
   const [id, setId] = useState('');
+  const [dates, setDates] = useState<string[]>([]);
 
   const [timeRange, setTimeRange] = useState<number[]>([9, 17]);
   const [earliest, latest] = timeRange;
 
   // creates a new meeting in firebase
   async function createMeeting() {
+    if (!dates.length) {
+      window.alert('Please select at least one date.');
+      return;
+    }
     const meetingsRef = collection(db, 'meetings');
     // check id
     if (id) {
@@ -45,12 +51,7 @@ export default function Index() {
     const meetingRef = doc(meetingsRef, meetingId);
     // create meeting
     const meeting: Meeting = {
-      id: meetingId,
-      title,
-      timezone,
-      earliest,
-      latest,
-      dates: []
+      id: meetingId, title, timezone, earliest, latest, dates
     };
     await setDoc(meetingRef, meeting);
     Router.push(`/${meetingId}`);
@@ -72,6 +73,10 @@ export default function Index() {
         }}>
           <div>
             <h1>Which dates?</h1>
+            <DatesPicker
+              dates={dates}
+              setDates={setDates}
+            />
           </div>
           <div>
             <h1>Which times?</h1>
