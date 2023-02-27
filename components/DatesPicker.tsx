@@ -27,6 +27,63 @@ export default function DatesPicker(props: Props) {
 
   return (
     <div className={styles.container}>
+      <div className={styles.calendar}>
+        <div className={styles.month}>
+          <button type="button" onClick={() => setMmt(mmt.clone().subtract(1, 'month'))}>
+            <Image src="/icons/leftarrow.svg" width="24" height="24" alt="leftarrow.svg" />
+          </button>
+          <div>{mmt.format('MMMM YYYY')}</div>
+          <button type="button" onClick={() => setMmt(mmt.clone().add(1, 'month'))}>
+            <Image src="/icons/rightarrow.svg" width="24" height="24" alt="rightarrow.svg" />
+          </button>
+        </div>
+        <div className={styles.headings}>
+          {
+            ['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) =>
+              <div className={styles.heading} key={i}>{d}</div>
+            )
+          }
+        </div>
+        <div className={styles.dates}>
+          {
+            Array(daysBefore).fill(null).map((v, i) =>
+              <div className={`${styles.date} ${styles.inactive}`} key={i}>
+                {daysInPrevMonth - (daysBefore - i - 1)}
+              </div>
+            )
+          }
+          {
+            Array(daysInMonth).fill(null).map((v, i) =>
+              <div
+                className={styleBuilder([
+                  styles.date,
+                  [styles.selected, dates.includes(getDate(i + 1))],
+                  [styles.today, moment().format('YYYY-MM-DD') === getDate(i + 1)]
+                ])}
+                onMouseDown={() => {
+                  const date = getDate(i + 1);
+                  const newDates = dates.slice();
+                  const dateIndex = newDates.indexOf(date);
+                  if (dateIndex === -1) newDates.push(date);
+                  else newDates.splice(dateIndex, 1);
+                  setDates(newDates);
+                }}
+                key={i}
+              >
+                {i + 1}
+              </div>
+            )
+          }
+          {
+            Array(daysAfter).fill(null).map((v, i) =>
+              <div className={`${styles.date} ${styles.inactive}`} key={i}>
+                {i + 1}
+              </div>
+            )
+          }
+        </div>
+      </div>
+      <p>Click and drag to select date ranges.</p>
     </div>
   );
 }
