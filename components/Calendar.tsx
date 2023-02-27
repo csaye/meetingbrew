@@ -87,7 +87,38 @@ export default function Calendar(props: Props) {
     // update calendar values
     setTimes(newTimes);
     setDays(newDays);
+  }, [dates, earliest, latest, timezone, currentTimezone]);
+
+  // called on drag end
+  const finishDrag = useCallback(() => {
+    if (!dragStart || !dragEnd) return;
+    // calculate drag range
+    const maxDayIndex = Math.max(dragStart[0], dragEnd[0]);
+    const minDayIndex = Math.min(dragStart[0], dragEnd[0]);
+    const maxIntIndex = Math.max(dragStart[1], dragEnd[1]);
+    const minIntIndex = Math.min(dragStart[1], dragEnd[1]);
+    // update selected indices
+    const newSelectedIndices = selectedIndices.slice();
+    for (let dayIndex = minDayIndex; dayIndex <= maxDayIndex; dayIndex++) {
+      for (let intIndex = minIntIndex; intIndex <= maxIntIndex; intIndex++) {
+        const interval = days[dayIndex].intervals[intIndex];
+        if (!interval.active) continue;
+        const indexIndex = newSelectedIndices.indexOf(interval.index);
+        if (dragAdd && indexIndex === -1) newSelectedIndices.push(interval.index);
+        if (!dragAdd && indexIndex !== -1) newSelectedIndices.splice(indexIndex, 1);
+      }
+    }
+    setSelectedIndices(newSelectedIndices);
+    // clear drag positions
+    setDragStart(null);
+    setDragEnd(null);
   }, [days, dragAdd, dragEnd, dragStart, selectedIndices]);
+
+  // listen for mouse up to finish drag
+  useEffect(() => {
+    window.addEventListener('mouseup', finishDrag);
+    return () => window.removeEventListener('mouseup', finishDrag);
+  }, [finishDrag]);
 
   return (
     <div className={styles.container}>
