@@ -9,8 +9,8 @@
   --dim-white: #fafafa;
   --white: #fff;
   --mb-red: #fa3737;
-  --mb-red-hover: #ef0606;
-  --mb-red-active: #d10d0d;
+  --mb-red-hover: #E83232;
+  --mb-red-active: #D62E2E;
 }
 
 * {
@@ -22,13 +22,56 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'DM Sans', sans-serif;
-  background: #fafafa;
+  color: var(--primary-text);
+  background: var(--dim-white);
 }
 
 html,
 body,
 #__next {
   height: 100%;
+}
+
+.heading1 {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 48px;
+}
+
+.heading2 {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 32px;
+}
+
+.heading3 {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+}
+
+.heading4 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.paragraph {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+}
+
+.paragraphMedium {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.paragraphBold {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
 }
 
 a {
@@ -44,4 +87,10 @@ button,
 input,
 textarea {
   font-family: 'DM Sans', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mb-red: #EBFFFF;
+  }
 }
