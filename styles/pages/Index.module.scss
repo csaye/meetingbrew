@@ -12,7 +12,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var(--redorange);
+        background: var(--mb-red);
         border: 0;
         color: #fff;
         font-weight: 700;
@@ -24,7 +24,7 @@
         }
 
         &:hover {
-          background: var(--redorangeHover);
+          background: var(--mb-red-cal-hover);
         }
       }
     }
