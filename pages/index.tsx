@@ -71,14 +71,14 @@ export default function Index() {
           e.preventDefault();
           createMeeting();
         }}>
-          <div>
+          <div className={styles.flexItem}>
             <h1>Which dates?</h1>
             <DatesPicker
               dates={dates}
               setDates={setDates}
             />
           </div>
-          <div>
+          <div className={styles.flexItem}>
             <h1>Which times?</h1>
             <p>Timezone</p>
             <TimezoneSelect
@@ -91,7 +91,7 @@ export default function Index() {
               setTimeRange={setTimeRange}
             />
           </div>
-          <div>
+          <div className={styles.flexItem}>
             MeetingBrew.com/
             <input
               value={id}

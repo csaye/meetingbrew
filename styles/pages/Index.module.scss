@@ -7,6 +7,10 @@
     }
 
     >form {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
       >button {
         height: 48px;
         display: flex;
@@ -26,6 +30,11 @@
         &:hover {
           background: var(--mb-red-cal-hover);
         }
+      }
+
+      >.flexItem {
+        width: 336px;
+        margin-right: 48px;
       }
     }
   }
