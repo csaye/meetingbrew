@@ -7,34 +7,59 @@
     }
 
     >form {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
 
-      >button {
-        height: 48px;
+      >.flexContainer {
+        border: 1px solid blue;
         display: flex;
-        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
         justify-content: center;
-        background: var(--mb-red);
-        border: 0;
-        color: #fff;
-        font-weight: 700;
-        font-size: 16px;
-        padding: 0 24px 0 18px;
 
-        >img {
-          margin-right: 6px;
+        >.flexItem {
+          border: 1px solid orange;
+          width: 336px;
+          margin-right: 48px;
+          flex-shrink: 0;
+
+          >button {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--mb-red);
+            border: 0;
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 0 24px 0 18px;
+
+            >img {
+              margin-right: 6px;
+            }
+
+            &:hover {
+              background: var(--mb-red-cal-hover);
+            }
+          }
         }
 
-        &:hover {
-          background: var(--mb-red-cal-hover);
+        >.flexItem:last-child {
+          margin-right: 0;
         }
-      }
 
-      >.flexItem {
-        width: 336px;
-        margin-right: 48px;
+        >.flexItem.leftFlex {
+          width: calc(336px * 2 + 48px);
+        }
+
+        @media (max-width: 815px) {
+          >.flexItem {
+            margin: 0 48px 0 48px !important;
+          }
+
+          >.flexItem.leftFlex {
+            width: 336px;
+          }
+        }
       }
     }
   }

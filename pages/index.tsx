@@ -61,50 +61,58 @@ export default function Index() {
     <div className={styles.container}>
       <Header />
       <div className={styles.content}>
-        <input
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          placeholder="Event Title"
-          required
-        />
         <form onSubmit={e => {
           e.preventDefault();
           createMeeting();
         }}>
-          <div className={styles.flexItem}>
-            <h1>Which dates?</h1>
-            <DatesPicker
-              dates={dates}
-              setDates={setDates}
-            />
+          <div className={styles.flexContainer}>
+            <div className={`${styles.flexItem} ${styles.leftFlex}`}>
+              <input
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                placeholder="Event Title"
+                required
+              />
+            </div>
           </div>
-          <div className={styles.flexItem}>
-            <h1>Which times?</h1>
-            <p>Timezone</p>
-            <TimezoneSelect
-              value={timezone}
-              onChange={tz => setTimezone(tz.value)}
-              instanceId="select-timezone"
-            />
-            <TimeRangeSlider
-              timeRange={timeRange}
-              setTimeRange={setTimeRange}
-            />
+          <div className={styles.flexContainer}>
+            <div className={styles.flexItem}>
+              <h1>Which dates?</h1>
+              <DatesPicker
+                dates={dates}
+                setDates={setDates}
+              />
+            </div>
+            <div className={styles.flexItem}>
+              <h1>Which times?</h1>
+              <p>Timezone</p>
+              <TimezoneSelect
+                value={timezone}
+                onChange={tz => setTimezone(tz.value)}
+                instanceId="select-timezone"
+              />
+              <TimeRangeSlider
+                timeRange={timeRange}
+                setTimeRange={setTimeRange}
+              />
+            </div>
           </div>
-          <div className={styles.flexItem}>
-            MeetingBrew.com/
-            <input
-              value={id}
-              onChange={e => setId(e.target.value)}
-              placeholder="ID (optional)"
-            />
+          <div className={styles.flexContainer}>
+            <div className={`${styles.flexItem} ${styles.leftFlex}`}>
+              <p className={styles.paragraph} style={{ display: 'inline' }}>MeetingBrew.com/ </p>
+              <input
+                value={id}
+                onChange={e => setId(e.target.value)}
+                placeholder="ID (optional)"
+              />
+              <button>
+                <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
+                Create Event
+              </button>
+            </div>
           </div>
-          <button>
-            <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
-            Create Event
-          </button>
         </form>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
