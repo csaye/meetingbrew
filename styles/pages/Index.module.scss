@@ -9,14 +9,14 @@
     >form {
 
       >.flexContainer {
-        border: 1px solid blue;
+        // border: 1px solid blue;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
 
         >.flexItem {
-          border: 1px solid orange;
+          // border: 1px solid orange;
           width: 336px;
           margin-right: 48px;
           flex-shrink: 0;
