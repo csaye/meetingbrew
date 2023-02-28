@@ -20,43 +20,6 @@
   }
 
   >.content {
-    display: flex;
-    flex-direction: column;
-
-    >.headings {
-      display: flex;
-
-      >.heading {
-        background: #fff;
-        border: 1px solid #e0e0e0;
-        width: 80px;
-        height: 80px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        >h1 {
-          margin: 0;
-          color: #222;
-          font-weight: 500;
-          font-size: 24px;
-        }
-
-        >h2 {
-          margin: 0;
-          color: #666;
-          font-weight: 400;
-          font-size: 16px;
-        }
-
-        &:not(:last-of-type) {
-          border-right: 0;
-        }
-      }
-    }
-
     >.days {
       display: flex;
 
@@ -65,15 +28,55 @@
         flex-direction: column;
         text-align: center;
 
+        >.heading {
+          background: #fff;
+          border: 1px solid #e0e0e0;
+          border-right-width: 0;
+          width: 80px;
+          height: 80px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          >h1 {
+            margin: 0;
+            color: #222;
+            font-weight: 500;
+            font-size: 24px;
+          }
+
+          >h2 {
+            margin: 0;
+            color: #666;
+            font-weight: 400;
+            font-size: 16px;
+          }
+        }
+
+        &.gapped {
+          margin-right: 12px;
+        }
+
+        /* add right borders for last column and gapped headings */
+        &:last-of-type,
+        &.gapped {
+          >.heading {
+            border-right-width: 1px;
+          }
+        }
+
         >.interval {
           background: #e0e0e0;
           width: 80px;
-          height: 32px;
+          height: 8px;
           border-top: 1px solid #fafafa;
           border-left: 1px solid #fafafa;
+          border-top-width: 0;
 
-          >p {
-            margin: 0;
+          &.dragging {
+            cursor: pointer;
           }
 
           &.inactive {
@@ -84,16 +87,23 @@
             background: #f93636;
           }
 
-          &:first-of-type {
-            border-top: 0;
+          /* interval hour dividers */
+          &:nth-of-type(4n+6) {
+            border-top-width: 1px;
           }
         }
 
+        /* remove the left border for first column intervals */
         &:first-of-type {
           >.interval {
             border-left: 0;
           }
         }
+      }
+
+      /* remove the left border for intervals after a day gap */
+      >.day.gapped+.day>.interval {
+        border-left: 0;
       }
     }
   }
