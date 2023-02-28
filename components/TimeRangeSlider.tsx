@@ -9,7 +9,7 @@ type Props = {
 
 const marks = Array(25).fill(null).map((v, i) => ({
   value: i,
-  label: i % 3 === 0 ? `${i % 12 || 12} ${i < 12 ? 'AM' : 'PM'}` : undefined
+  label: i % 3 === 0 ? `${i % 12 || 12} ${(i < 12 || i === 24) ? 'AM' : 'PM'}` : undefined
 }));
 
 const maxValue = 24;
