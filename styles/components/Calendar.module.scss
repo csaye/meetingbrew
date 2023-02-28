@@ -74,9 +74,10 @@
           border-top: 1px solid #fafafa;
           border-left: 1px solid #fafafa;
           border-top-width: 0;
+          cursor: pointer;
 
-          &.dragging {
-            cursor: pointer;
+          &:hover {
+            background: #D0D0D0;
           }
 
           &.inactive {
@@ -85,11 +86,20 @@
 
           &.selected {
             background: #f93636;
+
+            &:hover {
+              background: #e01919;
+            }
           }
 
           /* interval hour dividers */
           &:nth-of-type(4n+6) {
             border-top-width: 1px;
+          }
+
+          &.gapped {
+            margin-top: 32px;
+            border-top: 0;
           }
         }
 

@@ -91,6 +91,11 @@ export default function Calendar(props: Props) {
       const hourPadded = hour.toString().padStart(2, '0');
       const mmt = moment.tz(`${newDates[0]} ${hourPadded}:00:00`, currentTimezone);
       newTimes.push(mmt);
+      // check for time gap start
+      if (hour < maxHour &&
+        !activeIntervals.some(i => parseInt(i.split(' ')[1].split(':')[0]) === hour + 1)) {
+        newTimes.push(mmt.clone().add(1, 'hour'));
+      }
     }
     // update calendar values
     setTimes(newTimes);
@@ -185,7 +190,10 @@ export default function Calendar(props: Props) {
                         styles.interval,
                         [styles.inactive, !interval.active],
                         [styles.selected, interval.active && intervalSelected(i, j, interval.index)],
-                        [styles.dragging, !!dragStart]
+                        [styles.gapped, (j > 0 && j % 4 === 0) &&
+                          (day.intervals[j].moment.clone().subtract(1, 'hour').hour() !==
+                            day.intervals[j - 1].moment.hour())
+                        ]
                       ])}
                       onMouseDown={() => {
                         if (!interval.active) return;
