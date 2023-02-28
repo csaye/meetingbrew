@@ -1,3 +1,4 @@
+import { styleBuilder } from '@/util/styles';
 import moment, { Moment } from 'moment-timezone';
 import { useCallback, useEffect, useState } from 'react';
 import styles from '../styles/components/Calendar.module.scss';
@@ -160,29 +161,32 @@ export default function Calendar(props: Props) {
         }
       </div>
       <div className={styles.content}>
-        <div className={styles.headings}>
-          {
-            days.map((day, i) =>
-              <div className={styles.heading} key={i}>
-                <h1>{day.moment.format('ddd')}</h1>
-                <h2>{day.moment.format('MMM D')}</h2>
-              </div>
-            )
-          }
-        </div>
         <div className={styles.days}>
           {
             days.map((day, i) =>
-              <div className={styles.day} key={i}>
+              <div
+                className={styleBuilder([
+                  styles.day,
+                  [styles.gapped, i < days.length - 1 &&
+                    (day.moment.clone().add(1, 'day').format('YYYY-MM-DD') !==
+                      days[i + 1].moment.format('YYYY-MM-DD'))
+                  ]
+                ])}
+                key={i}
+              >
+                <div className={styles.heading}>
+                  <h1>{day.moment.format('ddd')}</h1>
+                  <h2>{day.moment.format('MMM D')}</h2>
+                </div>
                 {
                   day.intervals.map((interval, j) =>
                     <div
-                      className={
-                        interval.active ? (intervalSelected(i, j, interval.index) ?
-                          `${styles.interval} ${styles.selected}` :
-                          styles.interval) :
-                          `${styles.interval} ${styles.inactive}`}
-                      key={j}
+                      className={styleBuilder([
+                        styles.interval,
+                        [styles.inactive, !interval.active],
+                        [styles.selected, interval.active && intervalSelected(i, j, interval.index)],
+                        [styles.dragging, !!dragStart]
+                      ])}
                       onMouseDown={() => {
                         if (!interval.active) return;
                         setDragAdd(!selectedIndices.includes(interval.index));
@@ -193,6 +197,7 @@ export default function Calendar(props: Props) {
                         if (!dragStart) return;
                         setDragEnd([i, j]);
                       }}
+                      key={j}
                     />
                   )
                 }
