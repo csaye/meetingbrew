@@ -144,10 +144,14 @@ export default function Index() {
                       if (e.target.value.length > 100) { e.target.value = e.target.value.slice(0, -1); }
                     }}
                     onKeyDown={(e) => {
+                      if (!('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 Backspace ArrowLeft ArrowRight'.includes(e.key))) {
+                        e.preventDefault();
+                      }
                       if (e.key === ' ') {
                         // replace space with hyphen
                         e.preventDefault();
-                        e.target.value = e.target.value + "-";
+                        if (e.target.value.slice(-1) !== '-')
+                          e.target.value = e.target.value + "-";
                         e.target.scrollLeft = e.target.scrollWidth;
                       }
                     }}
