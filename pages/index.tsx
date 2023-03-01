@@ -7,7 +7,7 @@ import { Meeting } from '@/util/types';
 import { collection, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import Router from 'next/router';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import TimezoneSelect from 'react-timezone-select';
 
 const reservedIds = ['about'];
@@ -16,12 +16,18 @@ export default function Index() {
   const db = getFirestore();
 
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
-  const [title, setTitle] = useState('New Meeting');
+  const [title, setTitle] = useState('');
   const [id, setId] = useState('');
   const [dates, setDates] = useState<string[]>([]);
 
   const [timeRange, setTimeRange] = useState<number[]>([9, 17]);
   const [earliest, latest] = timeRange;
+
+  const titleInput = useRef()
+
+  useEffect(() => {
+    titleInput.current?.focus()
+  }, [])
 
   // creates a new meeting in firebase
   async function createMeeting() {
@@ -59,7 +65,7 @@ export default function Index() {
 
   return (
     <div className={styles.container}>
-      <Header />
+      <Header width={1140} />
       <div className={styles.content}>
         <form onSubmit={e => {
           e.preventDefault();
@@ -67,24 +73,34 @@ export default function Index() {
         }}>
           <div className={styles.flexContainer}>
             <div className={`${styles.flexItem} ${styles.leftFlex}`}>
-              <input
+              <textarea className={styles.titleInput}
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 placeholder="Event Title"
                 required
+                ref={titleInput}
+                wrap="hard"
+                onInput={(e) => {
+                  // e.target.style.height = 'auto';
+                  e.target.style.height = '0';
+                  e.target.style.height = e.target.scrollHeight + "px";
+                }}
+                data-gramm="false"
+                data-gramm_editor="false"
+                data-enable-grammarly="false"
               />
             </div>
           </div>
           <div className={styles.flexContainer}>
             <div className={styles.flexItem}>
-              <h1>Which dates?</h1>
+              <h2>Which dates?</h2>
               <DatesPicker
                 dates={dates}
                 setDates={setDates}
               />
             </div>
             <div className={styles.flexItem}>
-              <h1>Which times?</h1>
+              <h2>Which times?</h2>
               <p>Timezone</p>
               <TimezoneSelect
                 value={timezone}

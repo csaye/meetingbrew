@@ -14,7 +14,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        padding-right: calc(336px + 48px + 24px);
+        padding-right: calc(336px + 48px);
 
         >.flexItem {
           // border: 1px solid orange;
@@ -40,6 +40,27 @@
 
             &:hover {
               background: var(--mb-red-cal-hover);
+            }
+          }
+
+          >.titleInput {
+            height: 48px;
+            width: 100%;
+            margin: 0 0 48px 0;
+            padding: 0;
+            border: none;
+            font-size: 36px;
+            line-height: 48px;
+            font-weight: 600;
+            background: none;
+            resize: none;
+
+            &::placeholder {
+              color: var(--gray)
+            }
+
+            &:focus {
+              outline: 0;
             }
           }
         }

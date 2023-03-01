@@ -32,7 +32,7 @@ export default function DatesPicker(props: Props) {
           <button type="button" onClick={() => setMmt(mmt.clone().subtract(1, 'month'))}>
             <Image src="/icons/leftarrow.svg" width="24" height="24" alt="leftarrow.svg" />
           </button>
-          <div>{mmt.format('MMMM YYYY')}</div>
+          <h4>{mmt.format('MMMM YYYY')}</h4>
           <button type="button" onClick={() => setMmt(mmt.clone().add(1, 'month'))}>
             <Image src="/icons/rightarrow.svg" width="24" height="24" alt="rightarrow.svg" />
           </button>
