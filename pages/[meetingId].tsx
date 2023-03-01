@@ -4,10 +4,11 @@ import styles from '@/styles/pages/MeetingPage.module.scss';
 import { sampleGradient } from '@/util/sampleGradient';
 import { getCurrentTimezone } from '@/util/timezone';
 import { Meeting, Respondent } from '@/util/types';
+import { Checkbox } from '@mui/material';
 import { collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import TimezoneSelect from 'react-timezone-select';
 
 export default function MeetingPage() {
@@ -19,8 +20,13 @@ export default function MeetingPage() {
   const [meeting, setMeeting] = useState<Meeting | null>();
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
   const [respondents, setRespondents] = useState<Respondent[]>();
-  const [name, setName] = useState<string>();
+  const [inputtingName, setInputtingName] = useState(false);
+  const [inputName, setInputName] = useState('');
+  const [name, setName] = useState<string | null>(null);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
+  const [selectedRespondents, setSelectedRespodents] = useState<string[]>([]);
+
+  const nameRef = useRef<HTMLInputElement>(null);
 
   // retrieve respondents from firebase
   const getRespondents = useCallback(async () => {
@@ -29,6 +35,7 @@ export default function MeetingPage() {
     const respondentsDocs = (await getDocs(respondentsRef)).docs;
     const respondentsData = respondentsDocs.map(doc => doc.data() as Respondent);
     setRespondents(respondentsData);
+    setSelectedRespodents(respondentsData.map(r => r.id));
   }, [meetingId, db]);
 
   // get respondents on start
@@ -87,6 +94,11 @@ export default function MeetingPage() {
     const respondentDocRef = doc(db, 'meetings', meetingId, 'respondents', id);
     await updateDoc(respondentDocRef, { availability });
   }
+
+  // focus name input on response start
+  useEffect(() => {
+    if (inputtingName) nameRef.current?.focus();
+  }, [inputtingName]);
 
   // creates a new respondent
   async function createRespondent() {
