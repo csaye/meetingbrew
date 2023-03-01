@@ -69,21 +69,6 @@ export default function MeetingPage() {
     return respondents.findIndex(r => r.name.toLowerCase() === name.toLowerCase());
   }
 
-  // prompts user to enter name
-  async function getName() {
-    if (!respondents) return;
-    // get name from user
-    let newName = window.prompt('Enter your name: ');
-    if (!newName) {
-      window.alert('No name entered.');
-      return;
-    }
-    // update name and availability
-    const rIndex = respondentIndex(newName);
-    if (rIndex !== -1) setSelectedIndices(respondents[rIndex].availability);
-    setName(newName);
-  }
-
   // saves respondent in firebase
   async function saveRespondent() {
     if (typeof meetingId !== 'string' || !name || !respondents) return;
@@ -136,6 +121,24 @@ export default function MeetingPage() {
     await setDoc(respondentDoc, respondent);
   }
 
+  // saves input name as current respondent name
+  async function saveName() {
+    if (!respondents) return;
+    // return if input name not set
+    if (!inputName) {
+      window.alert('Please enter your name.');
+      nameRef.current?.focus();
+      return;
+    }
+    // create respondent
+    const rIndex = respondentIndex(inputName);
+    if (rIndex === -1) createRespondent();
+    else {
+      setSelectedIndices(respondents[rIndex].availability);
+      // reset name input
+      setName(inputName);
+      setInputtingName(false);
+      setInputName('');
     }
   }
 
