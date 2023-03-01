@@ -91,6 +91,10 @@
         &:nth-child(7n+1) {
           border-left: 0;
         }
+
+        &::hover {
+          cursor: pointer;
+        }
       }
     }
   }

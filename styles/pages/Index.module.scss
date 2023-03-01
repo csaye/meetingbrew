@@ -52,14 +52,18 @@
             }
 
             &:hover {
-              background: var(--mb-red-cal-hover);
+              background: var(--mb-red-hover);
+            }
+
+            &:active {
+              background: var(--mb-red-active);
             }
           }
 
           >.titleInput {
             height: 48px;
             width: 100%;
-            margin: 0 0 48px 0;
+            margin: 0 0 36px 0;
             padding: 0;
             border: none;
             font-size: 36px;
@@ -74,6 +78,27 @@
 
             &:focus {
               outline: 0;
+            }
+          }
+
+          .idInput {
+            flex-grow: 1;
+            height: 32px;
+            padding: 4px 6px;
+            border: 1px solid var(--light-gray);
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 300;
+            color: var(--primary-text);
+            background: var(--white);
+
+            &::placeholder {
+              color: var(--gray)
+            }
+
+            &:focus {
+              outline: 0;
+              border-color: var(--mb-red);
             }
           }
         }

@@ -84,9 +84,6 @@ export default function Index() {
                 onInput={(e) => {
                   // 100 char limit
                   if (e.target.value.length > 100) { e.target.value = e.target.value.slice(0, -1); }
-                  // autoresize
-                  // e.target.style.height = '0';
-                  // e.target.style.height = e.target.scrollHeight + "px";
                 }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -101,20 +98,32 @@ export default function Index() {
           </div>
           <div className={styles.flexContainer}>
             <div className={styles.flexItem}>
-              <h2>Which dates?</h2>
-              <DatesPicker
-                dates={dates}
-                setDates={setDates}
-              />
+              <h2 style={{ marginBottom: '12px' }}>Which dates?</h2>
+              <p style={{ color: 'var(--secondary-text)' }}>Timezone</p>
+              <div style={{ marginBottom: '12px' }}>
+                <TimezoneSelect
+                  value={timezone}
+                  onChange={tz => setTimezone(tz.value)}
+                  instanceId="select-timezone"
+                />
+              </div>
+              <div style={{ marginBottom: '48px' }}>
+                <DatesPicker
+                  dates={dates}
+                  setDates={setDates}
+                />
+              </div>
             </div>
             <div className={styles.flexItem}>
-              <h2>Which times?</h2>
-              <p>Timezone</p>
-              <TimezoneSelect
-                value={timezone}
-                onChange={tz => setTimezone(tz.value)}
-                instanceId="select-timezone"
-              />
+              <h2 style={{ marginBottom: '12px' }}>Which times?</h2>
+              <p style={{ color: 'var(--secondary-text)' }}>Timezone</p>
+              <div style={{ marginBottom: '24px' }}>
+                <TimezoneSelect
+                  value={timezone}
+                  onChange={tz => setTimezone(tz.value)}
+                  instanceId="select-timezone"
+                />
+              </div>
               <TimeRangeSlider
                 timeRange={timeRange}
                 setTimeRange={setTimeRange}
@@ -122,13 +131,30 @@ export default function Index() {
             </div>
           </div>
           <div className={styles.flexContainer}>
-            <div className={`${styles.flexItem} ${styles.flexFullWidth}`}>
-              <p className={styles.paragraph} style={{ display: 'inline' }}>MeetingBrew.com/ </p>
-              <input
-                value={id}
-                onChange={e => setId(e.target.value)}
-                placeholder="ID (optional)"
-              />
+            <div className={`${styles.flexItem} ${styles.flexFullWidth}`} style={{ maxWidth: '336px' }}>
+              <div style={{ marginBottom: '48px' }}>
+                <p style={{ fontWeight: '600', display: 'inline' }}>MeetingBrew.com/ </p>
+                <div style={{ display: 'inline-block', marginBottom: '12px' }}>
+                  <input className={styles.idInput}
+                    value={id}
+                    onChange={e => setId(e.target.value)}
+                    placeholder="custom ID (optional)"
+                    onInput={(e) => {
+                      // 100 char limit
+                      if (e.target.value.length > 100) { e.target.value = e.target.value.slice(0, -1); }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === ' ') {
+                        // replace space with hyphen
+                        e.preventDefault();
+                        e.target.value = e.target.value + "-";
+                        e.target.scrollLeft = e.target.scrollWidth;
+                      }
+                    }}
+                  />
+                </div>
+                <p style={{ fontWeight: 200, color: 'var(--secondary-text)' }}>You can optionally set a custom id that will appear in the link of your MeetingBrew.</p>
+              </div>
               <button>
                 <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
                 Create Event
