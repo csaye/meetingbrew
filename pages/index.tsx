@@ -92,6 +92,7 @@ export default function Index() {
                 data-gramm="false"
                 data-gramm_editor="false"
                 data-enable-grammarly="false"
+                spellcheck="false"
               />
             </div>
           </div>
