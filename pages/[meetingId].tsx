@@ -47,7 +47,7 @@ export default function MeetingPage() {
 
   return (
     <div className={styles.container}>
-      <Header />
+      <Header width={1140} />
       {
         meeting === undefined ? <p>Loading...</p> :
           !meeting ? <p>No meeting found</p> :
