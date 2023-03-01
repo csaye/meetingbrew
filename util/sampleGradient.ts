@@ -36,10 +36,14 @@ function newColor(color1: string, color2: string, lBound: number, uBound: number
  */
 export function sampleGradient(points: number, theme: boolean = true) {
 
+  if (points === 1) {
+    return [{ r: 224, g: 244, b: 244 }, { r: 249, g: 54, b: 54 }]
+  }
+
   let levels = [];
   levels.push(0);
   for (let i = 0; i < points; i++) {
-    levels.push((i) / (points - 1) || 1);
+    levels.push((i) / (points - 1) || 0);
   }
   console.log(levels)
 
@@ -60,3 +64,6 @@ export function sampleGradient(points: number, theme: boolean = true) {
 
   return colors
 }
+
+
+console.log(sampleGradient(0))
