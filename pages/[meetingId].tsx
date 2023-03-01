@@ -71,30 +71,23 @@ export default function MeetingPage() {
 
   // saves respondent in firebase
   async function saveRespondent() {
-    if (typeof meetingId !== 'string' || !name || !respondents) return;
+    // return if invalid states
+    if (typeof meetingId !== 'string' || !respondents || !name) return;
     // get respondent data
-    const newRespondents = respondents.slice();
     const rIndex = respondentIndex(name);
-    const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
+    if (rIndex === -1) throw 'saving respondent with invalid name';
     const availability = selectedIndices.slice();
-    // if respondent existing
-    if (rIndex !== -1) {
-      // update local respondent
-      newRespondents[rIndex].availability = availability;
-      setRespondents(newRespondents);
-      // update firebase respondent
-      const { id } = newRespondents[rIndex];
-      const respondentDocRef = doc(respondentsRef, id);
-      await updateDoc(respondentDocRef, { availability });
-    } else {
-      // create local respondent
-      const respondentDoc = doc(respondentsRef);
-      const { id } = respondentDoc;
-      const respondent: Respondent = { id, name, availability };
-      newRespondents.push(respondent);
-      setRespondents(newRespondents);
-      // create firebase respondent
-      await setDoc(respondentDoc, respondent);
+    // update local respondent
+    const newRespondents = respondents.slice();
+    newRespondents[rIndex].availability = availability;
+    setRespondents(newRespondents);
+    setName(null);
+    // update firebase respondent
+    const { id } = newRespondents[rIndex];
+    const respondentDocRef = doc(db, 'meetings', meetingId, 'respondents', id);
+    await updateDoc(respondentDocRef, { availability });
+  }
+
   // creates a new respondent
   async function createRespondent() {
     // return if invalid states
