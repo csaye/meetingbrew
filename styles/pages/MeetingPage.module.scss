@@ -9,25 +9,48 @@
       font-size: 36px;
     }
 
-    >.inviteButton {
-      height: 48px;
+    >.options {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f0f0f0;
-      border: 1px solid #d0d0d0;
-      color: #666;
-      font-weight: 700;
-      font-size: 16px;
-      padding: 0 24px 0 18px;
+      margin: 24px 0;
 
-      >img {
-        margin-right: 6px;
+      >button {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 16px;
+        padding: 0 24px 0 18px;
+        margin-right: 12px;
+
+        >img {
+          margin-right: 12px;
+        }
       }
 
-      &:hover {
-        background: #d6d6d6;
+      >.respondButton {
+        background: var(--redorange);
+        border: 0;
+        color: #fff;
+
+        &:hover {
+          background: var(--redorangeHover);
+        }
       }
+
+      >.inviteButton {
+        background: #f0f0f0;
+        border: 1px solid #d0d0d0;
+        color: #666;
+
+        &:hover {
+          background: #d6d6d6;
+        }
+      }
+    }
+
+    >.calendars {
+      display: flex;
     }
   }
 }
