@@ -110,6 +110,32 @@ export default function MeetingPage() {
       setRespondents(newRespondents);
       // create firebase respondent
       await setDoc(respondentDoc, respondent);
+  // creates a new respondent
+  async function createRespondent() {
+    // return if invalid states
+    if (typeof meetingId !== 'string' || !respondents) return;
+    // create respondent
+    const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
+    const respondentDoc = doc(respondentsRef);
+    const { id } = respondentDoc;
+    const respondent: Respondent = { id, name: inputName, availability: [] };
+    // add user to local respondents
+    const newRespondents = respondents.slice();
+    newRespondents.push(respondent);
+    setRespondents(newRespondents);
+    setSelectedIndices([]);
+    // reset name input
+    setName(inputName);
+    setInputtingName(false);
+    setInputName('');
+    // add user to selected respondents
+    const newSelectedRespondents = selectedRespondents.slice();
+    newSelectedRespondents.push(id);
+    setSelectedRespodents(newSelectedRespondents);
+    // add user to firebase respondents
+    await setDoc(respondentDoc, respondent);
+  }
+
     }
   }
 
