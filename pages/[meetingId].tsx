@@ -1,6 +1,7 @@
 import Calendar from '@/components/Calendar';
 import Header from '@/components/Header';
 import styles from '@/styles/pages/MeetingPage.module.scss';
+import { sampleGradient } from '@/util/sampleGradient';
 import { getCurrentTimezone } from '@/util/timezone';
 import { Meeting, Respondent } from '@/util/types';
 import { collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
@@ -145,6 +146,21 @@ export default function MeetingPage() {
                   <Image src="/icons/link.svg" width="24" height="24" alt="link.svg" />
                   Invite
                 </button>
+                <div className={styles.availability}>
+                  <p>0/{respondents.length}</p>
+                  <div className={styles.shades}>
+                    {
+                      Array(respondents.length + 1).fill(0).map((v, i) =>
+                        <div
+                          className={styles.shade}
+                          style={{ background: sampleGradient(respondents.length)[i] }}
+                          key={i}
+                        />
+                      )
+                    }
+                  </div>
+                  <p>{respondents.length}/{respondents.length}</p>
+                </div>
                 <TimezoneSelect
                   value={timezone}
                   onChange={tz => setTimezone(tz.value)}

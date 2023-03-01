@@ -47,6 +47,28 @@
           background: #d6d6d6;
         }
       }
+
+      >.availability {
+        display: flex;
+        align-items: center;
+
+        >p {
+          color: #666;
+          font-weight: 500;
+          font-size: 16px;
+          margin: 0;
+        }
+
+        >.shades {
+          display: flex;
+          margin: 0 12px;
+
+          >.shade {
+            width: 48px;
+            height: 48px;
+          }
+        }
+      }
     }
 
     >.calendars {
