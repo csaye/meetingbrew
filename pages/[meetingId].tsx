@@ -2,11 +2,11 @@ import Calendar from '@/components/Calendar';
 import Header from '@/components/Header';
 import styles from '@/styles/pages/MeetingPage.module.scss';
 import { getCurrentTimezone } from '@/util/timezone';
-import { Meeting } from '@/util/types';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { Meeting, Respondent } from '@/util/types';
+import { collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import TimezoneSelect from 'react-timezone-select';
 
 export default function MeetingPage() {
@@ -17,6 +17,21 @@ export default function MeetingPage() {
 
   const [meeting, setMeeting] = useState<Meeting | null>();
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
+  const [respondents, setRespondents] = useState<Respondent[]>();
+
+  // retrieve respondents from firebase
+  const getRespondents = useCallback(async () => {
+    if (typeof meetingId !== 'string') return;
+    const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
+    const respondentsDocs = (await getDocs(respondentsRef)).docs;
+    const respondentsData = respondentsDocs.map(doc => doc.data() as Respondent);
+    setRespondents(respondentsData);
+  }, [meetingId, db]);
+
+  // get respondents on start
+  useEffect(() => {
+    getRespondents();
+  }, [getRespondents]);
 
   // get meeting on start
   useEffect(() => {
