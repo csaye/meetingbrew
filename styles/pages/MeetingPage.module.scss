@@ -78,6 +78,55 @@
 
     >.content {
       display: flex;
+
+      >.respondents {
+        width: 280px;
+
+        >p {
+          display: flex;
+          align-items: center;
+          margin: 0 0 8px 0;
+          color: #a0a0a0;
+          font-weight: 700;
+          font-size: 16px;
+
+          >img {
+            margin: 0 12px 0 24px;
+          }
+        }
+
+        >.nameInput {
+          margin: 8px 0 8px 24px;
+          color: #222;
+          font-size: 24px;
+          font-weight: 500;
+          background: #fff;
+          width: 178px;
+          height: 32px;
+          border: 1px solid #e0e0e0;
+
+          &::placeholder {
+            color: #a0a0a0;
+          }
+        }
+
+        >.respondent {
+          display: flex;
+          align-items: center;
+          padding: 8px 0;
+
+          >p {
+            margin: 0;
+            color: #222;
+            font-size: 24px;
+            font-weight: 400;
+
+            &.self {
+              font-weight: 700;
+            }
+          }
+        }
+      }
     }
   }
 }
