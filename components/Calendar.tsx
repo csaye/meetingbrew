@@ -166,6 +166,15 @@ export default function Calendar(props: Props) {
     return () => window.removeEventListener('mouseup', finishDrag);
   }, [finishDrag]);
 
+  // returns color for interval index
+  function getIntervalColor(index: number) {
+    if (type === 'select') return;
+    const { respondents } = props;
+    const colors = sampleGradient(respondents.length);
+    const shade = respondents.filter(r => r.availability.includes(index)).length;
+    return colors[shade];
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.times}>
@@ -208,6 +217,11 @@ export default function Calendar(props: Props) {
                             day.intervals[j - 1].moment.hour())
                         ]
                       ])}
+                      style={
+                        (type === 'display' && interval.active) ?
+                          { background: getIntervalColor(interval.index) } :
+                          undefined
+                      }
                       onMouseDown={() => {
                         if (type === 'display' || !interval.active) return;
                         const { selectedIndices } = props;

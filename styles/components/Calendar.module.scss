@@ -74,11 +74,6 @@
           border-top: 1px solid #fafafa;
           border-left: 1px solid #fafafa;
           border-top-width: 0;
-          cursor: pointer;
-
-          &:hover {
-            background: #D0D0D0;
-          }
 
           &.inactive {
             background: #a0a0a0;
@@ -86,9 +81,17 @@
 
           &.selected {
             background: #f93636;
+          }
+
+          &.hoverable:not(&.inactive) {
+            cursor: pointer;
 
             &:hover {
-              background: #e01919;
+              background: #D0D0D0;
+
+              &.selected {
+                background: #e01919;
+              }
             }
           }
 
