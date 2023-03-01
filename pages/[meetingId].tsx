@@ -182,38 +182,32 @@ export default function MeetingPage() {
                   }}
                 />
               </div>
-              <div className={styles.respondents}>
+              <div className={styles.content}>
+                <div className={styles.respondents}>
+                  {
+                    respondents.map((respondent, i) =>
+                      <div key={i}>
+                        {respondent.name}
+                      </div>
+                    )
+                  }
+                </div>
                 {
-                  respondents.map((respondent, i) =>
-                    <div key={i}>
-                      {respondent.name}
-                    </div>
-                  )
+                  name ?
+                    <Calendar
+                      {...meeting}
+                      currentTimezone={timezone}
+                      type="select"
+                      selectedIndices={selectedIndices}
+                      setSelectedIndices={setSelectedIndices}
+                    /> :
+                    <Calendar
+                      {...meeting}
+                      currentTimezone={timezone}
+                      type="display"
+                      respondents={respondents}
+                    />
                 }
-              </div>
-              <div className={styles.calendars}>
-                {
-                  name &&
-                  <Calendar
-                    timezone={meeting.timezone}
-                    currentTimezone={timezone}
-                    dates={meeting.dates}
-                    earliest={meeting.earliest}
-                    latest={meeting.latest}
-                    type="select"
-                    selectedIndices={selectedIndices}
-                    setSelectedIndices={setSelectedIndices}
-                  />
-                }
-                <Calendar
-                  timezone={meeting.timezone}
-                  currentTimezone={timezone}
-                  dates={meeting.dates}
-                  earliest={meeting.earliest}
-                  latest={meeting.latest}
-                  type="display"
-                  respondents={respondents}
-                />
               </div>
             </div>
       }
