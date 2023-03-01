@@ -10,9 +10,19 @@ function hexToRgb(hex: string) {
   };
 }
 
-// find number between t*100 percent to b from a
+// linearly interpolates between a and b by t
 function lerp(a: number, b: number, t: number) {
   return a * (1 - t) + b * t;
+}
+
+// linearly interpolates between two hex colors
+export function lerpColor(colorA: string, colorB: string, t: number) {
+  const rgbA = hexToRgb(colorA);
+  const rgbB = hexToRgb(colorB);
+  const r = lerp(rgbA.r, rgbB.r, t);
+  const g = lerp(rgbA.g, rgbB.g, t);
+  const b = lerp(rgbA.b, rgbB.b, t);
+  return `rgb(${r}, ${g}, ${b})`;
 }
 
 // find percentage of distance to b that t is from a, b > a
@@ -21,49 +31,16 @@ function progress(a: number, b: number, t: number) {
   return (t - a) / distance;
 }
 
-function newColor(color1: string, color2: string, lBound: number, uBound: number, point: number) {
-  const r = lerp(hexToRgb(color1).r, hexToRgb(color2).r, progress(lBound, uBound, point))
-  const g = lerp(hexToRgb(color1).g, hexToRgb(color2).g, progress(lBound, uBound, point))
-  const b = lerp(hexToRgb(color1).b, hexToRgb(color2).b, progress(lBound, uBound, point))
-  return { r, g, b }
+// returns a color gradient of size shades + 1
+export function sampleGradient(shades: number) {
+  // calculate shade levels
+  const levels = Array(shades + 1).fill(0).map((v, i) => i / shades || 0);
+  // convert shade levels to colors
+  return levels.map(x => {
+    if (x === 0) return '#E0E0E0';
+    if (x < 0.33) return lerpColor('#FFFBD6', '#FFDE69', progress(0, 0.33, x));
+    if (x < 0.69) return lerpColor('#FFDE69', '#FF9636', progress(0.33, 0.69, x));
+    if (x < 0.82) return lerpColor('#FF9636', '#FD7836', progress(0.69, 0.82, x));
+    return lerpColor('#FD7836', '#F93636', progress(0.82, 1, x));
+  });
 }
-
-/**
- * Sample heatmap gradient
- * @param points n number of shades needed (for n people)
- * @param theme defaults to true for light theme
- * @returns array of n+1 shades (0 is nobody available, n is everyone available)
- */
-export function sampleGradient(points: number, theme: boolean = true) {
-
-  if (points === 1) {
-    return [{ r: 224, g: 244, b: 244 }, { r: 249, g: 54, b: 54 }]
-  }
-
-  let levels = [];
-  levels.push(0);
-  for (let i = 0; i < points; i++) {
-    levels.push((i) / (points - 1) || 0);
-  }
-  console.log(levels)
-
-  const colors = levels.map((x) => {
-    // find which two colors it should lerp between
-    if (x < 0.33)
-      return newColor('#FFFBD6', '#FFDE69', 0, 0.33, x)
-    else if (x < 0.69)
-      return newColor('#FFDE69', '#FF9636', 0.33, 0.69, x)
-    else if (x < 0.82)
-      return newColor('#FF9636', '#FD7836', 0.69, 0.82, x)
-    else
-      return newColor('#FD7836', '#F93636', 0.82, 1, x)
-  })
-
-  colors[0] = hexToRgb('#E0E0E0')
-
-
-  return colors
-}
-
-
-console.log(sampleGradient(0))
