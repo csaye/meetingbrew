@@ -15,7 +15,7 @@ function lerp(a: number, b: number, t: number) {
   return a * (1 - t) + b * t;
 }
 
-// find percentage of distance to b that t is from a
+// find percentage of distance to b that t is from a, b > a
 function progress(a: number, b: number, t: number) {
   const distance = b - a;
   return (t - a) / distance;
@@ -37,11 +37,11 @@ function newColor(color1: string, color2: string, lBound: number, uBound: number
 export function sampleGradient(points: number, theme: boolean = true) {
 
   let levels = [];
-  levels.push(0)
+  levels.push(0);
   for (let i = 0; i < points; i++) {
-    levels.push((i) / (points - 1));
+    levels.push((i) / (points - 1) || 1);
   }
-  // console.log(levels)
+  console.log(levels)
 
   const colors = levels.map((x) => {
     // find which two colors it should lerp between
@@ -60,6 +60,3 @@ export function sampleGradient(points: number, theme: boolean = true) {
 
   return colors
 }
-
-// console.log(sampleGradient(4))
-// console.log(sampleGradient(10))
