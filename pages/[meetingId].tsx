@@ -165,6 +165,21 @@ export default function MeetingPage() {
                   value={timezone}
                   onChange={tz => setTimezone(tz.value)}
                   instanceId="select-currenttimezone"
+                  className={styles.select}
+                  styles={{
+                    control: baseStyles => ({
+                      ...baseStyles,
+                      height: '48px',
+                      borderRadius: 0,
+                      background: '#f0f0f0',
+                      border: '1px solid #d0d0d0'
+                    }),
+                    singleValue: baseStyles => ({
+                      ...baseStyles,
+                      fontWeight: 700,
+                      color: '#666'
+                    })
+                  }}
                 />
               </div>
               <div className={styles.respondents}>

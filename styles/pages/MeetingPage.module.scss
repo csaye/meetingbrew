@@ -21,7 +21,6 @@
         font-weight: 700;
         font-size: 16px;
         padding: 0 24px 0 18px;
-        margin-right: 12px;
 
         >img {
           margin-right: 12px;
@@ -32,6 +31,7 @@
         background: var(--redorange);
         border: 0;
         color: #fff;
+        margin-right: 12px;
 
         &:hover {
           background: var(--redorangeHover);
@@ -42,9 +42,10 @@
         background: #f0f0f0;
         border: 1px solid #d0d0d0;
         color: #666;
+        margin-right: 32px;
 
         &:hover {
-          background: #d6d6d6;
+          background: #e0e0e0;
         }
       }
 
@@ -68,6 +69,10 @@
             height: 48px;
           }
         }
+      }
+
+      >.select {
+        margin-left: 32px;
       }
     }
 
