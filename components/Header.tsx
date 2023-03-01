@@ -17,7 +17,7 @@ export default function Header(props: Props) {
         <Link className={styles.link} href="/about">About</Link>
         <button>
           <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
-          New Meeting
+          New Event
         </button>
       </div>
     </div>
