@@ -117,28 +117,73 @@ export default function MeetingPage() {
       <Header />
       {
         meeting === undefined ? <p>Loading...</p> :
-          !meeting ? <p>No meeting found</p> :
+          !meeting ? <p>No meeting found</p> : !respondents ? <p>Loading...</p> :
             <div className={styles.content}>
               <h1>{meeting.title}</h1>
-              <button
-                className={styles.inviteButton}
-                onClick={copyLink}
-              >
-                <Image src="/icons/link.svg" width="24" height="24" alt="link.svg" />
-                Invite
-              </button>
-              <TimezoneSelect
-                value={timezone}
-                onChange={tz => setTimezone(tz.value)}
-                instanceId="select-currenttimezone"
-              />
-              <Calendar
-                timezone={meeting.timezone}
-                currentTimezone={timezone}
-                dates={meeting.dates}
-                earliest={meeting.earliest}
-                latest={meeting.latest}
-              />
+              <div className={styles.options}>
+                {
+                  name ?
+                    <button
+                      className={styles.respondButton}
+                      onClick={saveRespondent}
+                    >
+                      <Image src="/icons/check.svg" width="24" height="24" alt="check.svg" />
+                      Save
+                    </button> :
+                    <button
+                      className={styles.respondButton}
+                      onClick={getName}
+                    >
+                      <Image src="/icons/calendar.svg" width="24" height="24" alt="calendar.svg" />
+                      Respond
+                    </button>
+                }
+                <button
+                  className={styles.inviteButton}
+                  onClick={copyLink}
+                >
+                  <Image src="/icons/link.svg" width="24" height="24" alt="link.svg" />
+                  Invite
+                </button>
+                <TimezoneSelect
+                  value={timezone}
+                  onChange={tz => setTimezone(tz.value)}
+                  instanceId="select-currenttimezone"
+                />
+              </div>
+              <div className={styles.respondents}>
+                {
+                  respondents.map((respondent, i) =>
+                    <div key={i}>
+                      {respondent.name}
+                    </div>
+                  )
+                }
+              </div>
+              <div className={styles.calendars}>
+                {
+                  name &&
+                  <Calendar
+                    timezone={meeting.timezone}
+                    currentTimezone={timezone}
+                    dates={meeting.dates}
+                    earliest={meeting.earliest}
+                    latest={meeting.latest}
+                    type="select"
+                    selectedIndices={selectedIndices}
+                    setSelectedIndices={setSelectedIndices}
+                  />
+                }
+                <Calendar
+                  timezone={meeting.timezone}
+                  currentTimezone={timezone}
+                  dates={meeting.dates}
+                  earliest={meeting.earliest}
+                  latest={meeting.latest}
+                  type="display"
+                  respondents={respondents}
+                />
+              </div>
             </div>
       }
     </div>
