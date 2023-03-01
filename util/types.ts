@@ -6,3 +6,9 @@ export type Meeting = {
   earliest: number;
   latest: number;
 };
+
+export type Respondent = {
+  name: string;
+  availability: number[];
+  id: string;
+};
