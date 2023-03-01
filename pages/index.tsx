@@ -99,7 +99,7 @@ export default function Index() {
           <div className={styles.flexContainer}>
             <div className={styles.flexItem}>
               <h2 style={{ marginBottom: '12px' }}>Which dates?</h2>
-              <p style={{ color: 'var(--secondary-text)' }}>Timezone</p>
+              <p style={{ color: 'var(--secondary-text)' }}>Date Type</p>
               <div style={{ marginBottom: '12px' }}>
                 <TimezoneSelect
                   value={timezone}
