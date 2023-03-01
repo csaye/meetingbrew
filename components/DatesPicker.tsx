@@ -83,7 +83,7 @@ export default function DatesPicker(props: Props) {
           }
         </div>
       </div>
-      <p style={{ color: 'var(--secondary-text)', fontWeight: 300 }}>Click and drag to select date ranges.</p>
+      <p style={{ color: 'var(--secondary-text)', fontWeight: 200 }}>Click and drag to select date ranges.</p>
     </div>
   );
 }
