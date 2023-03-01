@@ -157,21 +157,29 @@ export default function MeetingPage() {
               <h1>{meeting.title}</h1>
               <div className={styles.options}>
                 {
-                  name ?
+                  inputtingName ?
                     <button
                       className={styles.respondButton}
-                      onClick={saveRespondent}
+                      onClick={saveName}
                     >
                       <Image src="/icons/check.svg" width="24" height="24" alt="check.svg" />
                       Save
                     </button> :
-                    <button
-                      className={styles.respondButton}
-                      onClick={getName}
-                    >
-                      <Image src="/icons/calendar.svg" width="24" height="24" alt="calendar.svg" />
-                      Respond
-                    </button>
+                    name ?
+                      <button
+                        className={styles.respondButton}
+                        onClick={saveRespondent}
+                      >
+                        <Image src="/icons/check.svg" width="24" height="24" alt="check.svg" />
+                        Done
+                      </button> :
+                      <button
+                        className={styles.respondButton}
+                        onClick={() => setInputtingName(true)}
+                      >
+                        <Image src="/icons/calendar.svg" width="24" height="24" alt="calendar.svg" />
+                        Respond
+                      </button>
                 }
                 <button
                   className={styles.inviteButton}
@@ -180,21 +188,26 @@ export default function MeetingPage() {
                   <Image src="/icons/link.svg" width="24" height="24" alt="link.svg" />
                   Invite
                 </button>
-                <div className={styles.availability}>
-                  <p>0/{respondents.length}</p>
-                  <div className={styles.shades}>
-                    {
-                      Array(respondents.length + 1).fill(0).map((v, i) =>
-                        <div
-                          className={styles.shade}
-                          style={{ background: sampleGradient(respondents.length)[i] }}
-                          key={i}
-                        />
-                      )
-                    }
+                {
+                  (!name && !inputtingName) &&
+                  <div className={styles.availability}>
+                    <p>0/{selectedRespondents.length}</p>
+                    <div className={styles.shades}>
+                      {
+                        Array(selectedRespondents.length + 1).fill(0).map((v, i) =>
+                          <div
+                            className={styles.shade}
+                            style={{
+                              background: sampleGradient(selectedRespondents.length)[i]
+                            }}
+                            key={i}
+                          />
+                        )
+                      }
+                    </div>
+                    <p>{selectedRespondents.length}/{selectedRespondents.length}</p>
                   </div>
-                  <p>{respondents.length}/{respondents.length}</p>
-                </div>
+                }
                 <TimezoneSelect
                   value={timezone}
                   onChange={tz => setTimezone(tz.value)}
@@ -218,29 +231,66 @@ export default function MeetingPage() {
               </div>
               <div className={styles.content}>
                 <div className={styles.respondents}>
+                  <p>
+                    <Image src="/icons/funnel.svg" width="24" height="24" alt="funnel.svg" />
+                    Respondents
+                  </p>
+                  {
+                    inputtingName &&
+                    <input
+                      className={styles.nameInput}
+                      ref={nameRef}
+                      value={inputName}
+                      onChange={e => setInputName(e.target.value)}
+                      placeholder="Name"
+                    />
+                  }
                   {
                     respondents.map((respondent, i) =>
-                      <div key={i}>
-                        {respondent.name}
+                      <div className={styles.respondent} key={i}>
+                        <Checkbox
+                          sx={{
+                            padding: 0, margin: '0 16px 0 24px'
+                          }}
+                          defaultChecked
+                          icon={<Image src="/icons/box.svg" width="18" height="18" alt="box.svg" />}
+                          checkedIcon={<Image src="/icons/boxchecked.svg" width="18" height="18" alt="boxchecked.svg" />}
+                          onChange={e => {
+                            // update selected respondents
+                            const newSelectedRespondents = selectedRespondents.slice();
+                            const rIndex = newSelectedRespondents.indexOf(respondent.id);
+                            if (e.target.checked && rIndex === -1) newSelectedRespondents.push(respondent.id);
+                            if (!e.target.checked && rIndex !== -1) newSelectedRespondents.splice(rIndex, 1);
+                            setSelectedRespodents(newSelectedRespondents);
+                          }}
+                          disableRipple
+                        />
+                        <p className={
+                          respondent.name.toLowerCase() === name?.toLowerCase() ?
+                            styles.self : undefined
+                        }>{respondent.name}</p>
                       </div>
                     )
                   }
                 </div>
                 {
-                  name ?
-                    <Calendar
-                      {...meeting}
-                      currentTimezone={timezone}
-                      type="select"
-                      selectedIndices={selectedIndices}
-                      setSelectedIndices={setSelectedIndices}
-                    /> :
-                    <Calendar
-                      {...meeting}
-                      currentTimezone={timezone}
-                      type="display"
-                      respondents={respondents}
-                    />
+                  name &&
+                  <Calendar
+                    {...meeting}
+                    currentTimezone={timezone}
+                    type="select"
+                    selectedIndices={selectedIndices}
+                    setSelectedIndices={setSelectedIndices}
+                  />
+                }
+                {
+                  (!name && !inputtingName) &&
+                  <Calendar
+                    {...meeting}
+                    currentTimezone={timezone}
+                    type="display"
+                    respondents={respondents.filter(r => selectedRespondents.includes(r.id))}
+                  />
                 }
               </div>
             </div>
