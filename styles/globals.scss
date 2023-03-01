@@ -15,6 +15,11 @@
 
 * {
   box-sizing: border-box;
+
+  &::selection {
+    // color: var(--white);
+    background: #ffde69;
+  }
 }
 
 html,
@@ -60,7 +65,7 @@ h4 {
   line-height: 24px;
 }
 
-.paragraph {
+p {
   margin: 0;
   font-size: 16px;
   font-weight: 300;
@@ -68,17 +73,11 @@ h4 {
 }
 
 .paragraphMedium {
-  margin: 0;
-  font-size: 16px;
   font-weight: 400;
-  line-height: 24px;
 }
 
 .paragraphBold {
-  margin: 0;
-  font-size: 16px;
   font-weight: 300;
-  line-height: 24px;
 }
 
 a {
@@ -88,6 +87,7 @@ a {
 
 button {
   cursor: pointer;
+  user-select: none;
 }
 
 button,
