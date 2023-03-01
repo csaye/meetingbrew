@@ -9,6 +9,7 @@ import Image from 'next/image';
 import Router from 'next/router';
 import { useState, useRef, useEffect } from 'react';
 import TimezoneSelect from 'react-timezone-select';
+import TextareaAutosize from '@mui/base/TextareaAutosize';
 
 const reservedIds = ['about'];
 
@@ -73,7 +74,7 @@ export default function Index() {
         }}>
           <div className={styles.flexContainer}>
             <div className={`${styles.flexItem} ${styles.flexFullWidth}`}>
-              <textarea className={styles.titleInput}
+              <TextareaAutosize className={styles.titleInput}
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 placeholder="Event Title"
@@ -81,8 +82,11 @@ export default function Index() {
                 ref={titleInput}
                 wrap="hard"
                 onInput={(e) => {
-                  e.target.style.height = '0';
-                  e.target.style.height = e.target.scrollHeight + "px";
+                  // 100 char limit
+                  if (e.target.value.length > 100) { e.target.value = e.target.value.slice(0, -1); }
+                  // autoresize
+                  // e.target.style.height = '0';
+                  // e.target.style.height = e.target.scrollHeight + "px";
                 }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -92,8 +96,7 @@ export default function Index() {
                 data-gramm="false"
                 data-gramm_editor="false"
                 data-enable-grammarly="false"
-                spellcheck="false"
-              />
+                spellcheck="false" />
             </div>
           </div>
           <div className={styles.flexContainer}>
