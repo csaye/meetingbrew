@@ -72,7 +72,7 @@ export default function Index() {
           createMeeting();
         }}>
           <div className={styles.flexContainer}>
-            <div className={`${styles.flexItem} ${styles.leftFlex}`}>
+            <div className={`${styles.flexItem} ${styles.flexFullWidth}`}>
               <textarea className={styles.titleInput}
                 value={title}
                 onChange={e => setTitle(e.target.value)}
@@ -81,9 +81,13 @@ export default function Index() {
                 ref={titleInput}
                 wrap="hard"
                 onInput={(e) => {
-                  // e.target.style.height = 'auto';
                   e.target.style.height = '0';
                   e.target.style.height = e.target.scrollHeight + "px";
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                  }
                 }}
                 data-gramm="false"
                 data-gramm_editor="false"
@@ -114,7 +118,7 @@ export default function Index() {
             </div>
           </div>
           <div className={styles.flexContainer}>
-            <div className={`${styles.flexItem} ${styles.leftFlex}`}>
+            <div className={`${styles.flexItem} ${styles.flexFullWidth}`}>
               <p className={styles.paragraph} style={{ display: 'inline' }}>MeetingBrew.com/ </p>
               <input
                 value={id}

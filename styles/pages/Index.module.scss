@@ -1,6 +1,11 @@
 .container {
   >.content {
     padding: 48px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    // border: 2px solid red;
 
     >h1 {
       margin: 0;
@@ -8,19 +13,27 @@
 
     >form {
 
+      display: contents;
+
       >.flexContainer {
-        // border: 1px solid blue;
+        flex-basis: 1140px;
+        flex-shrink: 1;
+        // border: 2px solid blue;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
-        padding-right: calc(336px + 48px);
+        justify-content: left;
+        // padding-right: calc(336px + 48px);
 
         >.flexItem {
-          // border: 1px solid orange;
-          width: 336px;
+          // border: 2px solid orange;
+          // width: 336px;
           margin-right: 48px;
-          flex-shrink: 0;
+          // flex-shrink: 0;
+
+          &.flexFullWidth {
+            flex-grow: 1;
+          }
 
           >button {
             height: 48px;
@@ -68,25 +81,11 @@
         >.flexItem:last-child {
           margin-right: 0;
         }
-
-        >.flexItem.leftFlex {
-          width: calc(336px * 2 + 48px);
-        }
-
-        @media (max-width: 815px) {
-          >.flexItem {
-            margin: 0 48px 0 48px !important;
-          }
-
-          >.flexItem.leftFlex {
-            width: 336px;
-          }
-        }
       }
 
-      @media (max-width: 1200px) {
+      @media (min-width: calc(1140px + 48px + 48px)) {
         >.flexContainer {
-          padding-right: 0;
+          margin: 0 calc((100vw - 1140px - 48px - 48px) / 2);
         }
       }
     }
