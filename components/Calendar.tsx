@@ -1,15 +1,21 @@
+import { sampleGradient } from '@/util/sampleGradient';
 import { styleBuilder } from '@/util/styles';
+import { Respondent } from '@/util/types';
 import moment, { Moment } from 'moment-timezone';
-import { useCallback, useEffect, useState } from 'react';
+import { Dispatch, useCallback, useEffect, useState } from 'react';
 import styles from '../styles/components/Calendar.module.scss';
 
-type Props = {
+type BaseProps = {
   timezone: string;
   currentTimezone: string;
   dates: string[];
   earliest: number;
   latest: number;
 };
+
+type Props =
+  BaseProps & { type: 'select', selectedIndices: number[], setSelectedIndices: Dispatch<number[]> } |
+  BaseProps & { type: 'display', respondents: Respondent[] };
 
 type Interval = {
   index: number;
@@ -23,7 +29,7 @@ type Day = {
 };
 
 export default function Calendar(props: Props) {
-  const { timezone, currentTimezone, dates, earliest, latest } = props;
+  const { timezone, currentTimezone, dates, earliest, latest, type } = props;
 
   const [days, setDays] = useState<Day[]>([]);
   const [times, setTimes] = useState<Moment[]>();
@@ -31,7 +37,6 @@ export default function Calendar(props: Props) {
   const [dragAdd, setDragAdd] = useState(true);
   const [dragStart, setDragStart] = useState<number[] | null>(null);
   const [dragEnd, setDragEnd] = useState<number[] | null>(null);
-  const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
 
   // update days on info change
   useEffect(() => {
@@ -104,6 +109,9 @@ export default function Calendar(props: Props) {
 
   // returns whether given interval is currently selected
   function intervalSelected(dayIndex: number, intIndex: number, index: number) {
+    if (type === 'display') return false;
+    const { selectedIndices } = props;
+    // if dragging to remove
     if (!dragAdd && dragStart && dragEnd) {
       const maxDayIndex = Math.max(dragStart[0], dragEnd[0]);
       const minDayIndex = Math.min(dragStart[0], dragEnd[0]);
@@ -112,7 +120,9 @@ export default function Calendar(props: Props) {
       if (dayIndex >= minDayIndex && dayIndex <= maxDayIndex &&
         intIndex >= minIntIndex && intIndex <= maxIntIndex) return false;
     }
+    // if already selected
     if (selectedIndices.includes(index)) return true;
+    // if dragging to add
     if (!dragStart || !dragEnd) return false;
     const maxDayIndex = Math.max(dragStart[0], dragEnd[0]);
     const minDayIndex = Math.min(dragStart[0], dragEnd[0]);
@@ -125,6 +135,8 @@ export default function Calendar(props: Props) {
 
   // called on drag end
   const finishDrag = useCallback(() => {
+    if (type === 'display') return;
+    const { selectedIndices, setSelectedIndices } = props;
     if (!dragStart || !dragEnd) return;
     // calculate drag range
     const maxDayIndex = Math.max(dragStart[0], dragEnd[0]);
@@ -146,7 +158,7 @@ export default function Calendar(props: Props) {
     // clear drag positions
     setDragStart(null);
     setDragEnd(null);
-  }, [days, dragAdd, dragEnd, dragStart, selectedIndices]);
+  }, [days, dragAdd, dragEnd, dragStart, type, props]);
 
   // listen for mouse up to finish drag
   useEffect(() => {
@@ -190,13 +202,15 @@ export default function Calendar(props: Props) {
                         styles.interval,
                         [styles.inactive, !interval.active],
                         [styles.selected, interval.active && intervalSelected(i, j, interval.index)],
+                        [styles.hoverable, type === 'select'],
                         [styles.gapped, (j > 0 && j % 4 === 0) &&
                           (day.intervals[j].moment.clone().subtract(1, 'hour').hour() !==
                             day.intervals[j - 1].moment.hour())
                         ]
                       ])}
                       onMouseDown={() => {
-                        if (!interval.active) return;
+                        if (type === 'display' || !interval.active) return;
+                        const { selectedIndices } = props;
                         setDragAdd(!selectedIndices.includes(interval.index));
                         setDragStart([i, j]);
                         setDragEnd([i, j]);
