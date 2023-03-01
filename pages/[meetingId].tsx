@@ -83,6 +83,35 @@ export default function MeetingPage() {
     setName(newName);
   }
 
+  // saves respondent in firebase
+  async function saveRespondent() {
+    if (typeof meetingId !== 'string' || !name || !respondents) return;
+    // get respondent data
+    const newRespondents = respondents.slice();
+    const rIndex = respondentIndex(name);
+    const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
+    const availability = selectedIndices.slice();
+    // if respondent existing
+    if (rIndex !== -1) {
+      // update local respondent
+      newRespondents[rIndex].availability = availability;
+      setRespondents(newRespondents);
+      // update firebase respondent
+      const { id } = newRespondents[rIndex];
+      const respondentDocRef = doc(respondentsRef, id);
+      await updateDoc(respondentDocRef, { availability });
+    } else {
+      // create local respondent
+      const respondentDoc = doc(respondentsRef);
+      const { id } = respondentDoc;
+      const respondent: Respondent = { id, name, availability };
+      newRespondents.push(respondent);
+      setRespondents(newRespondents);
+      // create firebase respondent
+      await setDoc(respondentDoc, respondent);
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Header />
