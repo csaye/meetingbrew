@@ -18,6 +18,8 @@ export default function MeetingPage() {
   const [meeting, setMeeting] = useState<Meeting | null>();
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
   const [respondents, setRespondents] = useState<Respondent[]>();
+  const [name, setName] = useState<string>();
+  const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
 
   // retrieve respondents from firebase
   const getRespondents = useCallback(async () => {
@@ -58,6 +60,27 @@ export default function MeetingPage() {
   async function copyLink() {
     await navigator.clipboard.writeText(`https://meetingbrew.com/${meetingId}`);
     window.alert('Copied invite to clipboard!');
+  }
+
+  // returns index of respondent by name
+  function respondentIndex(name: string) {
+    if (!respondents) return -1;
+    return respondents.findIndex(r => r.name.toLowerCase() === name.toLowerCase());
+  }
+
+  // prompts user to enter name
+  async function getName() {
+    if (!respondents) return;
+    // get name from user
+    let newName = window.prompt('Enter your name: ');
+    if (!newName) {
+      window.alert('No name entered.');
+      return;
+    }
+    // update name and availability
+    const rIndex = respondentIndex(newName);
+    if (rIndex !== -1) setSelectedIndices(respondents[rIndex].availability);
+    setName(newName);
   }
 
   return (
