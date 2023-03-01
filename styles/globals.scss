@@ -1,10 +1,25 @@
 :root {
-  --redorange: #fa3737;
-  --redorangeHover: #ef0606;
+  --black: #000;
+  --primary-text: #222;
+  --secondary-text: #666;
+  --gray: #a0a0a0;
+  --mid-gray: #d0d0d0;
+  --light-gray: #e0e0e0;
+  --dark-white: #f0f0f0;
+  --dim-white: #fafafa;
+  --white: #fff;
+  --mb-red: #fa3737;
+  --mb-red-hover: #E83232;
+  --mb-red-active: #D62E2E;
 }
 
 * {
   box-sizing: border-box;
+
+  &::selection {
+    // color: var(--white);
+    background: #ffde69;
+  }
 }
 
 html,
@@ -12,13 +27,57 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'DM Sans', sans-serif;
-  background: #fafafa;
+  color: var(--primary-text);
+  background: var(--dim-white);
 }
 
 html,
 body,
 #__next {
   height: 100%;
+}
+
+h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 48px;
+}
+
+h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 32px;
+}
+
+h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+}
+
+h4 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 200;
+  line-height: 24px;
+}
+
+.paragraphMedium {
+  font-weight: 400;
+}
+
+.paragraphBold {
+  font-weight: 600;
 }
 
 a {
@@ -28,6 +87,11 @@ a {
 
 button {
   cursor: pointer;
+  user-select: none;
+}
+
+img {
+  user-select: none;
 }
 
 button,
@@ -35,3 +99,9 @@ input,
 textarea {
   font-family: 'DM Sans', sans-serif;
 }
+
+// @media (prefers-color-scheme: dark) {
+//   :root {
+//     --mb-red: #EBFFFF;
+//   }
+// }

@@ -32,7 +32,7 @@ export default function DatesPicker(props: Props) {
           <button type="button" onClick={() => setMmt(mmt.clone().subtract(1, 'month'))}>
             <Image src="/icons/leftarrow.svg" width="24" height="24" alt="leftarrow.svg" />
           </button>
-          <div>{mmt.format('MMMM YYYY')}</div>
+          <h4>{mmt.format('MMMM YYYY')}</h4>
           <button type="button" onClick={() => setMmt(mmt.clone().add(1, 'month'))}>
             <Image src="/icons/rightarrow.svg" width="24" height="24" alt="rightarrow.svg" />
           </button>
@@ -44,7 +44,7 @@ export default function DatesPicker(props: Props) {
             )
           }
         </div>
-        <div className={styles.dates}>
+        <div className={styles.dates} style={{ marginBottom: '12px' }}>
           {
             Array(daysBefore).fill(null).map((v, i) =>
               <div className={`${styles.date} ${styles.inactive}`} key={i}>
@@ -83,7 +83,7 @@ export default function DatesPicker(props: Props) {
           }
         </div>
       </div>
-      <p>Click and drag to select date ranges.</p>
+      <p style={{ color: 'var(--secondary-text)', fontWeight: 200 }}>Click and drag to select date ranges.</p>
     </div>
   );
 }

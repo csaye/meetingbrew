@@ -7,8 +7,9 @@ import { Meeting } from '@/util/types';
 import { collection, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import Router from 'next/router';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import TimezoneSelect from 'react-timezone-select';
+import TextareaAutosize from '@mui/base/TextareaAutosize';
 
 const reservedIds = ['about'];
 
@@ -16,12 +17,18 @@ export default function Index() {
   const db = getFirestore();
 
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
-  const [title, setTitle] = useState('New Meeting');
+  const [title, setTitle] = useState('');
   const [id, setId] = useState('');
   const [dates, setDates] = useState<string[]>([]);
 
   const [timeRange, setTimeRange] = useState<number[]>([9, 17]);
   const [earliest, latest] = timeRange;
+
+  const titleInput = useRef()
+
+  useEffect(() => {
+    titleInput.current?.focus()
+  }, [])
 
   // creates a new meeting in firebase
   async function createMeeting() {
@@ -59,52 +66,103 @@ export default function Index() {
 
   return (
     <div className={styles.container}>
-      <Header />
+      <Header width={1140} />
       <div className={styles.content}>
-        <input
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          placeholder="Event Title"
-          required
-        />
         <form onSubmit={e => {
           e.preventDefault();
           createMeeting();
         }}>
-          <div>
-            <h1>Which dates?</h1>
-            <DatesPicker
-              dates={dates}
-              setDates={setDates}
-            />
+          <div className={styles.flexContainer}>
+            <div className={`${styles.flexItem} ${styles.flexFullWidth}`}>
+              <TextareaAutosize className={styles.titleInput}
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                placeholder="Event Title"
+                required
+                ref={titleInput}
+                wrap="hard"
+                onInput={(e) => {
+                  // 100 char limit
+                  if (e.target.value.length > 100) { e.target.value = e.target.value.slice(0, -1); }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                  }
+                }}
+                data-gramm="false"
+                data-gramm_editor="false"
+                data-enable-grammarly="false"
+                spellcheck="false" />
+            </div>
           </div>
-          <div>
-            <h1>Which times?</h1>
-            <p>Timezone</p>
-            <TimezoneSelect
-              value={timezone}
-              onChange={tz => setTimezone(tz.value)}
-              instanceId="select-timezone"
-            />
-            <TimeRangeSlider
-              timeRange={timeRange}
-              setTimeRange={setTimeRange}
-            />
+          <div className={styles.flexContainer}>
+            <div className={styles.flexItem}>
+              <h2 style={{ marginBottom: '12px' }}>Which dates?</h2>
+              <p style={{ color: 'var(--secondary-text)' }}>Timezone</p>
+              <div style={{ marginBottom: '12px' }}>
+                <TimezoneSelect
+                  value={timezone}
+                  onChange={tz => setTimezone(tz.value)}
+                  instanceId="select-timezone"
+                />
+              </div>
+              <div style={{ marginBottom: '48px' }}>
+                <DatesPicker
+                  dates={dates}
+                  setDates={setDates}
+                />
+              </div>
+            </div>
+            <div className={styles.flexItem}>
+              <h2 style={{ marginBottom: '12px' }}>Which times?</h2>
+              <p style={{ color: 'var(--secondary-text)' }}>Timezone</p>
+              <div style={{ marginBottom: '24px' }}>
+                <TimezoneSelect
+                  value={timezone}
+                  onChange={tz => setTimezone(tz.value)}
+                  instanceId="select-timezone"
+                />
+              </div>
+              <TimeRangeSlider
+                timeRange={timeRange}
+                setTimeRange={setTimeRange}
+              />
+            </div>
           </div>
-          <div>
-            MeetingBrew.com/
-            <input
-              value={id}
-              onChange={e => setId(e.target.value)}
-              placeholder="ID (optional)"
-            />
+          <div className={styles.flexContainer}>
+            <div className={`${styles.flexItem} ${styles.flexFullWidth}`} style={{ maxWidth: '336px' }}>
+              <div style={{ marginBottom: '48px' }}>
+                <p style={{ fontWeight: '600', display: 'inline' }}>MeetingBrew.com/ </p>
+                <div style={{ display: 'inline-block', marginBottom: '12px' }}>
+                  <input className={styles.idInput}
+                    value={id}
+                    onChange={e => setId(e.target.value)}
+                    placeholder="custom ID (optional)"
+                    onInput={(e) => {
+                      // 100 char limit
+                      if (e.target.value.length > 100) { e.target.value = e.target.value.slice(0, -1); }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === ' ') {
+                        // replace space with hyphen
+                        e.preventDefault();
+                        e.target.value = e.target.value + "-";
+                        e.target.scrollLeft = e.target.scrollWidth;
+                      }
+                    }}
+                  />
+                </div>
+                <p style={{ fontWeight: 200, color: 'var(--secondary-text)' }}>You can optionally set a custom id that will appear in the link of your MeetingBrew.</p>
+              </div>
+              <button>
+                <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
+                Create Event
+              </button>
+            </div>
           </div>
-          <button>
-            <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
-            Create Event
-          </button>
         </form>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

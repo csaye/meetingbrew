@@ -1,30 +1,118 @@
 .container {
   >.content {
-    padding: 48px;
+    height: calc(100vh - 96px);
+    padding: 48px 48px 96px 48px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-y: scroll;
+    // border: 2px solid red;
 
     >h1 {
       margin: 0;
     }
 
     >form {
-      >button {
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--redorange);
-        border: 0;
-        color: #fff;
-        font-weight: 700;
-        font-size: 16px;
-        padding: 0 24px 0 18px;
 
-        >img {
-          margin-right: 6px;
+      display: contents;
+
+      >.flexContainer {
+        flex-basis: 1140px;
+        flex-shrink: 1;
+        // border: 2px solid blue;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: left;
+        // padding-right: calc(336px + 48px);
+
+        >.flexItem {
+          // border: 2px solid orange;
+          width: 336px;
+          margin-right: 48px;
+          // flex-shrink: 0;
+
+          &.flexFullWidth {
+            flex-grow: 1;
+          }
+
+          >button {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--mb-red);
+            border: 0;
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 0 24px 0 18px;
+
+            >img {
+              margin-right: 6px;
+            }
+
+            &:hover {
+              background: var(--mb-red-hover);
+            }
+
+            &:active {
+              background: var(--mb-red-active);
+            }
+          }
+
+          >.titleInput {
+            height: 48px;
+            width: 100%;
+            margin: 0 0 36px 0;
+            padding: 0;
+            border: none;
+            font-size: 36px;
+            line-height: 48px;
+            font-weight: 600;
+            background: none;
+            resize: none;
+
+            &::placeholder {
+              color: var(--gray)
+            }
+
+            &:focus {
+              outline: 0;
+            }
+          }
+
+          .idInput {
+            flex-grow: 1;
+            height: 32px;
+            padding: 4px 6px;
+            border: 1px solid var(--light-gray);
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 300;
+            color: var(--primary-text);
+            background: var(--white);
+
+            &::placeholder {
+              color: var(--gray)
+            }
+
+            &:focus {
+              outline: 0;
+              border-color: var(--mb-red);
+            }
+          }
         }
 
-        &:hover {
-          background: var(--redorangeHover);
+        >.flexItem:last-child {
+          margin-right: 0;
+        }
+      }
+
+      @media (min-width: calc(1140px + 48px + 48px)) {
+        >.flexContainer {
+          margin: 0 calc((100vw - 1140px - 48px - 48px) / 2);
         }
       }
     }
