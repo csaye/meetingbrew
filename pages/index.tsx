@@ -29,12 +29,19 @@ export default function Index() {
   const titleInput = useRef<HTMLTextAreaElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  // focus title input on start
   useEffect(() => {
-    titleInput.current?.focus()
-  }, [])
+    titleInput.current?.focus();
+  }, []);
 
   // creates a new meeting in firebase
   async function createMeeting() {
+    // if no title given
+    if (!title) {
+      window.alert('Please enter a title.');
+      return;
+    }
+    // if no dates selected
     if (!dates.length) {
       window.alert('Please select at least one date.');
       return;
