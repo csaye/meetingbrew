@@ -8,9 +8,6 @@
       justify-content: center;
       height: 48px;
       position: relative;
-      color: #222;
-      font-weight: 500;
-      font-size: 20px;
 
       >button {
         width: 24px;
@@ -58,6 +55,7 @@
       display: flex;
       flex-wrap: wrap;
       user-select: none;
+      margin-bottom: 12px;
 
       >.date {
         width: 48px;
@@ -72,7 +70,7 @@
         border-left: 1px solid #fafafa;
 
         &.today {
-          font-weight: 700;
+          font-weight: 600;
         }
 
         &.inactive {
@@ -93,5 +91,10 @@
         }
       }
     }
+  }
+
+  >p {
+    color: var(--secondary-text);
+    font-weight: 200;
   }
 }

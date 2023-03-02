@@ -44,7 +44,7 @@ export default function DatesPicker(props: Props) {
             )
           }
         </div>
-        <div className={styles.dates} style={{ marginBottom: '12px' }}>
+        <div className={styles.dates}>
           {
             Array(daysBefore).fill(null).map((v, i) =>
               <div className={`${styles.date} ${styles.inactive}`} key={i}>
@@ -83,7 +83,7 @@ export default function DatesPicker(props: Props) {
           }
         </div>
       </div>
-      <p style={{ color: 'var(--secondary-text)', fontWeight: 200 }}>Click and drag to select date ranges.</p>
+      <p>Click and drag to select date ranges.</p>
     </div>
   );
 }
