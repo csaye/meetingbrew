@@ -4,13 +4,14 @@ import TimeRangeSlider from '@/components/TimeRangeSlider';
 import styles from '@/styles/pages/Index.module.scss';
 import { getCurrentTimezone } from '@/util/timezone';
 import { Meeting } from '@/util/types';
+import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { collection, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import Router from 'next/router';
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TimezoneSelect from 'react-timezone-select';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
 
+// ids that cannot be taken for meetings
 const reservedIds = ['about'];
 
 export default function Index() {
@@ -20,11 +21,13 @@ export default function Index() {
   const [title, setTitle] = useState('');
   const [id, setId] = useState('');
   const [dates, setDates] = useState<string[]>([]);
+  const [width, setWidth] = useState(0);
 
   const [timeRange, setTimeRange] = useState<number[]>([9, 17]);
   const [earliest, latest] = timeRange;
 
-  const titleInput = useRef()
+  const titleInput = useRef<HTMLTextAreaElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     titleInput.current?.focus()
