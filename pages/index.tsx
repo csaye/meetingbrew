@@ -64,6 +64,18 @@ export default function Index() {
     Router.push(`/${meetingId}`);
   }
 
+  // set up content resize listener
+  useEffect(() => {
+    function onResize() {
+      if (!contentRef.current) return;
+      setWidth(contentRef.current.offsetWidth);
+    }
+    if (!contentRef.current) return;
+    setWidth(contentRef.current.offsetWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   return (
     <div className={styles.container}>
       <Header width={1140} />
