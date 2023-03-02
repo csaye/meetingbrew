@@ -5,7 +5,7 @@
     >h1 {
       margin: 0;
       color: #222;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 36px;
     }
 
@@ -18,7 +18,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: 700;
+        font-weight: 600;
         font-size: 16px;
         padding: 0 24px 0 18px;
 
@@ -28,13 +28,13 @@
       }
 
       >.respondButton {
-        background: var(--redorange);
+        background: var(--mb-red);
         border: 0;
         color: #fff;
         margin-right: 12px;
 
         &:hover {
-          background: var(--redorangeHover);
+          background: var(--mb-red-hover);
         }
       }
 
@@ -87,7 +87,7 @@
           align-items: center;
           margin: 0 0 8px 0;
           color: #a0a0a0;
-          font-weight: 700;
+          font-weight: 600;
           font-size: 16px;
 
           >img {
@@ -122,7 +122,7 @@
             font-weight: 400;
 
             &.self {
-              font-weight: 700;
+              font-weight: 600;
             }
           }
         }
