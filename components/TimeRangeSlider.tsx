@@ -47,7 +47,7 @@ export default function TimeRangeSlider(props: Props) {
       </p>
       <Slider
         sx={{
-          width: 330,
+          width: 336,
           height: 12,
           color: '#f93636',
           '& .MuiSlider-thumb': {
@@ -57,23 +57,27 @@ export default function TimeRangeSlider(props: Props) {
             borderRadius: 0,
             '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
               boxShadow: 'inherit'
+            },
+            '&:before': {
+              display: 'none'
             }
           },
           '& .MuiSlider-track': {
             transition: 'none'
           },
           '& .MuiSlider-rail': {
-            color: '#e0e0e0',
+            color: 'transparent',
             opacity: 1,
             borderRadius: 0
           },
           '& .MuiSlider-mark': {
-            backgroundColor: '#fafafa',
+            background: '#e0e0e0',
+            width: 12,
             height: 12,
+            transform: 'translate(-50%, -50%)',
             borderRadius: 0,
             '&.MuiSlider-markActive': {
-              opacity: 1,
-              backgroundColor: 'currentColor'
+              opacity: 0
             }
           },
           '& .MuiSlider-markLabel': {
@@ -94,7 +98,7 @@ export default function TimeRangeSlider(props: Props) {
         disableSwap
         marks={marks}
       />
-      <p style={{ marginBottom: '48px' }}>Slide the begin and end times left and right.</p>
+      <p>Slide the begin and end times left and right.</p>
     </div>
   );
 }
