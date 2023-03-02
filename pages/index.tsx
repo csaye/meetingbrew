@@ -88,34 +88,28 @@ export default function Index() {
 
   return (
     <div className={styles.container}>
-      <Header width={1140} />
-      <div className={styles.content}>
-        <form onSubmit={e => {
-          e.preventDefault();
-          createMeeting();
-        }}>
+      <Header width={width} />
+      <div className={styles.outerContent}>
+        <div
+          ref={contentRef}
+          className={styles.content}
+        >
           <div className={styles.flexContainer}>
-            <div className={`${styles.flexItem} ${styles.flexFullWidth}`}>
-              <TextareaAutosize className={styles.titleInput}
+            <div className={styles.flexItem}>
+              <TextareaAutosize
+                className={styles.titleInput}
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 placeholder="Event Title"
-                required
                 ref={titleInput}
                 wrap="hard"
-                onInput={(e) => {
-                  // 100 char limit
-                  if (e.target.value.length > 100) { e.target.value = e.target.value.slice(0, -1); }
+                maxLength={100}
+                onKeyDown={e => {
+                  // prevent enter key
+                  if (e.key === 'Enter') e.preventDefault();
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                  }
-                }}
-                data-gramm="false"
-                data-gramm_editor="false"
-                data-enable-grammarly="false"
-                spellcheck="false" />
+                spellCheck="false"
+              />
             </div>
           </div>
           <div className={styles.flexContainer}>
@@ -153,42 +147,32 @@ export default function Index() {
             </div>
           </div>
           <div className={styles.flexContainer}>
-            <div className={`${styles.flexItem} ${styles.flexFullWidth}`} style={{ maxWidth: '336px' }}>
+            <div className={styles.flexItem} style={{ maxWidth: '336px' }}>
               <div style={{ marginBottom: '48px' }}>
                 <p style={{ fontWeight: '600', display: 'inline' }}>MeetingBrew.com/ </p>
                 <div style={{ display: 'inline-block', marginBottom: '12px' }}>
                   <input className={styles.idInput}
                     value={id}
-                    onChange={e => setId(e.target.value)}
+                    onChange={e => {
+                      let newId = e.target.value;
+                      newId = newId.replaceAll(/[^\w -]/g, '');
+                      newId = newId.replaceAll(' ', '-');
+                      setId(newId);
+                    }}
                     placeholder="custom ID (optional)"
-                    onInput={(e) => {
-                      // 100 char limit
-                      if (e.target.value.length > 100) { e.target.value = e.target.value.slice(0, -1); }
-                    }}
-                    onKeyDown={(e) => {
-                      if (!('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 Backspace ArrowLeft ArrowRight'.includes(e.key))) {
-                        e.preventDefault();
-                      }
-                      if (e.key === ' ') {
-                        // replace space with hyphen
-                        e.preventDefault();
-                        if (e.target.value.slice(-1) !== '-')
-                          e.target.value = e.target.value + "-";
-                        e.target.scrollLeft = e.target.scrollWidth;
-                      }
-                    }}
+                    maxLength={100}
                   />
                 </div>
                 <p style={{ fontWeight: 200, color: 'var(--secondary-text)' }}>You can optionally set a custom id that will appear in the link of your MeetingBrew.</p>
               </div>
-              <button>
+              <button onClick={createMeeting}>
                 <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
                 Create Event
               </button>
             </div>
           </div>
-        </form>
-      </div >
-    </div >
+        </div>
+      </div>
+    </div>
   );
 }
