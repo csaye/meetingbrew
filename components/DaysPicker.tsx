@@ -39,6 +39,23 @@ export default function DaysPicker(props: Props) {
     window.addEventListener('mouseup', finishDrag);
     return () => window.removeEventListener('mouseup', finishDrag);
   }, [finishDrag]);
+
+  // returns whether given day is selected
+  function daySelected(day: number) {
+    if (!dragAdd && dragStart !== null && dragEnd !== null) {
+      // calculate drag range
+      const minDay = Math.min(dragStart, dragEnd);
+      const maxDay = Math.max(dragStart, dragEnd);
+      if (day >= minDay && day <= maxDay) return false;
+    }
+    if (days.includes(day)) return true;
+    // if dragging to add
+    if (dragStart === null || dragEnd === null) return false;
+    const minDay = Math.min(dragStart, dragEnd);
+    const maxDay = Math.max(dragStart, dragEnd);
+    return day >= minDay && day <= maxDay;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.headings}>
