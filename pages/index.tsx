@@ -11,6 +11,12 @@ import Image from 'next/image';
 import Router from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
+// options for dates types
+const datesOptions = [
+  { value: 'dates', label: 'Specific Dates' },
+  { value: 'days', label: 'Days of the Week' }
+];
+
 // ids that cannot be taken for meetings
 const reservedIds = ['about'];
 
@@ -20,7 +26,6 @@ export default function Index() {
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
   const [title, setTitle] = useState('');
   const [id, setId] = useState('');
-  const [dates, setDates] = useState<string[]>([]);
   const [width, setWidth] = useState(0);
 
   const [timeRange, setTimeRange] = useState<number[]>([9, 17]);
@@ -28,6 +33,10 @@ export default function Index() {
 
   const titleInput = useRef<HTMLTextAreaElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  const [datesOption, setDatesOption] = useState(datesOptions[0]);
+  const [dates, setDates] = useState<string[]>([]);
+  const [days, setDays] = useState<string[]>([]);
 
   // focus title input on start
   useEffect(() => {
