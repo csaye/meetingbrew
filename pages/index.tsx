@@ -1,8 +1,10 @@
 import DatesPicker from '@/components/DatesPicker';
+import DaysPicker from '@/components/DaysPicker';
 import Header from '@/components/Header';
 import TimeRangeSlider from '@/components/TimeRangeSlider';
 import TimezoneSelect from '@/components/TimezoneSelect';
 import styles from '@/styles/pages/Index.module.scss';
+import { selectStyles } from '@/util/styles';
 import { getCurrentTimezone } from '@/util/timezone';
 import { Meeting } from '@/util/types';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
@@ -37,7 +39,7 @@ export default function Index() {
 
   const [datesOption, setDatesOption] = useState(datesOptions[0]);
   const [dates, setDates] = useState<string[]>([]);
-  const [days, setDays] = useState<string[]>([]);
+  const [days, setDays] = useState<number[]>([]);
 
   // focus title input on start
   useEffect(() => {
@@ -127,25 +129,16 @@ export default function Index() {
                   if (val) setDatesOption(val);
                 }}
                 options={datesOptions}
-                styles={{
-                  control: baseStyles => ({
-                    ...baseStyles,
-                    height: '48px',
-                    borderRadius: 0,
-                    background: '#f0f0f0',
-                    border: '1px solid #d0d0d0'
-                  }),
-                  singleValue: baseStyles => ({
-                    ...baseStyles,
-                    fontWeight: 700,
-                    color: '#666'
-                  })
-                }}
+                styles={selectStyles}
               />
-              <DatesPicker
-                dates={dates}
-                setDates={setDates}
-              />
+              {
+                datesOption.value === 'dates' &&
+                <DatesPicker dates={dates} setDates={setDates} />
+              }
+              {
+                datesOption.value === 'days' &&
+                <DaysPicker days={days} setDays={setDays} />
+              }
             </div>
             <div className={styles.times}>
               <h2 style={{ marginBottom: '12px' }}>Which times?</h2>
