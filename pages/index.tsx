@@ -161,30 +161,29 @@ export default function Index() {
               />
             </div>
           </div>
-          <div className={styles.flexContainer}>
-            <div className={styles.flexItem} style={{ maxWidth: '336px' }}>
-              <div style={{ marginBottom: '48px' }}>
-                <p style={{ fontWeight: '600', display: 'inline' }}>MeetingBrew.com/ </p>
-                <div style={{ display: 'inline-block', marginBottom: '12px' }}>
-                  <input className={styles.idInput}
-                    value={id}
-                    onChange={e => {
-                      let newId = e.target.value;
-                      newId = newId.replaceAll(/[^\w -]/g, '');
-                      newId = newId.replaceAll(' ', '-');
-                      setId(newId);
-                    }}
-                    placeholder="custom ID (optional)"
-                    maxLength={100}
-                  />
-                </div>
-                <p style={{ fontWeight: 200, color: 'var(--secondary-text)' }}>You can optionally set a custom id that will appear in the link of your MeetingBrew.</p>
+          <div className={styles.options}>
+            <div style={{ marginBottom: '48px' }}>
+              <p style={{ fontWeight: '600', display: 'inline' }}>MeetingBrew.com/ </p>
+              <div style={{ display: 'inline-block', marginBottom: '12px' }}>
+                <input className={styles.idInput}
+                  value={id}
+                  onChange={e => {
+                    // clean up input id
+                    let newId = e.target.value;
+                    newId = newId.replaceAll(/[^\w -]/g, '');
+                    newId = newId.replaceAll(' ', '-');
+                    setId(newId);
+                  }}
+                  placeholder="custom ID (optional)"
+                  maxLength={100}
+                />
               </div>
-              <button onClick={createMeeting}>
-                <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
-                Create Event
-              </button>
+              <p style={{ fontWeight: 200, color: 'var(--secondary-text)' }}>You can optionally set a custom id that will appear in the link of your MeetingBrew.</p>
             </div>
+            <button onClick={createMeeting}>
+              <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
+              Create Event
+            </button>
           </div>
         </div>
       </div>
