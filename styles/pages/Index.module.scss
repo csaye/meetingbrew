@@ -1,8 +1,9 @@
 .container {
   >.outerContent {
-    padding: 48px 48px 96px 48px;
+    padding: 48px;
     display: flex;
     justify-content: center;
+    background: var(--dim-white);
 
     >.content {
       display: flex;
@@ -59,6 +60,7 @@
             font-size: 36px;
             line-height: 48px;
             font-weight: 600;
+            color: var(--primary-text);
             background: none;
             resize: none;
 

@@ -95,7 +95,7 @@ export default function Index() {
           className={styles.content}
         >
           <div className={styles.flexContainer}>
-            <div className={styles.flexItem}>
+            <div className={styles.flexItem} style={{ flexGrow: 1 }}>
               <TextareaAutosize
                 className={styles.titleInput}
                 value={title}
@@ -109,6 +109,7 @@ export default function Index() {
                   if (e.key === 'Enter') e.preventDefault();
                 }}
                 spellCheck="false"
+                data-gramm="false"
               />
             </div>
           </div>
