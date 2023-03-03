@@ -100,6 +100,7 @@ export default function DaysPicker(props: Props) {
           )
         }
       </div>
+      <p>Click and drag to select day ranges.</p>
     </div>
   );
 }

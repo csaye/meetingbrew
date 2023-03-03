@@ -23,6 +23,7 @@
   >.days {
     display: flex;
     user-select: none;
+    margin-bottom: 12px;
 
     >.day {
       width: 48px;
@@ -40,5 +41,9 @@
         background: var(--mb-red);
       }
     }
+  }
+
+  >p {
+    color: var(--secondary-text);
   }
 }

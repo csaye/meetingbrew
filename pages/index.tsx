@@ -136,6 +136,7 @@ export default function Index() {
                 }}
                 options={datesOptions}
                 styles={selectStyles}
+                instanceId="select-dates"
               />
               {
                 datesOption.value === 'dates' &&
