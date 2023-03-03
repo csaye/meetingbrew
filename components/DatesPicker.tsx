@@ -72,22 +72,16 @@ export default function DatesPicker(props: Props) {
         </div>
         <div className={styles.dates}>
           {
-            Array(daysBefore).fill(null).map((v, i) =>
-              <div className={`${styles.date} ${styles.inactive}`} key={i}>
-                {daysInPrevMonth - (daysBefore - i - 1)}
-              </div>
-            )
-          }
-          {
-            Array(daysInMonth).fill(null).map((v, i) =>
+            days.map((day, i) =>
               <div
                 className={styleBuilder([
                   styles.date,
-                  [styles.selected, dates.includes(getDate(i + 1))],
-                  [styles.today, moment().format('YYYY-MM-DD') === getDate(i + 1)]
+                  [styles.selected, dates.includes(dayString(day))],
+                  [styles.today, moment().format('YYYY-MM-DD') === dayString(day)],
+                  [styles.inactive, day.month !== mmt.month()]
                 ])}
                 onMouseDown={() => {
-                  const date = getDate(i + 1);
+                  const date = dayString(day);
                   const newDates = dates.slice();
                   const dateIndex = newDates.indexOf(date);
                   if (dateIndex === -1) newDates.push(date);
@@ -96,14 +90,7 @@ export default function DatesPicker(props: Props) {
                 }}
                 key={i}
               >
-                {i + 1}
-              </div>
-            )
-          }
-          {
-            Array(daysAfter).fill(null).map((v, i) =>
-              <div className={`${styles.date} ${styles.inactive}`} key={i}>
-                {i + 1}
+                {day.day}
               </div>
             )
           }

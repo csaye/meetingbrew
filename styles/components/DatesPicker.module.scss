@@ -36,9 +36,9 @@
       >.heading {
         width: 48px;
         height: 48px;
-        background: #fff;
-        border: 1px solid #e0e0e0;
-        color: #666;
+        background: var(--white);
+        border: 1px solid var(--light-gray);
+        color: var(--secondary-text);
         font-weight: 500;
         font-size: 20px;
         display: flex;
@@ -60,26 +60,25 @@
       >.date {
         width: 48px;
         height: 48px;
-        background: #e0e0e0;
+        background: var(--light-gray);
         font-family: 'Outfit', sans-serif;
         font-feature-settings: 'tnum' on, 'lnum' on;
-        color: #222;
         font-size: 20px;
         padding: 2px 0 0 6px;
-        border-top: 1px solid #fafafa;
-        border-left: 1px solid #fafafa;
+        border-top: 1px solid var(--dim-white);
+        border-left: 1px solid var(--dim-white);
 
         &.today {
           font-weight: 600;
         }
 
         &.inactive {
-          color: #a0a0a0;
+          color: var(--gray);
         }
 
         &.selected {
           background: #f93636;
-          color: #fff;
+          color: var(--white);
         }
 
         &:nth-child(-n+7) {
