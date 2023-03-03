@@ -76,9 +76,9 @@ export default function Index() {
     const meetingId = id ? id : doc(meetingsRef).id.slice(0, 6);
     const meetingRef = doc(meetingsRef, meetingId);
     // create meeting
-    const meeting: Meeting = {
-      id: meetingId, title, timezone, earliest, latest, dates
-    };
+    const meetingBase = { id: meetingId, title, timezone, earliest, latest };
+    const meeting: Meeting = datesOption.value === 'dates' ?
+      { ...meetingBase, type: 'dates', dates } : { ...meetingBase, type: 'days', days };
     await setDoc(meetingRef, meeting);
     Router.push(`/${meetingId}`);
   }
