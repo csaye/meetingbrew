@@ -100,31 +100,22 @@ export default function Index() {
     <div className={styles.container}>
       <Header width={width} />
       <div className={styles.outerContent}>
-        <div
-          ref={contentRef}
-          className={styles.content}
-        >
-          <div className={styles.flexContainer}>
-            <div className={styles.flexItem} style={{ flexGrow: 1 }}>
-              <TextareaAutosize
-                className={styles.titleInput}
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-                placeholder="Event Title"
-                ref={titleInput}
-                wrap="hard"
-                maxLength={100}
-                onKeyDown={e => {
-                  // prevent enter key
-                  if (e.key === 'Enter') e.preventDefault();
-                }}
-                spellCheck="false"
-                data-gramm="false"
-              />
-            </div>
-          </div>
-          <div className={styles.flexContainer}>
-            <div className={styles.flexItem}>
+        <div className={styles.content} ref={contentRef}>
+          <TextareaAutosize
+            className={styles.titleInput}
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            placeholder="Event Title"
+            ref={titleInput}
+            wrap="hard"
+            maxLength={100}
+            onKeyDown={e => {
+              // prevent enter key
+              if (e.key === 'Enter') e.preventDefault();
+            }}
+            spellCheck="false"
+            data-gramm="false"
+          />
               <h2 style={{ marginBottom: '12px' }}>Which dates?</h2>
               <p style={{ color: 'var(--secondary-text)' }}>Date Type</p>
               <div style={{ marginBottom: '48px' }}>
