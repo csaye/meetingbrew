@@ -10,6 +10,7 @@ import { collection, doc, getDoc, getFirestore, setDoc } from 'firebase/firestor
 import Image from 'next/image';
 import Router from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import Select from 'react-select';
 
 // options for dates types
 const datesOptions = [
@@ -126,19 +127,34 @@ export default function Index() {
             <div className={styles.flexItem}>
               <h2 style={{ marginBottom: '12px' }}>Which dates?</h2>
               <p style={{ color: 'var(--secondary-text)' }}>Date Type</p>
-              <div style={{ marginBottom: '12px' }}>
-                <TimezoneSelect
-                  value={timezone}
-                  onChange={tz => setTimezone(tz.value)}
-                  instanceId="select-timezone"
-                />
-              </div>
               <div style={{ marginBottom: '48px' }}>
                 <DatesPicker
                   dates={dates}
                   setDates={setDates}
                 />
               </div>
+              <Select
+                className={styles.select}
+                value={datesOption}
+                onChange={val => {
+                  if (val) setDatesOption(val);
+                }}
+                options={datesOptions}
+                styles={{
+                  control: baseStyles => ({
+                    ...baseStyles,
+                    height: '48px',
+                    borderRadius: 0,
+                    background: '#f0f0f0',
+                    border: '1px solid #d0d0d0'
+                  }),
+                  singleValue: baseStyles => ({
+                    ...baseStyles,
+                    fontWeight: 700,
+                    color: '#666'
+                  })
+                }}
+              />
             </div>
             <div className={styles.flexItem}>
               <h2 style={{ marginBottom: '12px' }}>Which times?</h2>
