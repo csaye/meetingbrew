@@ -1,6 +1,7 @@
 import DatesPicker from '@/components/DatesPicker';
 import Header from '@/components/Header';
 import TimeRangeSlider from '@/components/TimeRangeSlider';
+import TimezoneSelect from '@/components/TimezoneSelect';
 import styles from '@/styles/pages/Index.module.scss';
 import { getCurrentTimezone } from '@/util/timezone';
 import { Meeting } from '@/util/types';
@@ -9,7 +10,6 @@ import { collection, doc, getDoc, getFirestore, setDoc } from 'firebase/firestor
 import Image from 'next/image';
 import Router from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import TimezoneSelect from 'react-timezone-select';
 
 // ids that cannot be taken for meetings
 const reservedIds = ['about'];
@@ -134,13 +134,11 @@ export default function Index() {
             <div className={styles.flexItem}>
               <h2 style={{ marginBottom: '12px' }}>Which times?</h2>
               <p style={{ color: 'var(--secondary-text)' }}>Timezone</p>
-              <div style={{ marginBottom: '24px' }}>
-                <TimezoneSelect
-                  value={timezone}
-                  onChange={tz => setTimezone(tz.value)}
-                  instanceId="select-timezone"
-                />
-              </div>
+              <TimezoneSelect
+                className={styles.select}
+                timezone={timezone}
+                setTimezone={setTimezone}
+              />
               <TimeRangeSlider
                 timeRange={timeRange}
                 setTimeRange={setTimeRange}
