@@ -1,6 +1,6 @@
 import { styleBuilder } from '@/util/styles';
 import Image from 'next/image';
-import { Dispatch } from 'react';
+import { Dispatch, useCallback, useEffect, useState } from 'react';
 import styles from '../styles/components/DaysPicker.module.scss';
 
 type Props = {
@@ -11,6 +11,34 @@ type Props = {
 export default function DaysPicker(props: Props) {
   const { days, setDays } = props;
 
+  const [dragAdd, setDragAdd] = useState(true);
+  const [dragStart, setDragStart] = useState<number | null>(null);
+  const [dragEnd, setDragEnd] = useState<number | null>(null);
+
+  // called on drag end
+  const finishDrag = useCallback(() => {
+    if (dragStart === null || dragEnd === null) return;
+    // calculate drag range
+    const minDay = Math.min(dragStart, dragEnd);
+    const maxDay = Math.max(dragStart, dragEnd);
+    // update days
+    const newDays = days.slice();
+    for (let day = minDay; day <= maxDay; day++) {
+      const dayIndex = newDays.indexOf(day);
+      if (dragAdd && dayIndex === -1) newDays.push(day);
+      if (!dragAdd && dayIndex !== -1) newDays.splice(dayIndex, 1);
+    }
+    setDays(newDays);
+    // clear drag positions
+    setDragStart(null);
+    setDragEnd(null);
+  }, [days, dragAdd, dragEnd, dragStart, setDays]);
+
+  // listen for mouse up to finish drag
+  useEffect(() => {
+    window.addEventListener('mouseup', finishDrag);
+    return () => window.removeEventListener('mouseup', finishDrag);
+  }, [finishDrag]);
   return (
     <div className={styles.container}>
       <div className={styles.headings}>
