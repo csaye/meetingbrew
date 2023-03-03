@@ -50,12 +50,18 @@ export default function Index() {
   async function createMeeting() {
     // if no title given
     if (!title) {
-      window.alert('Please enter a title.');
+      window.alert('Must enter a title.');
+      titleInput.current?.focus();
       return;
     }
     // if no dates selected
-    if (!dates.length) {
-      window.alert('Please select at least one date.');
+    if (datesOption.value === 'dates' && !dates.length) {
+      window.alert('Must select at least one date.');
+      return;
+    }
+    // if no days selected
+    if (datesOption.value === 'days' && !dates.length) {
+      window.alert('Must select at least one day.');
       return;
     }
     const meetingsRef = collection(db, 'meetings');
