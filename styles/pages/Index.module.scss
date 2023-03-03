@@ -30,19 +30,33 @@
           outline: 0;
         }
       }
-        display: flex;
 
-        @media (max-width: 815.98px) {
-          flex-direction: column;
+      >.datesTimes {
+        display: flex;
+        flex-direction: column;
+
+        @media (min-width: 816px) {
+          flex-direction: row;
+
+          >.dates {
+            margin-right: 48px;
+          }
         }
 
-        >.flexItem {
-          width: 336px;
+        .select {
+          margin-bottom: 12px;
+        }
 
-          @media (min-width: 816px) {
-            &:not(:last-of-type) {
-              margin-right: 48px;
-            }
+        >.dates {
+          width: 336px;
+          margin-bottom: 48px;
+        }
+
+        >.times {
+          width: 336px;
+          margin-bottom: 48px;
+        }
+      }
           }
 
           >button {
