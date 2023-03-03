@@ -9,20 +9,46 @@ type Props = {
   setDates: Dispatch<string[]>;
 };
 
+type Day = {
+  year: number;
+  month: number;
+  day: number;
+};
+
 export default function DatesPicker(props: Props) {
   const { dates, setDates } = props;
 
   const [mmt, setMmt] = useState(moment().startOf('month'));
 
+  const prevMonth = mmt.clone().subtract(1, 'month');
+  const nextMonth = mmt.clone().add(1, 'month');
+
   const daysBefore = mmt.day();
   const daysInMonth = mmt.daysInMonth();
-  const daysInPrevMonth = mmt.clone().subtract(1, 'month').daysInMonth();
+  const daysInPrevMonth = prevMonth.daysInMonth();
   const daysLeftover = (daysBefore + daysInMonth) % 7;
   const daysAfter = daysLeftover ? 7 - daysLeftover : 0;
 
-  // returns YYYY-MM-DD formatted date for given day of month
-  function getDate(day: number) {
-    return `${mmt.format('YYYY-MM-')}${day.toString().padStart(2, '0')}`;
+  // days to be displayed on calendar
+  const days: Day[] = Array(daysBefore).fill(null).map((v, i) => ({
+    year: prevMonth.year(),
+    month: prevMonth.month(),
+    day: daysInPrevMonth - (daysBefore - i - 1)
+  })).concat(Array(daysInMonth).fill(null).map((v, i) => ({
+    year: mmt.year(),
+    month: mmt.month(),
+    day: i + 1
+  }))).concat(Array(daysAfter).fill(null).map((v, i) => ({
+    year: nextMonth.year(),
+    month: nextMonth.month(),
+    day: i + 1
+  })));
+
+  // returns YYYY-MM-DD formatted date for given day
+  function dayString(day: Day) {
+    const monthString = (day.month + 1).toString().padStart(2, '0');
+    const dayString = day.day.toString().padStart(2, '0');
+    return `${day.year}-${monthString}-${dayString}`;
   }
 
   return (
