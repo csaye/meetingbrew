@@ -116,14 +116,10 @@ export default function Index() {
             spellCheck="false"
             data-gramm="false"
           />
+          <div className={styles.datesTimes}>
+            <div className={styles.dates}>
               <h2 style={{ marginBottom: '12px' }}>Which dates?</h2>
               <p style={{ color: 'var(--secondary-text)' }}>Date Type</p>
-              <div style={{ marginBottom: '48px' }}>
-                <DatesPicker
-                  dates={dates}
-                  setDates={setDates}
-                />
-              </div>
               <Select
                 className={styles.select}
                 value={datesOption}
@@ -146,8 +142,12 @@ export default function Index() {
                   })
                 }}
               />
+              <DatesPicker
+                dates={dates}
+                setDates={setDates}
+              />
             </div>
-            <div className={styles.flexItem}>
+            <div className={styles.times}>
               <h2 style={{ marginBottom: '12px' }}>Which times?</h2>
               <p style={{ color: 'var(--secondary-text)' }}>Timezone</p>
               <TimezoneSelect
