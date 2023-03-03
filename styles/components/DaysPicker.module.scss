@@ -1,0 +1,42 @@
+.container {
+  width: 336px;
+
+  >.headings {
+    display: flex;
+
+    >.heading {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--light-gray);
+      color: var(--secondary-text);
+
+      &:not(:last-of-type) {
+        border-right: 0;
+      }
+    }
+  }
+
+  >.days {
+    display: flex;
+
+    >.day {
+      width: 48px;
+      height: 48px;
+      background: var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:not(:first-of-type) {
+        border-left: 1px solid var(--dim-white);
+      }
+
+      &.selected {
+        background: var(--mb-red);
+      }
+    }
+  }
+}
