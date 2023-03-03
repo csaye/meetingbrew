@@ -9,7 +9,7 @@ type Props = {
 
 const marks = Array(25).fill(null).map((v, i) => ({
   value: i,
-  label: i % 3 === 0 ? `${i % 12 || 12} ${(i < 12 || i === 24) ? 'AM' : 'PM'}` : undefined
+  label: i % 3 === 0 ? `${i % 12 || 12}` : undefined
 }));
 
 const maxValue = 24;
@@ -72,7 +72,7 @@ export default function TimeRangeSlider(props: Props) {
           },
           '& .MuiSlider-mark': {
             background: '#e0e0e0',
-            width: 12,
+            width: 13,
             height: 12,
             transform: 'translate(-50%, -50%)',
             borderRadius: 0,
