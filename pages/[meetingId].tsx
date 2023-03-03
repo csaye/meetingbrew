@@ -209,9 +209,9 @@ export default function MeetingPage() {
                   </div>
                 }
                 <TimezoneSelect
-                  value={timezone}
-                  onChange={tz => setTimezone(tz.value)}
                   className={styles.select}
+                  timezone={timezone}
+                  setTimezone={setTimezone}
                 />
               </div>
               <div className={styles.content}>

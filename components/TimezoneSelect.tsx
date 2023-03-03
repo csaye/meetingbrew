@@ -1,3 +1,4 @@
+import { selectStyles } from '@/util/styles';
 import { Dispatch } from 'react';
 import TimezoneSelectBase from 'react-timezone-select';
 
@@ -16,20 +17,7 @@ export default function TimezoneSelect(props: Props) {
       value={timezone}
       onChange={tz => setTimezone(tz.value)}
       instanceId="select-timezone"
-      styles={{
-        control: baseStyles => ({
-          ...baseStyles,
-          height: '48px',
-          borderRadius: 0,
-          background: '#f0f0f0',
-          border: '1px solid #d0d0d0'
-        }),
-        singleValue: baseStyles => ({
-          ...baseStyles,
-          fontWeight: 700,
-          color: '#666'
-        })
-      }}
+      styles={selectStyles}
     />
   );
 }

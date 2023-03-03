@@ -8,7 +8,7 @@ type BaseMeeting = {
 
 export type Meeting =
   BaseMeeting & { type: 'dates', dates: string[] } |
-  BaseMeeting & { type: 'days', days: string[] };
+  BaseMeeting & { type: 'days', days: number[] };
 
 export type Respondent = {
   name: string;
