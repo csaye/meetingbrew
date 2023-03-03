@@ -57,7 +57,30 @@
           margin-bottom: 48px;
         }
       }
+
+      >.options {
+        width: 336px;
+
+        .idInput {
+          flex-grow: 1;
+          height: 32px;
+          padding: 4px 6px;
+          border: 1px solid var(--light-gray);
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 300;
+          color: var(--primary-text);
+          background: var(--white);
+
+          &::placeholder {
+            color: var(--gray)
           }
+
+          &:focus {
+            outline: 0;
+            border-color: var(--mb-red);
+          }
+        }
 
           >button {
             height: 48px;
@@ -82,6 +105,20 @@
             &:active {
               background: var(--mb-red-active);
             }
+        >button {
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--mb-red);
+          border: 0;
+          color: #fff;
+          font-weight: 600;
+          font-size: 16px;
+          padding: 0 24px 0 18px;
+
+          >img {
+            margin-right: 6px;
           }
 
           >.titleInput {
