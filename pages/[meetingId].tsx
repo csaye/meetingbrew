@@ -1,5 +1,6 @@
 import Calendar from '@/components/Calendar';
 import Header from '@/components/Header';
+import TimezoneSelect from '@/components/TimezoneSelect';
 import styles from '@/styles/pages/MeetingPage.module.scss';
 import { sampleGradient } from '@/util/sampleGradient';
 import { getCurrentTimezone } from '@/util/timezone';
@@ -9,7 +10,6 @@ import { collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } fro
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import TimezoneSelect from 'react-timezone-select';
 
 export default function MeetingPage() {
   const db = getFirestore();
@@ -211,22 +211,7 @@ export default function MeetingPage() {
                 <TimezoneSelect
                   value={timezone}
                   onChange={tz => setTimezone(tz.value)}
-                  instanceId="select-currenttimezone"
                   className={styles.select}
-                  styles={{
-                    control: baseStyles => ({
-                      ...baseStyles,
-                      height: '48px',
-                      borderRadius: 0,
-                      background: '#f0f0f0',
-                      border: '1px solid #d0d0d0'
-                    }),
-                    singleValue: baseStyles => ({
-                      ...baseStyles,
-                      fontWeight: 700,
-                      color: '#666'
-                    })
-                  }}
                 />
               </div>
               <div className={styles.content}>
