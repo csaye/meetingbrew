@@ -71,22 +71,30 @@ export default function DaysPicker(props: Props) {
         {
           Array(7).fill(null).map((v, i) =>
             <div
-              onMouseDown={() => {
-                const newDays = days.slice();
-                const dayIndex = days.indexOf(i);
-                if (dayIndex === -1) newDays.push(i);
-                else newDays.splice(dayIndex, 1);
-                setDays(newDays);
-              }}
               className={styleBuilder([
                 styles.day,
-                [styles.selected, days.includes(i)]
+                [styles.selected, daySelected(i)]
               ])}
+              onMouseDown={() => {
+                setDragAdd(!days.includes(i));
+                setDragStart(i);
+                setDragEnd(i);
+              }}
+              onMouseOver={() => {
+                if (dragStart === null) return;
+                setDragEnd(i);
+              }}
               key={i}
             >
               {
-                days.includes(i) &&
-                <Image src="/icons/check.svg" width="24" height="24" alt="check.svg" />
+                daySelected(i) &&
+                <Image
+                  src="/icons/check.svg"
+                  width="24"
+                  height="24"
+                  alt="check.svg"
+                  draggable="false"
+                />
               }
             </div>
           )

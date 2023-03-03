@@ -3,6 +3,7 @@
 
   >.headings {
     display: flex;
+    user-select: none;
 
     >.heading {
       width: 48px;
@@ -21,6 +22,7 @@
 
   >.days {
     display: flex;
+    user-select: none;
 
     >.day {
       width: 48px;
