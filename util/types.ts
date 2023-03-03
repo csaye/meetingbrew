@@ -1,11 +1,14 @@
-export type Meeting = {
+type BaseMeeting = {
   id: string;
   title: string;
   timezone: string;
-  dates: string[];
   earliest: number;
   latest: number;
 };
+
+export type Meeting =
+  BaseMeeting & { type: 'dates', dates: string[] } |
+  BaseMeeting & { type: 'days', days: string[] };
 
 export type Respondent = {
   name: string;
