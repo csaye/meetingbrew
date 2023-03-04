@@ -86,6 +86,31 @@ export default function DatesPicker(props: Props) {
     return () => window.removeEventListener('mouseup', finishDrag);
   }, [finishDrag]);
 
+  // returns whether given date is currently selected
+  function dateSelected(dayIndex: number) {
+    const dayX = dayIndex % 7;
+    const dayY = Math.floor(dayIndex / 7);
+    // if dragging to remove
+    if (!dragAdd && dragStart !== null && dragEnd !== null) {
+      const minX = Math.min(dragStart % 7, dragEnd % 7);
+      const maxX = Math.max(dragStart % 7, dragEnd % 7);
+      const minY = Math.min(Math.floor(dragStart / 7), Math.floor(dragEnd / 7));
+      const maxY = Math.max(Math.floor(dragStart / 7), Math.floor(dragEnd / 7));
+      if (dayX >= minX && dayX <= maxX && dayY >= minY && dayY <= maxY) return false;
+    }
+    // if already selected
+    const day = days[dayIndex];
+    const date = dateString(day);
+    if (dates.includes(date)) return true;
+    // if dragging to add
+    if (dragStart === null || dragEnd === null) return false;
+    const minX = Math.min(dragStart % 7, dragEnd % 7);
+    const maxX = Math.max(dragStart % 7, dragEnd % 7);
+    const minY = Math.min(Math.floor(dragStart / 7), Math.floor(dragEnd / 7));
+    const maxY = Math.max(Math.floor(dragStart / 7), Math.floor(dragEnd / 7));
+    return dayX >= minX && dayX <= maxX && dayY >= minY && dayY <= maxY;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.calendar}>
