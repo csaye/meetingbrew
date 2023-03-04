@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import TimezoneSelect from '@/components/TimezoneSelect';
 import styles from '@/styles/pages/MeetingPage.module.scss';
 import { sampleGradient } from '@/util/sampleGradient';
+import { styleBuilder } from '@/util/styles';
 import { getCurrentTimezone } from '@/util/timezone';
 import { Meeting, Respondent } from '@/util/types';
 import { Checkbox } from '@mui/material';
@@ -26,7 +27,11 @@ export default function MeetingPage() {
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [selectedRespondents, setSelectedRespondents] = useState<string[]>([]);
 
+  const [width, setWidth] = useState(0);
+  const [hoverIndex, setHoverIndex] = useState(-1);
+
   const nameRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const currRespondents = selectedRespondents.length ? selectedRespondents :
     respondents ? respondents.map(r => r.id) : [];
@@ -145,13 +150,35 @@ export default function MeetingPage() {
     }
   }
 
+  // set up content resize listener
+  useEffect(() => {
+    function onResize() {
+      if (!contentRef.current) return;
+      setWidth(contentRef.current.offsetWidth);
+    }
+    if (!contentRef.current) return;
+    setWidth(contentRef.current.offsetWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [meeting, respondents]);
+
+  // returns whether given respondent is inactive
+  function respondentInactive(respondent: Respondent) {
+    if (name && name.toLowerCase() !== respondent.name.toLowerCase()) return true;
+    if (hoverIndex !== -1) {
+      if (!respondent.availability.includes(hoverIndex)) return true;
+      if (selectedRespondents.length && !selectedRespondents.includes(respondent.id)) return true;
+    }
+    return false;
+  }
+
   return (
     <div className={styles.container}>
-      <Header width={1140} />
-      {
-        meeting === undefined ? <p>Loading...</p> :
-          !meeting ? <p>No meeting found</p> : !respondents ? <p>Loading...</p> :
-            <div className={styles.content}>
+      <Header width={width} />
+      <div className={styles.outerContent}>
+        {
+          meeting === undefined ? <p>Loading...</p> : !meeting ? <p>No meeting found</p> : !respondents ? <p>Loading...</p> :
+            <div className={styles.content} ref={contentRef}>
               <h1>{meeting.title}</h1>
               <div className={styles.options}>
                 {
@@ -233,7 +260,13 @@ export default function MeetingPage() {
                   }
                   {
                     respondents.map((respondent, i) =>
-                      <div className={styles.respondent} key={i}>
+                      <div
+                        className={styleBuilder([
+                          styles.respondent,
+                          [styles.inactive, respondentInactive(respondent)]
+                        ])}
+                        key={i}
+                      >
                         <Checkbox
                           sx={{
                             padding: 0, margin: '0 16px 0 24px'
@@ -250,10 +283,7 @@ export default function MeetingPage() {
                           }}
                           disableRipple
                         />
-                        <p className={
-                          respondent.name.toLowerCase() === name?.toLowerCase() ?
-                            styles.self : undefined
-                        }>{respondent.name}</p>
+                        <p>{respondent.name}</p>
                       </div>
                     )
                   }
@@ -264,7 +294,10 @@ export default function MeetingPage() {
                     <>
                       <p>Click and drag to select times that you are available.</p>
                       <Calendar
-                        {...meeting}
+                        timezone={meeting.timezone}
+                        dates={meeting.type === 'dates' ? meeting.dates : []}
+                        earliest={meeting.earliest}
+                        latest={meeting.latest}
                         currentTimezone={timezone}
                         type="select"
                         selectedIndices={selectedIndices}
@@ -275,16 +308,21 @@ export default function MeetingPage() {
                   {
                     (!name && !inputtingName) &&
                     <Calendar
-                      {...meeting}
+                      timezone={meeting.timezone}
+                      dates={meeting.type === 'dates' ? meeting.dates : []}
+                      earliest={meeting.earliest}
+                      latest={meeting.latest}
                       currentTimezone={timezone}
                       type="display"
                       respondents={respondents.filter(r => currRespondents.includes(r.id))}
+                      setHoverIndex={setHoverIndex}
                     />
                   }
                 </div>
               </div>
             </div>
-      }
+        }
+      </div>
     </div>
   );
 }
