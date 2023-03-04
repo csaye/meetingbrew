@@ -1,7 +1,7 @@
 import { styleBuilder } from '@/util/styles';
 import moment from 'moment-timezone';
 import Image from 'next/image';
-import { Dispatch, useState } from 'react';
+import { Dispatch, useCallback, useEffect, useState } from 'react';
 import styles from '../styles/components/DatesPicker.module.scss';
 
 type Props = {
@@ -17,6 +17,10 @@ type Day = {
 
 export default function DatesPicker(props: Props) {
   const { dates, setDates } = props;
+
+  const [dragAdd, setDragAdd] = useState(true);
+  const [dragStart, setDragStart] = useState<number | null>(null);
+  const [dragEnd, setDragEnd] = useState<number | null>(null);
 
   const [mmt, setMmt] = useState(moment().startOf('month'));
 
@@ -44,12 +48,43 @@ export default function DatesPicker(props: Props) {
     day: i + 1
   })));
 
-  // returns YYYY-MM-DD formatted date for given day
-  function dayString(day: Day) {
+  // returns YYYY-MM-DD formatted date string for given day
+  function dateString(day: Day) {
     const monthString = (day.month + 1).toString().padStart(2, '0');
     const dayString = day.day.toString().padStart(2, '0');
     return `${day.year}-${monthString}-${dayString}`;
   }
+
+  // called on drag end
+  const finishDrag = useCallback(() => {
+    if (dragStart === null || dragEnd === null) return;
+    // calculate drag range
+    const minX = Math.min(dragStart % 7, dragEnd % 7);
+    const maxX = Math.max(dragStart % 7, dragEnd % 7);
+    const minY = Math.min(Math.floor(dragStart / 7), Math.floor(dragEnd / 7));
+    const maxY = Math.max(Math.floor(dragStart / 7), Math.floor(dragEnd / 7));
+    // update dates
+    const newDates = dates.slice();
+    for (let x = minX; x <= maxX; x++) {
+      for (let y = minY; y <= maxY; y++) {
+        const day = days[y * 7 + x];
+        const date = dateString(day);
+        const dateIndex = newDates.indexOf(date);
+        if (dragAdd && dateIndex === -1) newDates.push(date);
+        if (!dragAdd && dateIndex !== -1) newDates.splice(dateIndex, 1);
+      }
+    }
+    setDates(newDates);
+    // clear drag positions
+    setDragStart(null);
+    setDragEnd(null);
+  }, [dates, days, dragAdd, dragEnd, dragStart, setDates]);
+
+  // listen for mouse up to finish drag
+  useEffect(() => {
+    window.addEventListener('mouseup', finishDrag);
+    return () => window.removeEventListener('mouseup', finishDrag);
+  }, [finishDrag]);
 
   return (
     <div className={styles.container}>
