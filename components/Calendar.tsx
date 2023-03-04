@@ -198,7 +198,7 @@ export default function Calendar(props: Props) {
     const newSelectedIndices = selectedIndices.slice();
     for (let dayIndex = minDayIndex; dayIndex <= maxDayIndex; dayIndex++) {
       for (let intIndex = minIntIndex; intIndex <= maxIntIndex; intIndex++) {
-        const interval = days[dayIndex].intervals[intIndex];
+        const interval = calendarDays[dayIndex].intervals[intIndex];
         if (!interval.active) continue;
         const indexIndex = newSelectedIndices.indexOf(interval.index);
         if (dragAdd && indexIndex === -1) newSelectedIndices.push(interval.index);
@@ -209,7 +209,7 @@ export default function Calendar(props: Props) {
     // clear drag positions
     setDragStart(null);
     setDragEnd(null);
-  }, [days, dragAdd, dragEnd, dragStart, type, props]);
+  }, [type, props, dragStart, dragEnd, calendarDays, dragAdd]);
 
   // listen for mouse up to finish drag
   useEffect(() => {
@@ -240,20 +240,23 @@ export default function Calendar(props: Props) {
       <div className={styles.content}>
         <div className={styles.days}>
           {
-            days.map((day, i) =>
+            calendarDays.map((day, i) =>
               <div
                 className={styleBuilder([
                   styles.day,
-                  [styles.gapped, i < days.length - 1 &&
+                  [styles.gapped, i < calendarDays.length - 1 &&
                     (day.moment.clone().add(1, 'day').format('YYYY-MM-DD') !==
-                      days[i + 1].moment.format('YYYY-MM-DD'))
+                      calendarDays[i + 1].moment.format('YYYY-MM-DD'))
                   ]
                 ])}
                 key={i}
               >
                 <div className={styles.heading}>
                   <h1>{day.moment.format('ddd')}</h1>
-                  <h2>{day.moment.format('MMM D')}</h2>
+                  {
+                    datesType === 'dates' &&
+                    <h2>{day.moment.format('MMM D')}</h2>
+                  }
                 </div>
                 {
                   day.intervals.map((interval, j) =>
@@ -262,7 +265,8 @@ export default function Calendar(props: Props) {
                         styles.interval,
                         [styles.inactive, !interval.active],
                         [styles.selected, interval.active && intervalSelected(i, j, interval.index)],
-                        [styles.hoverable, type === 'select'],
+                        [styles.select, type === 'select'],
+                        [styles.display, type === 'display'],
                         [styles.gapped, (j > 0 && j % 4 === 0) &&
                           (day.intervals[j].moment.clone().subtract(1, 'hour').hour() !==
                             day.intervals[j - 1].moment.hour())
@@ -281,8 +285,17 @@ export default function Calendar(props: Props) {
                         setDragEnd([i, j]);
                       }}
                       onMouseOver={() => {
-                        if (!dragStart) return;
-                        setDragEnd([i, j]);
+                        if (interval.active && type === 'display') {
+                          const { setHoverIndex } = props;
+                          setHoverIndex(interval.index);
+                        }
+                        if (dragStart) setDragEnd([i, j]);
+                      }}
+                      onMouseLeave={() => {
+                        if (interval.active && type === 'display') {
+                          const { setHoverIndex } = props;
+                          setHoverIndex(-1);
+                        }
                       }}
                       key={j}
                     />
