@@ -211,44 +211,47 @@ export default function MeetingPage() {
                       </button>
                 }
                 <button
-                  className={styles.inviteButton}
+                  className={styleBuilder([
+                    styles.inviteButton,
+                    [styles.grayedOut, !!name || inputtingName]
+                  ])}
                   onClick={copyLink}
                 >
                   <Image src="/icons/link.svg" width="24" height="24" alt="link.svg" />
                   Invite
                 </button>
-                {
-                  (!name && !inputtingName) &&
-                  <div className={styles.availability}>
-                    <p>0/{currRespondents.length}</p>
-                    <div className={styles.shades}>
-                      {
-                        Array(currRespondents.length + 1).fill(0).map((v, i) =>
-                          <div
-                            className={styles.shade}
-                            style={{
-                              background: sampleGradient(currRespondents.length)[i]
-                            }}
-                            key={i}
-                          />
-                        )
-                      }
-                    </div>
-                    <p>{currRespondents.length}/{currRespondents.length}</p>
+                <div className={styleBuilder([
+                  styles.availability,
+                  [styles.grayedOut, !!name || inputtingName]
+                ])}>
+                  <p>0/{currRespondents.length}</p>
+                  <div className={styles.shades}>
+                    {
+                      Array(currRespondents.length + 1).fill(0).map((v, i) =>
+                        <div
+                          className={styles.shade}
+                          style={{
+                            background: sampleGradient(currRespondents.length)[i]
+                          }}
+                          key={i}
+                        />
+                      )
+                    }
                   </div>
-                }
-                {
-                  !inputtingName &&
-                  <TimezoneSelect
-                    className={styles.select}
-                    timezone={timezone}
-                    setTimezone={setTimezone}
-                  />
-                }
+                  <p>{currRespondents.length}/{currRespondents.length}</p>
+                </div>
+                <TimezoneSelect
+                  className={styleBuilder([
+                    styles.select,
+                    [styles.grayedOut, inputtingName]
+                  ])}
+                  timezone={timezone}
+                  setTimezone={setTimezone}
+                />
               </div>
               <div className={styles.content}>
                 <div className={styles.respondents}>
-                  <p>
+                  <p className={styleBuilder([[styles.grayedOut, inputtingName]])}>
                     <Image src="/icons/funnel.svg" width="24" height="24" alt="funnel.svg" />
                     Respondents
                   </p>
@@ -267,7 +270,7 @@ export default function MeetingPage() {
                       <div
                         className={styleBuilder([
                           styles.respondent,
-                          [styles.inactive, respondentInactive(respondent)]
+                          [styles.grayedOut, respondentInactive(respondent)]
                         ])}
                         key={i}
                       >
