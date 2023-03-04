@@ -60,7 +60,7 @@ export default function Index() {
       return;
     }
     // if no days selected
-    if (datesOption.value === 'days' && !dates.length) {
+    if (datesOption.value === 'days' && !days.length) {
       window.alert('Must select at least one day.');
       return;
     }
@@ -87,7 +87,8 @@ export default function Index() {
     // create meeting
     const meetingBase = { id: meetingId, title, timezone, earliest, latest };
     const meeting: Meeting = datesOption.value === 'dates' ?
-      { ...meetingBase, type: 'dates', dates } : { ...meetingBase, type: 'days', days };
+      { ...meetingBase, type: 'dates', dates: dates.slice().sort() } :
+      { ...meetingBase, type: 'days', days: days.slice().sort() };
     await setDoc(meetingRef, meeting);
     Router.push(`/${meetingId}`);
   }
