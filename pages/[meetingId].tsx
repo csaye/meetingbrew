@@ -24,9 +24,12 @@ export default function MeetingPage() {
   const [inputName, setInputName] = useState('');
   const [name, setName] = useState<string | null>(null);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
-  const [selectedRespondents, setSelectedRespodents] = useState<string[]>([]);
+  const [selectedRespondents, setSelectedRespondents] = useState<string[]>([]);
 
   const nameRef = useRef<HTMLInputElement>(null);
+
+  const currRespondents = selectedRespondents.length ? selectedRespondents :
+    respondents ? respondents.map(r => r.id) : [];
 
   // retrieve respondents from firebase
   const getRespondents = useCallback(async () => {
@@ -35,7 +38,6 @@ export default function MeetingPage() {
     const respondentsDocs = (await getDocs(respondentsRef)).docs;
     const respondentsData = respondentsDocs.map(doc => doc.data() as Respondent);
     setRespondents(respondentsData);
-    setSelectedRespodents(respondentsData.map(r => r.id));
   }, [meetingId, db]);
 
   // get respondents on start
@@ -118,10 +120,6 @@ export default function MeetingPage() {
     setName(inputName);
     setInputtingName(false);
     setInputName('');
-    // add user to selected respondents
-    const newSelectedRespondents = selectedRespondents.slice();
-    newSelectedRespondents.push(id);
-    setSelectedRespodents(newSelectedRespondents);
     // add user to firebase respondents
     await setDoc(respondentDoc, respondent);
   }
@@ -191,28 +189,31 @@ export default function MeetingPage() {
                 {
                   (!name && !inputtingName) &&
                   <div className={styles.availability}>
-                    <p>0/{selectedRespondents.length}</p>
+                    <p>0/{currRespondents.length}</p>
                     <div className={styles.shades}>
                       {
-                        Array(selectedRespondents.length + 1).fill(0).map((v, i) =>
+                        Array(currRespondents.length + 1).fill(0).map((v, i) =>
                           <div
                             className={styles.shade}
                             style={{
-                              background: sampleGradient(selectedRespondents.length)[i]
+                              background: sampleGradient(currRespondents.length)[i]
                             }}
                             key={i}
                           />
                         )
                       }
                     </div>
-                    <p>{selectedRespondents.length}/{selectedRespondents.length}</p>
+                    <p>{currRespondents.length}/{currRespondents.length}</p>
                   </div>
                 }
-                <TimezoneSelect
-                  className={styles.select}
-                  timezone={timezone}
-                  setTimezone={setTimezone}
-                />
+                {
+                  !inputtingName &&
+                  <TimezoneSelect
+                    className={styles.select}
+                    timezone={timezone}
+                    setTimezone={setTimezone}
+                  />
+                }
               </div>
               <div className={styles.content}>
                 <div className={styles.respondents}>
@@ -237,7 +238,6 @@ export default function MeetingPage() {
                           sx={{
                             padding: 0, margin: '0 16px 0 24px'
                           }}
-                          defaultChecked
                           icon={<Image src="/icons/box.svg" width="18" height="18" alt="box.svg" />}
                           checkedIcon={<Image src="/icons/boxchecked.svg" width="18" height="18" alt="boxchecked.svg" />}
                           onChange={e => {
@@ -246,7 +246,7 @@ export default function MeetingPage() {
                             const rIndex = newSelectedRespondents.indexOf(respondent.id);
                             if (e.target.checked && rIndex === -1) newSelectedRespondents.push(respondent.id);
                             if (!e.target.checked && rIndex !== -1) newSelectedRespondents.splice(rIndex, 1);
-                            setSelectedRespodents(newSelectedRespondents);
+                            setSelectedRespondents(newSelectedRespondents);
                           }}
                           disableRipple
                         />
@@ -258,25 +258,30 @@ export default function MeetingPage() {
                     )
                   }
                 </div>
-                {
-                  name &&
-                  <Calendar
-                    {...meeting}
-                    currentTimezone={timezone}
-                    type="select"
-                    selectedIndices={selectedIndices}
-                    setSelectedIndices={setSelectedIndices}
-                  />
-                }
-                {
-                  (!name && !inputtingName) &&
-                  <Calendar
-                    {...meeting}
-                    currentTimezone={timezone}
-                    type="display"
-                    respondents={respondents.filter(r => selectedRespondents.includes(r.id))}
-                  />
-                }
+                <div className={styles.calendar}>
+                  {
+                    name &&
+                    <>
+                      <p>Click and drag to select times that you are available.</p>
+                      <Calendar
+                        {...meeting}
+                        currentTimezone={timezone}
+                        type="select"
+                        selectedIndices={selectedIndices}
+                        setSelectedIndices={setSelectedIndices}
+                      />
+                    </>
+                  }
+                  {
+                    (!name && !inputtingName) &&
+                    <Calendar
+                      {...meeting}
+                      currentTimezone={timezone}
+                      type="display"
+                      respondents={respondents.filter(r => currRespondents.includes(r.id))}
+                    />
+                  }
+                </div>
               </div>
             </div>
       }
