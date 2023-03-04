@@ -1,138 +1,156 @@
 .container {
-  >.content {
-    background-color: var(--dim-white);
+  height: 100%;
+
+  >.outerContent {
+    min-height: calc(100% - var(--header));
     padding: 48px;
-
-    >h1 {
-      margin: 0;
-      color: #222;
-      font-weight: 600;
-      font-size: 36px;
-    }
-
-    >.options {
-      display: flex;
-      margin: 24px 0;
-
-      >button {
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        font-size: 16px;
-        padding: 0 24px 0 18px;
-
-        >img {
-          margin-right: 12px;
-        }
-      }
-
-      >.respondButton {
-        background: var(--mb-red);
-        border: 0;
-        color: #fff;
-        margin-right: 12px;
-
-        &:hover {
-          background: var(--mb-red-hover);
-        }
-      }
-
-      >.inviteButton {
-        background: #f0f0f0;
-        border: 1px solid #d0d0d0;
-        color: #666;
-        margin-right: 32px;
-
-        &:hover {
-          background: #e0e0e0;
-        }
-      }
-
-      >.availability {
-        display: flex;
-        align-items: center;
-
-        >p {
-          color: #666;
-          font-weight: 500;
-          font-size: 16px;
-          margin: 0;
-        }
-
-        >.shades {
-          display: flex;
-          margin: 0 12px;
-
-          >.shade {
-            width: 48px;
-            height: 48px;
-          }
-        }
-      }
-
-      >.select {
-        margin-left: 32px;
-      }
-    }
+    background: var(--dim-white);
+    display: flex;
+    justify-content: center;
 
     >.content {
-      display: flex;
+      width: fit-content;
 
-      >.respondents {
-        width: 280px;
+      .grayedOut {
+        opacity: 0.2;
+        pointer-events: none;
+      }
 
-        >p {
+      >h1 {
+        margin: 0;
+        color: #222;
+        font-weight: 600;
+        font-size: 36px;
+        max-width: 850px;
+      }
+
+      >.options {
+        display: flex;
+        margin: 24px 0;
+
+        >button {
+          height: 48px;
           display: flex;
           align-items: center;
-          margin: 0 0 8px 0;
-          color: #a0a0a0;
+          justify-content: center;
           font-weight: 600;
           font-size: 16px;
+          padding: 0 24px 0 18px;
 
           >img {
-            margin: 0 12px 0 24px;
+            margin-right: 12px;
           }
         }
 
-        >.nameInput {
-          margin: 8px 0 8px 24px;
-          color: #222;
-          font-size: 24px;
-          font-weight: 500;
-          background: #fff;
-          width: 178px;
-          height: 32px;
-          border: 1px solid #e0e0e0;
+        >.respondButton {
+          background: var(--mb-red);
+          border: 0;
+          color: #fff;
+          margin-right: 12px;
 
-          &::placeholder {
-            color: #a0a0a0;
+          &:hover {
+            background: var(--mb-red-hover);
           }
         }
 
-        >.respondent {
+        >.inviteButton {
+          background: #f0f0f0;
+          border: 1px solid #d0d0d0;
+          color: #666;
+
+          &:hover {
+            background: #e0e0e0;
+          }
+        }
+
+        >.availability {
           display: flex;
           align-items: center;
-          padding: 8px 0;
+          margin: 0 32px;
 
           >p {
+            color: #666;
+            font-weight: 500;
+            font-size: 16px;
             margin: 0;
-            color: #222;
-            font-size: 24px;
-            font-weight: 400;
+            width: 28px;
+            text-align: center;
+          }
 
-            &.self {
-              font-weight: 600;
+          >.shades {
+            display: flex;
+            margin: 0 12px;
+            width: 192px;
+
+            >.shade {
+              flex-grow: 1;
+              height: 48px;
             }
           }
         }
+
+        >.select {
+          width: 240px;
+        }
       }
 
-      >.calendar {
-        >p {
-          color: var(--secondary-text);
-          padding: 0 0 12px 48px;
+      >.content {
+        display: flex;
+
+        >.respondents {
+          width: 280px;
+
+          >p {
+            display: flex;
+            align-items: center;
+            margin: 0 0 8px 0;
+            color: #a0a0a0;
+            font-weight: 600;
+            font-size: 16px;
+
+            >img {
+              margin: 0 12px 0 21px;
+            }
+          }
+
+          >.nameInput {
+            margin: 8px 0 8px 24px;
+            color: #222;
+            font-size: 24px;
+            font-weight: 500;
+            background: #fff;
+            width: 178px;
+            height: 32px;
+            border: 1px solid #e0e0e0;
+
+            &::placeholder {
+              color: #a0a0a0;
+            }
+          }
+
+          >.respondent {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+
+            >p {
+              margin: 0;
+              color: #222;
+              font-size: 24px;
+              font-weight: 400;
+
+              &.self {
+                font-weight: 600;
+              }
+            }
+          }
+        }
+
+        >.calendar {
+          >p {
+            color: var(--secondary-text);
+            padding: 0 0 12px 48px;
+          }
         }
       }
     }
