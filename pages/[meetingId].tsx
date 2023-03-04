@@ -297,30 +297,48 @@ export default function MeetingPage() {
                     name &&
                     <>
                       <p>Click and drag to select times that you are available.</p>
-                      <Calendar
-                        timezone={meeting.timezone}
-                        dates={meeting.type === 'dates' ? meeting.dates : []}
-                        earliest={meeting.earliest}
-                        latest={meeting.latest}
-                        currentTimezone={timezone}
-                        type="select"
-                        selectedIndices={selectedIndices}
-                        setSelectedIndices={setSelectedIndices}
-                      />
+                      {
+                        meeting.type === 'dates' ?
+                          <Calendar
+                            {...meeting}
+                            datesType="dates"
+                            currentTimezone={timezone}
+                            type="select"
+                            selectedIndices={selectedIndices}
+                            setSelectedIndices={setSelectedIndices}
+                          /> :
+                          <Calendar
+                            {...meeting}
+                            datesType="days"
+                            currentTimezone={timezone}
+                            type="select"
+                            selectedIndices={selectedIndices}
+                            setSelectedIndices={setSelectedIndices}
+                          />
+                      }
                     </>
                   }
                   {
                     (!name && !inputtingName) &&
-                    <Calendar
-                      timezone={meeting.timezone}
-                      dates={meeting.type === 'dates' ? meeting.dates : []}
-                      earliest={meeting.earliest}
-                      latest={meeting.latest}
-                      currentTimezone={timezone}
-                      type="display"
-                      respondents={respondents.filter(r => currRespondents.includes(r.id))}
-                      setHoverIndex={setHoverIndex}
-                    />
+                    (
+                      meeting.type === 'dates' ?
+                        <Calendar
+                          {...meeting}
+                          datesType="dates"
+                          currentTimezone={timezone}
+                          type="display"
+                          respondents={respondents.filter(r => currRespondents.includes(r.id))}
+                          setHoverIndex={setHoverIndex}
+                        /> :
+                        <Calendar
+                          {...meeting}
+                          datesType="days"
+                          currentTimezone={timezone}
+                          type="display"
+                          respondents={respondents.filter(r => currRespondents.includes(r.id))}
+                          setHoverIndex={setHoverIndex}
+                        />
+                    )
                   }
                 </div>
               </div>
