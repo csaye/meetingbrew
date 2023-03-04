@@ -1,6 +1,5 @@
 .container {
   user-select: none;
-  margin: 16px;
   display: flex;
 
   >.times {
@@ -20,6 +19,27 @@
   }
 
   >.content {
+    max-width: 524px;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--light-gray);
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--gray);
+      border-radius: 10px;
+
+      &:hover {
+        background: #b9b9b9;
+      }
+    }
+
     >.days {
       display: flex;
 
@@ -83,14 +103,22 @@
             background: #f93636;
           }
 
-          &.hoverable:not(&.inactive) {
-            cursor: pointer;
+          &:not(&.inactive) {
+            &.select {
+              cursor: pointer;
 
-            &:hover {
-              background: #D0D0D0;
+              &:hover {
+                background: #D0D0D0;
 
-              &.selected {
-                background: #e01919;
+                &.selected {
+                  background: #e01919;
+                }
+              }
+            }
+
+            &.display {
+              &:hover {
+                filter: brightness(0.92);
               }
             }
           }
