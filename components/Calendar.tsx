@@ -5,17 +5,22 @@ import moment, { Moment } from 'moment-timezone';
 import { Dispatch, useCallback, useEffect, useState } from 'react';
 import styles from '../styles/components/Calendar.module.scss';
 
-type BaseProps = {
+type BaseBaseProps = {
   timezone: string;
   currentTimezone: string;
-  dates: string[];
+  dates?: string[];
+  days?: number[];
   earliest: number;
   latest: number;
 };
 
+type BaseProps =
+  BaseBaseProps & { type: 'select'; selectedIndices: number[]; setSelectedIndices: Dispatch<number[]>; } |
+  BaseBaseProps & { type: 'display'; respondents: Respondent[]; setHoverIndex: Dispatch<number>; };
+
 type Props =
-  BaseProps & { type: 'select', selectedIndices: number[], setSelectedIndices: Dispatch<number[]> } |
-  BaseProps & { type: 'display', respondents: Respondent[] };
+  BaseProps & { datesType: 'dates'; dates: string[]; } |
+  BaseProps & { datesType: 'days'; days: number[]; };
 
 type Interval = {
   index: number;
@@ -23,15 +28,15 @@ type Interval = {
   active: boolean;
 };
 
-type Day = {
+type CalendarDay = {
   moment: Moment;
   intervals: Interval[];
 };
 
 export default function Calendar(props: Props) {
-  const { timezone, currentTimezone, dates, earliest, latest, type } = props;
+  const { timezone, currentTimezone, earliest, latest, type, datesType } = props;
 
-  const [days, setDays] = useState<Day[]>([]);
+  const [calendarDays, setCalendarDays] = useState<CalendarDay[]>([]);
   const [times, setTimes] = useState<Moment[]>();
 
   const [dragAdd, setDragAdd] = useState(true);
