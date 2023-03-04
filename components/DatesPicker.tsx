@@ -136,17 +136,18 @@ export default function DatesPicker(props: Props) {
               <div
                 className={styleBuilder([
                   styles.date,
-                  [styles.selected, dates.includes(dayString(day))],
-                  [styles.today, moment().format('YYYY-MM-DD') === dayString(day)],
+                  [styles.selected, dateSelected(i)],
+                  [styles.today, moment().format('YYYY-MM-DD') === dateString(day)],
                   [styles.inactive, day.month !== mmt.month()]
                 ])}
                 onMouseDown={() => {
-                  const date = dayString(day);
-                  const newDates = dates.slice();
-                  const dateIndex = newDates.indexOf(date);
-                  if (dateIndex === -1) newDates.push(date);
-                  else newDates.splice(dateIndex, 1);
-                  setDates(newDates);
+                  setDragAdd(!dates.includes(dateString(day)));
+                  setDragStart(i);
+                  setDragEnd(i);
+                }}
+                onMouseOver={() => {
+                  if (dragStart === null) return;
+                  setDragEnd(i);
                 }}
                 key={i}
               >
