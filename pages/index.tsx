@@ -126,8 +126,8 @@ export default function Index() {
           />
           <div className={styles.datesTimes}>
             <div className={styles.dates}>
-              <h2 style={{ marginBottom: '12px' }}>Which dates?</h2>
-              <p style={{ color: 'var(--secondary-text)' }}>Date Type</p>
+              <h2>Which dates?</h2>
+              <p>Date Type</p>
               <Select
                 className={styles.select}
                 value={datesOption}
@@ -148,8 +148,8 @@ export default function Index() {
               }
             </div>
             <div className={styles.times}>
-              <h2 style={{ marginBottom: '12px' }}>Which times?</h2>
-              <p style={{ color: 'var(--secondary-text)' }}>Timezone</p>
+              <h2>Which times?</h2>
+              <p>Timezone</p>
               <TimezoneSelect
                 className={styles.select}
                 timezone={timezone}
@@ -162,10 +162,10 @@ export default function Index() {
             </div>
           </div>
           <div className={styles.options}>
-            <div style={{ marginBottom: '48px' }}>
-              <p style={{ fontWeight: '600', display: 'inline' }}>MeetingBrew.com/ </p>
-              <div style={{ display: 'inline-block', marginBottom: '12px' }}>
-                <input className={styles.idInput}
+            <div className={styles.idSection}>
+              <div className={styles.idInput}>
+                <p>MeetingBrew.com/ </p>
+                <input
                   value={id}
                   onChange={e => {
                     // clean up input id
@@ -176,9 +176,10 @@ export default function Index() {
                   }}
                   placeholder="custom ID (optional)"
                   maxLength={100}
+                  spellCheck="false"
                 />
               </div>
-              <p style={{ fontWeight: 200, color: 'var(--secondary-text)' }}>You can optionally set a custom id that will appear in the link of your MeetingBrew.</p>
+              <p>You can optionally set a custom id that will appear in the link of your MeetingBrew.</p>
             </div>
             <button onClick={createMeeting}>
               <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />

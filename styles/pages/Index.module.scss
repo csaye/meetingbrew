@@ -43,42 +43,63 @@
           }
         }
 
-        .select {
-          margin-bottom: 24px;
-        }
-
-        >.dates {
-          width: 336px;
-          margin-bottom: 48px;
-        }
-
+        >.dates,
         >.times {
           width: 336px;
           margin-bottom: 48px;
+
+          >h2 {
+            margin-bottom: 12px;
+          }
+
+          >p {
+            color: var(--secondary-text);
+          }
+
+          >.select {
+            margin-bottom: 24px;
+          }
         }
       }
 
       >.options {
         width: 336px;
 
-        .idInput {
-          flex-grow: 1;
-          height: 32px;
-          padding: 4px 6px;
-          border: 1px solid var(--light-gray);
-          font-size: 16px;
-          line-height: 24px;
-          font-weight: 300;
-          color: var(--primary-text);
-          background: var(--white);
+        >.idSection {
+          margin-bottom: 48px;
 
-          &::placeholder {
-            color: var(--gray)
+          >.idInput {
+            margin-bottom: 12px;
+
+            >p {
+              font-weight: 600;
+              display: inline;
+            }
+
+            >input {
+              flex-grow: 1;
+              height: 32px;
+              padding: 4px 6px;
+              border: 1px solid var(--light-gray);
+              font-size: 16px;
+              line-height: 24px;
+              font-weight: 300;
+              color: var(--primary-text);
+              background: var(--white);
+
+              &::placeholder {
+                color: var(--gray)
+              }
+
+              &:focus {
+                outline: 0;
+                border-color: var(--mb-red);
+              }
+            }
           }
 
-          &:focus {
-            outline: 0;
-            border-color: var(--mb-red);
+          >p {
+            color: var(--secondary-text);
           }
         }
 
