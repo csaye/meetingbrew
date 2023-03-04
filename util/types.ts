@@ -14,4 +14,5 @@ export type Respondent = {
   name: string;
   availability: number[];
   id: string;
+  responded: number;
 };

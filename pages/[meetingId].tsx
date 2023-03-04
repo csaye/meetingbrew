@@ -42,6 +42,7 @@ export default function MeetingPage() {
     const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
     const respondentsDocs = (await getDocs(respondentsRef)).docs;
     const respondentsData = respondentsDocs.map(doc => doc.data() as Respondent);
+    respondentsData.sort((a, b) => a.responded - b.responded);
     setRespondents(respondentsData);
   }, [meetingId, db]);
 
@@ -115,7 +116,9 @@ export default function MeetingPage() {
     const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
     const respondentDoc = doc(respondentsRef);
     const { id } = respondentDoc;
-    const respondent: Respondent = { id, name: inputName, availability: [] };
+    const respondent: Respondent = {
+      id, name: inputName, availability: [], responded: Date.now()
+    };
     // add user to local respondents
     const newRespondents = respondents.slice();
     newRespondents.push(respondent);
@@ -164,6 +167,7 @@ export default function MeetingPage() {
 
   // returns whether given respondent is inactive
   function respondentInactive(respondent: Respondent) {
+    if (inputtingName) return true;
     if (name && name.toLowerCase() !== respondent.name.toLowerCase()) return true;
     if (hoverIndex !== -1) {
       if (!respondent.availability.includes(hoverIndex)) return true;
