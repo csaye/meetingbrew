@@ -43,11 +43,12 @@ export default function Calendar(props: Props) {
   const [dragStart, setDragStart] = useState<number[] | null>(null);
   const [dragEnd, setDragEnd] = useState<number[] | null>(null);
 
-  // update days on info change
-  useEffect(() => {
+  // updates dates on calendar
+  const updateDates = useCallback(() => {
+    if (datesType !== 'dates') return;
+    const { dates } = props;
     const activeIntervals: string[] = [];
     const newDates: string[] = [];
-    let index = 0;
     let minHour, maxHour;
     // get all active intervals
     for (const date of dates) {
@@ -69,9 +70,54 @@ export default function Calendar(props: Props) {
         }
       }
     }
+    newDates.sort();
+    return { minHour, maxHour, newDates, activeIntervals };
+  }, [currentTimezone, datesType, earliest, latest, props, timezone]);
+
+  // updates days on calendar
+  const updateDays = useCallback(() => {
+    if (datesType !== 'days') return {};
+    const { days } = props;
+    const activeIntervals: string[] = [];
+    const newDates: string[] = [];
+    let minHour, maxHour;
+    // get all active intervals
+    for (const day of days) {
+      for (let hour = earliest; hour < latest; hour++) {
+        for (let minute = 0; minute < 60; minute += 15) {
+          // set moment and switch timezone
+          const dayPadded = (day + 1).toString().padStart(2, '0');
+          const hourPadded = hour.toString().padStart(2, '0');
+          const minutePadded = minute.toString().padStart(2, '0');
+          let mmt = moment.tz(`2023-01-${dayPadded} ${hourPadded}:${minutePadded}:00`, timezone);
+          mmt = mmt.clone().tz(currentTimezone);
+          if (mmt.month() !== 0) mmt.add(1, 'week');
+          if (mmt.date() > 7) mmt.subtract(1, 'week');
+          // update hour range
+          const hr = mmt.hour();
+          if (minHour === undefined || hr < minHour) minHour = hr;
+          if (maxHour === undefined || hr > maxHour) maxHour = hr;
+          // record date and create interval
+          const newDate = mmt.format('YYYY-MM-DD');
+          if (!newDates.includes(newDate)) newDates.push(newDate);
+          activeIntervals.push(mmt.format('YYYY-MM-DD HH:mm'));
+        }
+      }
+    }
+    newDates.sort();
+    return { minHour, maxHour, newDates, activeIntervals };
+  }, [currentTimezone, datesType, earliest, latest, props, timezone]);
+
+  // update dates or days on info change
+  useEffect(() => {
+    // get interval data
+    const intervalData = datesType === 'dates' ? updateDates() : updateDays();
+    if (!intervalData) return;
+    const { minHour, maxHour, newDates, activeIntervals } = intervalData;
     if (minHour === undefined || maxHour === undefined) throw 'undefined hours';
     // set up days
-    const newDays: Day[] = [];
+    let index = 0;
+    const newDays: CalendarDay[] = [];
     for (const date of newDates) {
       const ivs: Interval[] = [];
       for (let hour = minHour; hour <= maxHour; hour++) {
@@ -109,8 +155,8 @@ export default function Calendar(props: Props) {
     }
     // update calendar values
     setTimes(newTimes);
-    setDays(newDays);
-  }, [dates, earliest, latest, timezone, currentTimezone]);
+    setCalendarDays(newDays);
+  }, [currentTimezone, datesType, updateDates, updateDays]);
 
   // returns whether given interval is currently selected
   function intervalSelected(dayIndex: number, intIndex: number, index: number) {
