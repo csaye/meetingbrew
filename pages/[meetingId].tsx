@@ -185,41 +185,43 @@ export default function MeetingPage() {
             <div className={styles.content} ref={contentRef}>
               <h1>{meeting.title}</h1>
               <div className={styles.options}>
-                {
-                  inputtingName ?
-                    <button
-                      className={styles.respondButton}
-                      onClick={saveName}
-                    >
-                      <Image src="/icons/check.svg" width="24" height="24" alt="check.svg" />
-                      Save
-                    </button> :
-                    name ?
+                <div className={styles.buttons}>
+                  {
+                    inputtingName ?
                       <button
                         className={styles.respondButton}
-                        onClick={saveRespondent}
+                        onClick={saveName}
                       >
                         <Image src="/icons/check.svg" width="24" height="24" alt="check.svg" />
-                        Done
+                        Save
                       </button> :
-                      <button
-                        className={styles.respondButton}
-                        onClick={() => setInputtingName(true)}
-                      >
-                        <Image src="/icons/calendar.svg" width="24" height="24" alt="calendar.svg" />
-                        Respond
-                      </button>
-                }
-                <button
-                  className={styleBuilder([
-                    styles.inviteButton,
-                    [styles.grayedOut, !!name || inputtingName]
-                  ])}
-                  onClick={copyLink}
-                >
-                  <Image src="/icons/link.svg" width="24" height="24" alt="link.svg" />
-                  Invite
-                </button>
+                      name ?
+                        <button
+                          className={styles.respondButton}
+                          onClick={saveRespondent}
+                        >
+                          <Image src="/icons/check.svg" width="24" height="24" alt="check.svg" />
+                          Done
+                        </button> :
+                        <button
+                          className={styles.respondButton}
+                          onClick={() => setInputtingName(true)}
+                        >
+                          <Image src="/icons/calendar.svg" width="24" height="24" alt="calendar.svg" />
+                          Respond
+                        </button>
+                  }
+                  <button
+                    className={styleBuilder([
+                      styles.inviteButton,
+                      [styles.grayedOut, !!name || inputtingName]
+                    ])}
+                    onClick={copyLink}
+                  >
+                    <Image src="/icons/link.svg" width="24" height="24" alt="link.svg" />
+                    Invite
+                  </button>
+                </div>
                 <div className={styleBuilder([
                   styles.availability,
                   [styles.grayedOut, !!name || inputtingName]
