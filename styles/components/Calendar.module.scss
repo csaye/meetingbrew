@@ -20,12 +20,11 @@
 
   >.content {
     max-width: 624px;
+    overflow-x: auto;
 
     @media (max-width: 1047.98px) {
       max-width: 336px;
     }
-
-    overflow-x: auto;
 
     &::-webkit-scrollbar {
       height: 8px;
@@ -110,6 +109,10 @@
 
           &.faded {
             opacity: 0.2;
+          }
+
+          &.select {
+            touch-action: none;
           }
 
           &:not(&.inactive) {
