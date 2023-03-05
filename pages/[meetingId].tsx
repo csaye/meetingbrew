@@ -67,7 +67,10 @@ export default function MeetingPage() {
         setMeeting(null);
         return;
       }
-      setMeeting(meetingDoc.data() as Meeting);
+      const meetingData = meetingDoc.data() as Meeting;
+      setMeeting(meetingData);
+      // set document title
+      document.title = `MeetingBrew - ${meetingData.title}`;
     }
     getMeeting();
   }, [meetingId, db]);
