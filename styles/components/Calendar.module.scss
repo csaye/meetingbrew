@@ -20,6 +20,11 @@
 
   >.content {
     max-width: 624px;
+
+    @media (max-width: 1047.98px) {
+      max-width: 336px;
+    }
+
     overflow-x: auto;
 
     &::-webkit-scrollbar {
