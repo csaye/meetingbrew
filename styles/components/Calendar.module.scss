@@ -19,7 +19,7 @@
   }
 
   >.content {
-    max-width: 524px;
+    max-width: 624px;
     overflow-x: auto;
 
     &::-webkit-scrollbar {
@@ -101,6 +101,10 @@
 
           &.selected {
             background: #f93636;
+          }
+
+          &.faded {
+            opacity: 0.2;
           }
 
           &:not(&.inactive) {

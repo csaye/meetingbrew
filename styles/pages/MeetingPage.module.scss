@@ -47,6 +47,7 @@
           border: 0;
           color: #fff;
           margin-right: 12px;
+          width: 146px;
 
           &:hover {
             background: var(--mb-red-hover);
@@ -57,6 +58,7 @@
           background: #f0f0f0;
           border: 1px solid #d0d0d0;
           color: #666;
+          width: 122px;
 
           &:hover {
             background: #e0e0e0;
@@ -90,7 +92,7 @@
         }
 
         >.select {
-          width: 240px;
+          width: 336px;
         }
       }
 
