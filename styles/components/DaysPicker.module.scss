@@ -34,6 +34,11 @@
       align-items: center;
       justify-content: center;
 
+      >img {
+        touch-action: none;
+        pointer-events: none;
+      }
+
       &:not(:first-of-type) {
         border-left: 1px solid var(--dim-white);
       }
