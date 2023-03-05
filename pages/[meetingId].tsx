@@ -33,9 +33,6 @@ export default function MeetingPage() {
   const nameRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const currRespondents = selectedRespondents.length ? selectedRespondents :
-    respondents ? respondents.map(r => r.id) : [];
-
   // retrieve respondents from firebase
   const getRespondents = useCallback(async () => {
     if (typeof meetingId !== 'string') return;
@@ -227,21 +224,21 @@ export default function MeetingPage() {
                   styles.availability,
                   [styles.grayedOut, !!name || inputtingName]
                 ])}>
-                  <p>0/{currRespondents.length}</p>
+                  <p>0/{respondents.length}</p>
                   <div className={styles.shades}>
                     {
-                      Array(currRespondents.length + 1).fill(0).map((v, i) =>
+                      Array(respondents.length + 1).fill(0).map((v, i) =>
                         <div
                           className={styles.shade}
                           style={{
-                            background: sampleGradient(currRespondents.length)[i]
+                            background: sampleGradient(respondents.length)[i]
                           }}
                           key={i}
                         />
                       )
                     }
                   </div>
-                  <p>{currRespondents.length}/{currRespondents.length}</p>
+                  <p>{respondents.length}/{respondents.length}</p>
                 </div>
                 <TimezoneSelect
                   className={styleBuilder([
@@ -333,7 +330,8 @@ export default function MeetingPage() {
                           datesType="dates"
                           currentTimezone={timezone}
                           type="display"
-                          respondents={respondents.filter(r => currRespondents.includes(r.id))}
+                          respondents={respondents}
+                          selectedRespondents={selectedRespondents}
                           setHoverIndex={setHoverIndex}
                         /> :
                         <Calendar
@@ -341,7 +339,8 @@ export default function MeetingPage() {
                           datesType="days"
                           currentTimezone={timezone}
                           type="display"
-                          respondents={respondents.filter(r => currRespondents.includes(r.id))}
+                          respondents={respondents}
+                          selectedRespondents={selectedRespondents}
                           setHoverIndex={setHoverIndex}
                         />
                     )
