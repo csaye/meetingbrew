@@ -15,8 +15,18 @@ type BaseBaseProps = {
 };
 
 type BaseProps =
-  BaseBaseProps & { type: 'select'; selectedIndices: number[]; setSelectedIndices: Dispatch<number[]>; } |
-  BaseBaseProps & { type: 'display'; respondents: Respondent[]; setHoverIndex: Dispatch<number>; };
+  BaseBaseProps & {
+    type: 'select';
+    selectedIndices: number[];
+    setSelectedIndices:
+    Dispatch<number[]>;
+  } |
+  BaseBaseProps & {
+    type: 'display';
+    respondents: Respondent[];
+    selectedRespondents: string[];
+    setHoverIndex: Dispatch<number>;
+  };
 
 type Props =
   BaseProps & { datesType: 'dates'; dates: string[]; } |
@@ -221,11 +231,25 @@ export default function Calendar(props: Props) {
 
   // returns color for interval index
   function getIntervalColor(index: number) {
-    if (type === 'select') return;
+    if (type !== 'display') throw 'getting color for select calendar';
     const { respondents } = props;
     const colors = sampleGradient(respondents.length);
     const shade = respondents.filter(r => r.availability.includes(index)).length;
     return colors[shade];
+  }
+
+  // returns whether given interval index is faded
+  function intervalFaded(interval: Interval) {
+    if (type !== 'display') throw 'getting fade for select calendar';
+    const { respondents, selectedRespondents } = props;
+    if (!selectedRespondents.length) return false;
+    const currRespondents = respondents.filter(r => selectedRespondents.includes(r.id));
+    const { index, active } = interval;
+    if (!active) return true;
+    for (const r of currRespondents) {
+      if (!r.availability.includes(index)) return true;
+    }
+    return false;
   }
 
   return (
@@ -269,6 +293,7 @@ export default function Calendar(props: Props) {
                         [styles.selected, interval.active && intervalSelected(i, j, interval.index)],
                         [styles.select, type === 'select'],
                         [styles.display, type === 'display'],
+                        [styles.faded, type === 'display' && intervalFaded(interval)],
                         [styles.gapped, (j > 0 && j % 4 === 0) &&
                           (day.intervals[j].hour - 1 !==
                             day.intervals[j - 1].hour)
