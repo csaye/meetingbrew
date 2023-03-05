@@ -14,6 +14,7 @@ export default function DaysPicker(props: Props) {
   const [dragAdd, setDragAdd] = useState(true);
   const [dragStart, setDragStart] = useState<number | null>(null);
   const [dragEnd, setDragEnd] = useState<number | null>(null);
+  const [touching, setTouching] = useState(false);
 
   // called on drag end
   const finishDrag = useCallback(() => {
@@ -36,9 +37,10 @@ export default function DaysPicker(props: Props) {
 
   // listen for mouse up to finish drag
   useEffect(() => {
+    if (touching) return;
     window.addEventListener('mouseup', finishDrag);
     return () => window.removeEventListener('mouseup', finishDrag);
-  }, [finishDrag]);
+  }, [finishDrag, touching]);
 
   // returns whether given day is selected
   function daySelected(day: number) {
@@ -71,11 +73,13 @@ export default function DaysPicker(props: Props) {
         {
           Array(7).fill(null).map((v, i) =>
             <div
+              data-index={i}
               className={styleBuilder([
                 styles.day,
                 [styles.selected, daySelected(i)]
               ])}
               onMouseDown={() => {
+                if (touching) return;
                 setDragAdd(!days.includes(i));
                 setDragStart(i);
                 setDragEnd(i);
@@ -84,6 +88,22 @@ export default function DaysPicker(props: Props) {
                 if (dragStart === null) return;
                 setDragEnd(i);
               }}
+              onTouchStart={() => {
+                setTouching(true);
+                setDragAdd(!days.includes(i));
+                setDragStart(i);
+                setDragEnd(i);
+              }}
+              onTouchMove={e => {
+                // handle mobile drag
+                const { clientX, clientY } = e.touches[0];
+                const dayDiv = document.elementFromPoint(clientX, clientY);
+                if (!dayDiv) return;
+                const index = dayDiv.getAttribute('data-index');
+                if (index === null) return;
+                setDragEnd(parseInt(index));
+              }}
+              onTouchEnd={() => finishDrag()}
               key={i}
             >
               {

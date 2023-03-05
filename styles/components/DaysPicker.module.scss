@@ -26,6 +26,7 @@
     margin-bottom: 12px;
 
     >.day {
+      touch-action: none;
       width: 48px;
       height: 48px;
       background: var(--light-gray);
