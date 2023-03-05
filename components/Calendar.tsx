@@ -52,6 +52,7 @@ export default function Calendar(props: Props) {
   const [dragAdd, setDragAdd] = useState(true);
   const [dragStart, setDragStart] = useState<number[] | null>(null);
   const [dragEnd, setDragEnd] = useState<number[] | null>(null);
+  const [touching, setTouching] = useState(false);
 
   // updates dates on calendar
   const updateDates = useCallback(() => {
@@ -225,9 +226,10 @@ export default function Calendar(props: Props) {
 
   // listen for mouse up to finish drag
   useEffect(() => {
+    if (touching) return;
     window.addEventListener('mouseup', finishDrag);
     return () => window.removeEventListener('mouseup', finishDrag);
-  }, [finishDrag]);
+  }, [finishDrag, touching]);
 
   // returns color for interval index
   function getIntervalColor(index: number) {
@@ -250,6 +252,15 @@ export default function Calendar(props: Props) {
       if (!r.availability.includes(index)) return true;
     }
     return false;
+  }
+
+  // starts dragging
+  function startDrag(interval: Interval, i: number, j: number) {
+    if (type === 'display' || !interval.active) return;
+    const { selectedIndices } = props;
+    setDragAdd(!selectedIndices.includes(interval.index));
+    setDragStart([i, j]);
+    setDragEnd([i, j]);
   }
 
   return (
@@ -287,6 +298,8 @@ export default function Calendar(props: Props) {
                 {
                   day.intervals.map((interval, j) =>
                     <div
+                      data-i={i}
+                      data-j={j}
                       className={styleBuilder([
                         styles.interval,
                         [styles.inactive, !interval.active],
@@ -305,11 +318,8 @@ export default function Calendar(props: Props) {
                           undefined
                       }
                       onMouseDown={() => {
-                        if (type === 'display' || !interval.active) return;
-                        const { selectedIndices } = props;
-                        setDragAdd(!selectedIndices.includes(interval.index));
-                        setDragStart([i, j]);
-                        setDragEnd([i, j]);
+                        if (touching) return;
+                        startDrag(interval, i, j);
                       }}
                       onMouseOver={() => {
                         if (interval.active && type === 'display') {
@@ -324,6 +334,21 @@ export default function Calendar(props: Props) {
                           setHoverIndex(-1);
                         }
                       }}
+                      onTouchStart={() => {
+                        setTouching(true);
+                        startDrag(interval, i, j);
+                      }}
+                      onTouchMove={e => {
+                        // handle mobile drag
+                        const { clientX, clientY } = e.touches[0];
+                        const dayDiv = document.elementFromPoint(clientX, clientY);
+                        if (!dayDiv) return;
+                        const dataI = dayDiv.getAttribute('data-i');
+                        const dataJ = dayDiv.getAttribute('data-j');
+                        if (dataI === null || dataJ === null) return;
+                        setDragEnd([parseInt(dataI), parseInt(dataJ)]);
+                      }}
+                      onTouchEnd={() => finishDrag()}
                       key={j}
                     />
                   )
