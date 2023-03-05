@@ -21,6 +21,7 @@ export default function DatesPicker(props: Props) {
   const [dragAdd, setDragAdd] = useState(true);
   const [dragStart, setDragStart] = useState<number | null>(null);
   const [dragEnd, setDragEnd] = useState<number | null>(null);
+  const [touching, setTouching] = useState(false);
 
   const [mmt, setMmt] = useState(moment().startOf('month'));
 
@@ -82,9 +83,10 @@ export default function DatesPicker(props: Props) {
 
   // listen for mouse up to finish drag
   useEffect(() => {
+    if (touching) return;
     window.addEventListener('mouseup', finishDrag);
     return () => window.removeEventListener('mouseup', finishDrag);
-  }, [finishDrag]);
+  }, [finishDrag, touching]);
 
   // returns whether given date is currently selected
   function dateSelected(dayIndex: number) {
@@ -134,6 +136,7 @@ export default function DatesPicker(props: Props) {
           {
             days.map((day, i) =>
               <div
+                data-index={i}
                 className={styleBuilder([
                   styles.date,
                   [styles.selected, dateSelected(i)],
@@ -141,6 +144,7 @@ export default function DatesPicker(props: Props) {
                   [styles.inactive, day.month !== mmt.month()]
                 ])}
                 onMouseDown={() => {
+                  if (touching) return;
                   setDragAdd(!dates.includes(dateString(day)));
                   setDragStart(i);
                   setDragEnd(i);
@@ -149,6 +153,22 @@ export default function DatesPicker(props: Props) {
                   if (dragStart === null) return;
                   setDragEnd(i);
                 }}
+                onTouchStart={() => {
+                  setTouching(true);
+                  setDragAdd(!dates.includes(dateString(day)));
+                  setDragStart(i);
+                  setDragEnd(i);
+                }}
+                onTouchMove={e => {
+                  // handle mobile drag
+                  const { clientX, clientY } = e.touches[0];
+                  const dayDiv = document.elementFromPoint(clientX, clientY);
+                  if (!dayDiv) return;
+                  const index = dayDiv.getAttribute('data-index');
+                  if (index === null) return;
+                  setDragEnd(parseInt(index));
+                }}
+                onTouchEnd={() => finishDrag()}
                 key={i}
               >
                 {day.day}
