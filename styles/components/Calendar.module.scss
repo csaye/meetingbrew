@@ -2,12 +2,12 @@
   user-select: none;
   display: flex;
 
-  >.times {
+  >.hours {
     width: 48px;
     padding-right: 12px;
     padding-top: calc(80px - 32px / 2);
 
-    >.time {
+    >.hour {
       color: #666;
       height: 32px;
       display: flex;

@@ -24,7 +24,7 @@ type Props =
 
 type Interval = {
   index: number;
-  moment: Moment;
+  hour: number;
   active: boolean;
 };
 
@@ -37,7 +37,7 @@ export default function Calendar(props: Props) {
   const { timezone, currentTimezone, earliest, latest, type, datesType } = props;
 
   const [calendarDays, setCalendarDays] = useState<CalendarDay[]>([]);
-  const [times, setTimes] = useState<Moment[]>();
+  const [hours, setHours] = useState<number[]>();
 
   const [dragAdd, setDragAdd] = useState(true);
   const [dragStart, setDragStart] = useState<number[] | null>(null);
@@ -108,6 +108,11 @@ export default function Calendar(props: Props) {
     return { minHour, maxHour, newDates, activeIntervals };
   }, [currentTimezone, datesType, earliest, latest, props, timezone]);
 
+  // returns hour parsed from YYYY-MM-DD HH:mm string
+  function parseHour(date: string) {
+    return parseInt(date.split(' ')[1].split(':')[0]);
+  }
+
   // update dates or days on info change
   useEffect(() => {
     // get interval data
@@ -122,14 +127,15 @@ export default function Calendar(props: Props) {
       const ivs: Interval[] = [];
       for (let hour = minHour; hour <= maxHour; hour++) {
         // skip if no matching hour
-        if (!activeIntervals.some(i => parseInt(i.split(' ')[1].split(':')[0]) === hour)) continue;
+        if (!activeIntervals.some(i => parseHour(i) === hour)) continue;
         for (let minute = 0; minute < 60; minute += 15) {
           // add interval
           const hourPadded = hour.toString().padStart(2, '0');
           const minutePadded = minute.toString().padStart(2, '0');
           const mmt = moment.tz(`${date} ${hourPadded}:${minutePadded}:00`, currentTimezone);
-          const active = activeIntervals.includes(mmt.format('YYYY-MM-DD HH:mm'));
-          ivs.push({ index: active ? index : -1, moment: mmt, active });
+          const active = mmt.hour() !== hour ? false : // skip invalid dst times
+            activeIntervals.includes(mmt.format('YYYY-MM-DD HH:mm'));
+          ivs.push({ index: active ? index : -1, hour, active });
           if (active) index++;
         }
       }
@@ -137,24 +143,20 @@ export default function Calendar(props: Props) {
       newDays.push({ moment: mmt, intervals: ivs });
     }
     // get times
-    const newTimes: Moment[] = [];
-    for (let hour = minHour; hour <= maxHour + 1; hour++) {
+    const newHours: number[] = [];
+    for (let hour = minHour; hour <= maxHour; hour++) {
       // skip if no matching hour
-      if (
-        hour !== maxHour + 1 &&
-        !activeIntervals.some(i => parseInt(i.split(' ')[1].split(':')[0]) === hour)
-      ) continue;
-      const hourPadded = hour.toString().padStart(2, '0');
-      const mmt = moment.tz(`${newDates[0]} ${hourPadded}:00:00`, currentTimezone);
-      newTimes.push(mmt);
+      if (!activeIntervals.some(i => parseHour(i) === hour)) continue;
+      newHours.push(hour);
       // check for time gap start
       if (hour < maxHour &&
-        !activeIntervals.some(i => parseInt(i.split(' ')[1].split(':')[0]) === hour + 1)) {
-        newTimes.push(mmt.clone().add(1, 'hour'));
+        !activeIntervals.some(i => parseHour(i) === hour + 1)) {
+        newHours.push(hour + 1);
       }
     }
+    newHours.push(maxHour + 1);
     // update calendar values
-    setTimes(newTimes);
+    setHours(newHours);
     setCalendarDays(newDays);
   }, [currentTimezone, datesType, updateDates, updateDays]);
 
@@ -228,11 +230,11 @@ export default function Calendar(props: Props) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.times}>
+      <div className={styles.hours}>
         {
-          times && times.map((time, i) =>
-            <div className={styles.time} key={i}>
-              {time.format('h A')}
+          hours && hours.map((hour, i) =>
+            <div className={styles.hour} key={i}>
+              {hour % 12 || 12} {hour < 12 || hour === 24 ? 'AM' : 'PM'}
             </div>
           )
         }
@@ -268,8 +270,8 @@ export default function Calendar(props: Props) {
                         [styles.select, type === 'select'],
                         [styles.display, type === 'display'],
                         [styles.gapped, (j > 0 && j % 4 === 0) &&
-                          (day.intervals[j].moment.clone().subtract(1, 'hour').hour() !==
-                            day.intervals[j - 1].moment.hour())
+                          (day.intervals[j].hour - 1 !==
+                            day.intervals[j - 1].hour)
                         ]
                       ])}
                       style={
