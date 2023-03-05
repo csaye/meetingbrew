@@ -85,7 +85,7 @@ export default function Index() {
     const meetingId = id ? id : doc(meetingsRef).id.slice(0, 6);
     const meetingRef = doc(meetingsRef, meetingId);
     // create meeting
-    const meetingBase = { id: meetingId, title, timezone, earliest, latest };
+    const meetingBase = { id: meetingId, title, timezone, earliest, latest, created: Date.now() };
     const meeting: Meeting = datesOption.value === 'dates' ?
       { ...meetingBase, type: 'dates', dates: dates.slice().sort() } :
       { ...meetingBase, type: 'days', days: days.slice().sort() };

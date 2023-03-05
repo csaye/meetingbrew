@@ -4,6 +4,7 @@ type BaseMeeting = {
   timezone: string;
   earliest: number;
   latest: number;
+  created: number;
 };
 
 export type Meeting =
@@ -14,5 +15,6 @@ export type Respondent = {
   name: string;
   availability: number[];
   id: string;
-  responded: number;
+  created: number;
+  updated?: number;
 };

@@ -39,7 +39,7 @@ export default function MeetingPage() {
     const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
     const respondentsDocs = (await getDocs(respondentsRef)).docs;
     const respondentsData = respondentsDocs.map(doc => doc.data() as Respondent);
-    respondentsData.sort((a, b) => a.responded - b.responded);
+    respondentsData.sort((a, b) => a.created - b.created);
     setRespondents(respondentsData);
   }, [meetingId, db]);
 
@@ -100,7 +100,7 @@ export default function MeetingPage() {
     // update firebase respondent
     const { id } = newRespondents[rIndex];
     const respondentDocRef = doc(db, 'meetings', meetingId, 'respondents', id);
-    await updateDoc(respondentDocRef, { availability });
+    await updateDoc(respondentDocRef, { availability, updated: Date.now() });
   }
 
   // focus name input on response start
@@ -117,7 +117,7 @@ export default function MeetingPage() {
     const respondentDoc = doc(respondentsRef);
     const { id } = respondentDoc;
     const respondent: Respondent = {
-      id, name: inputName, availability: [], responded: Date.now()
+      id, name: inputName, availability: [], created: Date.now()
     };
     // add user to local respondents
     const newRespondents = respondents.slice();
