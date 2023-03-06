@@ -22,7 +22,7 @@
 
       >h1 {
         margin: 0;
-        color: #222;
+        color: var(--primary-text);
         font-weight: 600;
         font-size: 36px;
         max-width: 850px;
@@ -57,7 +57,7 @@
           >.respondButton {
             background: var(--mb-red);
             border: 0;
-            color: #fff;
+            color: var(--white);
             margin-right: 12px;
             width: 146px;
 
@@ -67,13 +67,13 @@
           }
 
           >.inviteButton {
-            background: #f0f0f0;
-            border: 1px solid #d0d0d0;
-            color: #666;
+            background: var(--dark-white);
+            border: 1px solid var(--mid-gray);
+            color: var(--secondary-text);
             width: 122px;
 
             &:hover {
-              background: #e0e0e0;
+              background: var(--light-gray);
             }
           }
         }
@@ -88,7 +88,7 @@
           }
 
           >p {
-            color: #666;
+            color: var(--secondary-text);
             font-weight: 500;
             font-size: 16px;
             margin: 0;
@@ -131,7 +131,7 @@
             display: flex;
             align-items: center;
             margin: 0 0 8px 0;
-            color: #a0a0a0;
+            color: var(--gray);
             font-weight: 600;
             font-size: 16px;
 
@@ -142,16 +142,16 @@
 
           >.nameInput {
             margin: 8px 0 8px 24px;
-            color: #222;
+            color: var(--primary-text);
             font-size: 24px;
             font-weight: 500;
-            background: #fff;
+            background: var(--white);
             width: 178px;
             height: 32px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--light-gray);
 
             &::placeholder {
-              color: #a0a0a0;
+              color: var(--gray);
             }
           }
 
@@ -162,7 +162,7 @@
 
             >p {
               margin: 0;
-              color: #222;
+              color: var(--primary-text);
               font-size: 24px;
               font-weight: 400;
 
