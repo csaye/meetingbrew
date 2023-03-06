@@ -2,6 +2,44 @@
   user-select: none;
   display: flex;
 
+  >.namesPopup {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+    touch-action: none;
+    z-index: 100;
+
+    >.head {
+      height: var(--header);
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      padding-left: 24px;
+
+      >h2 {
+        font-family: 'Outfit', sans-serif;
+        font-feature-settings: 'tnum' on, 'lnum' on;
+        color: var(--secondary-text);
+      }
+    }
+
+    >.names {
+      padding: 24px;
+
+      >.name {
+        font-size: 24px;
+        margin: 6px 0;
+        line-height: 32px;
+
+        &.unavailable {
+          color: var(--secondary-text);
+          text-decoration-line: line-through;
+        }
+      }
+    }
+  }
+
   >.hours {
     width: 48px;
     flex-shrink: 0;
