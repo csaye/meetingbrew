@@ -9,7 +9,7 @@
     padding-top: calc(80px - 32px / 2);
 
     >.hour {
-      color: #666;
+      color: var(--secondary-text);
       height: 32px;
       display: flex;
       justify-content: flex-end;
@@ -54,8 +54,8 @@
         text-align: center;
 
         >.heading {
-          background: #fff;
-          border: 1px solid #e0e0e0;
+          background: var(--white);
+          border: 1px solid var(--light-gray);
           border-right-width: 0;
           width: 80px;
           height: 80px;
@@ -67,14 +67,14 @@
 
           >h1 {
             margin: 0;
-            color: #222;
+            color: var(--primary-text);
             font-weight: 500;
             font-size: 24px;
           }
 
           >h2 {
             margin: 0;
-            color: #666;
+            color: var(--secondary-text);
             font-weight: 400;
             font-size: 16px;
           }
@@ -93,16 +93,16 @@
         }
 
         >.interval {
-          background: #e0e0e0;
           touch-action: none;
+          background: var(--light-gray);
           width: 80px;
           height: 8px;
-          border-top: 1px solid #fafafa;
-          border-left: 1px solid #fafafa;
+          border-top: 1px solid var(--dim-white);
+          border-left: 1px solid var(--dim-white);
           border-top-width: 0;
 
           &.inactive {
-            background: #a0a0a0;
+            background: var(--gray);
           }
 
           &.selected {
