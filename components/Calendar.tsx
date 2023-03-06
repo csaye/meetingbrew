@@ -308,6 +308,29 @@ export default function Calendar(props: Props) {
 
   return (
     <div className={styles.container}>
+      {
+        (type === 'display' && touching && props.hoverIndex !== -1) &&
+        <div className={styles.namesPopup}>
+          <div className={styles.head}>
+            <h2>{getTimeByIndex(props.hoverIndex)}</h2>
+          </div>
+          <div className={styles.names}>
+            {
+              props.respondents.map((r, i) =>
+                <p
+                  className={styleBuilder([
+                    styles.name,
+                    [styles.unavailable, !r.availability.includes(props.hoverIndex)]
+                  ])}
+                  key={i}
+                >
+                  {r.name}
+                </p>
+              )
+            }
+          </div>
+        </div>
+      }
       <div className={styles.hours}>
         {
           hours && hours.map((hour, i) =>
