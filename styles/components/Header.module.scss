@@ -1,5 +1,5 @@
 .container {
-  background: #fff;
+  background: var(--white);
   height: var(--header);
   display: flex;
   justify-content: center;
@@ -16,7 +16,7 @@
 
     >a.link {
       margin: 0 36px 0 24px;
-      color: #666;
+      color: var(--secondary-text);
       font-size: 16px;
       font-weight: 600;
 
@@ -33,7 +33,7 @@
       justify-content: center;
       background: var(--mb-red);
       border: 0;
-      color: #fff;
+      color: var(--white);
       font-weight: 600;
       font-size: 16px;
       padding: 0 24px 0 18px;
