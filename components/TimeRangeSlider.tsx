@@ -71,7 +71,7 @@ export default function TimeRangeSlider(props: Props) {
             borderRadius: 0
           },
           '& .MuiSlider-mark': {
-            background: '#e0e0e0',
+            background: 'var(--light-gray)',
             width: 13,
             height: 12,
             transform: 'translate(-50%, -50%)',
@@ -84,10 +84,10 @@ export default function TimeRangeSlider(props: Props) {
             fontFamily: 'DM Sans, sans-serif',
             fontSize: 12,
             marginTop: '4px',
-            color: '#666',
+            color: 'var(--secondary-text)',
             fontWeight: 500,
             '&.MuiSlider-markLabelActive': {
-              color: '#222'
+              color: 'var(--primary-text)'
             }
           }
         }}
