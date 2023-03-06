@@ -270,6 +270,14 @@ export default function Calendar(props: Props) {
     setHoverIndex(interval.index);
   }
 
+  // returns whether given interval is hovered
+  function isHovered(interval: Interval) {
+    if (type !== 'display' || !interval.active) return false;
+    const { hoverIndex } = props;
+    if (hoverIndex === -1) return false;
+    return hoverIndex === interval.index;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.hours}>
