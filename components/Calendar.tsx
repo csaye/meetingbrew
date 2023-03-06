@@ -36,6 +36,7 @@ type Props =
 type Interval = {
   index: number;
   hour: number;
+  minute: number;
   active: boolean;
 };
 
@@ -147,7 +148,7 @@ export default function Calendar(props: Props) {
           const mmt = moment.tz(`${date} ${hourPadded}:${minutePadded}:00`, currentTimezone);
           const active = mmt.hour() !== hour ? false : // skip invalid dst times
             activeIntervals.includes(mmt.format('YYYY-MM-DD HH:mm'));
-          ivs.push({ index: active ? index : -1, hour, active });
+          ivs.push({ index: active ? index : -1, hour, minute, active });
           if (active) index++;
         }
       }
@@ -311,7 +312,7 @@ export default function Calendar(props: Props) {
         {
           hours && hours.map((hour, i) =>
             <div className={styles.hour} key={i}>
-              {hour % 12 || 12} {hour < 12 || hour === 24 ? 'AM' : 'PM'}
+              {timeString(hour)}
             </div>
           )
         }
