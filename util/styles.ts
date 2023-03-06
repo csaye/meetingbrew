@@ -16,7 +16,7 @@ export const selectStyles = {
     ...baseStyles,
     height: '48px',
     borderRadius: 0,
-    background: '#f0f0f0',
+    background: 'var(--dark-white)',
     borderWidth: '1px',
     borderColor: state.isFocused ? 'var(--gray)' : 'var(--mid-gray)',
     boxShadow: 'none',
@@ -34,7 +34,7 @@ export const selectStyles = {
   }),
   option: (baseStyles: CSSObjectWithLabel, state: { isSelected: boolean; isFocused: boolean; }) => ({
     ...baseStyles,
-    backgroundColor: '#fff',
+    backgroundColor: 'var(--white)',
     background: state.isSelected ? 'var(--mb-red)' :
       state.isFocused ? 'rgba(250, 56, 56, 0.2)' : undefined,
     '&:active': {
