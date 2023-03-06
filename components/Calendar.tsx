@@ -279,6 +279,15 @@ export default function Calendar(props: Props) {
     return hoverIndex === interval.index;
   }
 
+  // returns time string for given hour and minute
+  function timeString(hour: number, minute?: number) {
+    const amPm = hour < 12 || hour === 24 ? 'AM' : 'PM';
+    const hourString = (hour % 12 || 12).toString();
+    if (minute === undefined) return `${hourString} ${amPm}`;
+    const minuteString = minute.toString().padStart(2, '0');
+    return `${hourString}:${minuteString} ${amPm}`;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.hours}>
