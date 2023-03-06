@@ -263,6 +263,13 @@ export default function Calendar(props: Props) {
     setDragEnd([i, j]);
   }
 
+  // handles hover for given interval
+  function handleHover(interval: Interval) {
+    if (!interval.active || type !== 'display') return;
+    const { setHoverIndex } = props;
+    setHoverIndex(interval.index);
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.hours}>
