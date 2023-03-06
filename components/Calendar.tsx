@@ -25,6 +25,7 @@ type BaseProps =
     type: 'display';
     respondents: Respondent[];
     selectedRespondents: string[];
+    hoverIndex: number;
     setHoverIndex: Dispatch<number>;
   };
 
@@ -256,7 +257,7 @@ export default function Calendar(props: Props) {
 
   // starts dragging
   function startDrag(interval: Interval, i: number, j: number) {
-    if (type === 'display' || !interval.active) return;
+    if (type !== 'select' || !interval.active) return;
     const { selectedIndices } = props;
     setDragAdd(!selectedIndices.includes(interval.index));
     setDragStart([i, j]);
@@ -313,6 +314,7 @@ export default function Calendar(props: Props) {
                 {
                   day.intervals.map((interval, j) =>
                     <div
+                      data-index={interval.index}
                       data-i={i}
                       data-j={j}
                       className={styleBuilder([
@@ -321,6 +323,7 @@ export default function Calendar(props: Props) {
                         [styles.selected, interval.active && intervalSelected(i, j, interval.index)],
                         [styles.select, type === 'select'],
                         [styles.display, type === 'display'],
+                        [styles.hovered, isHovered(interval)],
                         [styles.faded, type === 'display' && intervalFaded(interval)],
                         [styles.gapped, (j > 0 && j % 4 === 0) &&
                           (day.intervals[j].hour - 1 !==
@@ -337,10 +340,8 @@ export default function Calendar(props: Props) {
                         startDrag(interval, i, j);
                       }}
                       onMouseOver={() => {
-                        if (interval.active && type === 'display') {
-                          const { setHoverIndex } = props;
-                          setHoverIndex(interval.index);
-                        }
+                        if (touching) return;
+                        handleHover(interval);
                         if (dragStart) setDragEnd([i, j]);
                       }}
                       onMouseLeave={() => {
