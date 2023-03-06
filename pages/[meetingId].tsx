@@ -334,6 +334,7 @@ export default function MeetingPage() {
                           type="display"
                           respondents={respondents}
                           selectedRespondents={selectedRespondents}
+                          hoverIndex={hoverIndex}
                           setHoverIndex={setHoverIndex}
                         /> :
                         <Calendar
@@ -343,6 +344,7 @@ export default function MeetingPage() {
                           type="display"
                           respondents={respondents}
                           selectedRespondents={selectedRespondents}
+                          hoverIndex={hoverIndex}
                           setHoverIndex={setHoverIndex}
                         />
                     )
