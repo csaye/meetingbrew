@@ -288,6 +288,23 @@ export default function Calendar(props: Props) {
     return `${hourString}:${minuteString} ${amPm}`;
   }
 
+  // returns time by interval index
+  function getTimeByIndex(index: number) {
+    for (const day of calendarDays) {
+      for (const interval of day.intervals) {
+        if (interval.index === index) {
+          const { hour, minute } = interval;
+          const startTime = timeString(hour, minute);
+          const nextMinute = (minute + 15) % 60;
+          const nextHour = nextMinute ? hour : (hour + 1) % 24;
+          const endTime = timeString(nextHour, nextMinute);
+          return `${startTime} – ${endTime}`;
+        }
+      }
+    }
+    throw 'could not get time for interval index';
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.hours}>
