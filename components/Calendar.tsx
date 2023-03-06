@@ -352,18 +352,33 @@ export default function Calendar(props: Props) {
                       onTouchStart={() => {
                         setTouching(true);
                         startDrag(interval, i, j);
+                        handleHover(interval);
                       }}
                       onTouchMove={e => {
-                        // handle mobile drag
                         const { clientX, clientY } = e.touches[0];
                         const dayDiv = document.elementFromPoint(clientX, clientY);
                         if (!dayDiv) return;
-                        const dataI = dayDiv.getAttribute('data-i');
-                        const dataJ = dayDiv.getAttribute('data-j');
-                        if (dataI === null || dataJ === null) return;
-                        setDragEnd([parseInt(dataI), parseInt(dataJ)]);
+                        // handle mobile drag
+                        if (type === 'select' && dragStart) {
+                          const dataI = dayDiv.getAttribute('data-i');
+                          const dataJ = dayDiv.getAttribute('data-j');
+                          if (dataI === null || dataJ === null) return;
+                          setDragEnd([parseInt(dataI), parseInt(dataJ)]);
+                        }
+                        if (type === 'display') {
+                          const { setHoverIndex } = props;
+                          const index = dayDiv.getAttribute('data-index');
+                          if (index === null) return;
+                          setHoverIndex(parseInt(index));
+                        }
                       }}
-                      onTouchEnd={() => finishDrag()}
+                      onTouchEnd={() => {
+                        if (type === 'display') {
+                          const { setHoverIndex } = props;
+                          setHoverIndex(-1);
+                        }
+                        finishDrag();
+                      }}
                       key={j}
                     />
                   )
