@@ -18,3 +18,10 @@ export type Respondent = {
   created: number;
   updated?: number;
 };
+
+export type Interval = {
+  index: number;
+  hour: number;
+  minute: number;
+  active: boolean;
+};
