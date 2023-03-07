@@ -1,6 +1,7 @@
 import { sampleGradient } from '@/util/sampleGradient';
 import { styleBuilder } from '@/util/styles';
-import { Respondent } from '@/util/types';
+import { intervalTimeString, timeString } from '@/util/time';
+import { Interval, Respondent } from '@/util/types';
 import moment, { Moment } from 'moment-timezone';
 import { Dispatch, useCallback, useEffect, useState } from 'react';
 import styles from '../styles/components/Calendar.module.scss';
@@ -25,20 +26,13 @@ type BaseProps =
     type: 'display';
     respondents: Respondent[];
     selectedRespondents: string[];
-    hoverIndex: number;
-    setHoverIndex: Dispatch<number>;
+    hoverInterval: Interval | null;
+    setHoverInterval: Dispatch<Interval | null>;
   };
 
 type Props =
   BaseProps & { datesType: 'dates'; dates: string[]; } |
   BaseProps & { datesType: 'days'; days: number[]; };
-
-type Interval = {
-  index: number;
-  hour: number;
-  minute: number;
-  active: boolean;
-};
 
 type CalendarDay = {
   moment: Moment;
@@ -268,51 +262,35 @@ export default function Calendar(props: Props) {
   // handles hover for given interval
   function handleHover(interval: Interval) {
     if (!interval.active || type !== 'display') return;
-    const { setHoverIndex } = props;
-    setHoverIndex(interval.index);
+    const { setHoverInterval } = props;
+    setHoverInterval(interval);
   }
 
   // returns whether given interval is hovered
   function isHovered(interval: Interval) {
     if (type !== 'display' || !interval.active) return false;
-    const { hoverIndex } = props;
-    if (hoverIndex === -1) return false;
-    return hoverIndex === interval.index;
+    const { hoverInterval } = props;
+    if (!hoverInterval) return false;
+    return hoverInterval.index === interval.index;
   }
 
-  // returns time string for given hour and minute
-  function timeString(hour: number, minute?: number) {
-    const amPm = hour < 12 || hour === 24 ? 'AM' : 'PM';
-    const hourString = (hour % 12 || 12).toString();
-    if (minute === undefined) return `${hourString} ${amPm}`;
-    const minuteString = minute.toString().padStart(2, '0');
-    return `${hourString}:${minuteString} ${amPm}`;
-  }
-
-  // returns time by interval index
-  function getTimeByIndex(index: number) {
+  // returns interval by index
+  function getInterval(index: number) {
     for (const day of calendarDays) {
       for (const interval of day.intervals) {
-        if (interval.index === index) {
-          const { hour, minute } = interval;
-          const startTime = timeString(hour, minute);
-          const nextMinute = (minute + 15) % 60;
-          const nextHour = nextMinute ? hour : (hour + 1) % 24;
-          const endTime = timeString(nextHour, nextMinute);
-          return `${startTime} – ${endTime}`;
-        }
+        if (interval.index === index) return interval;
       }
     }
-    throw 'could not get time for interval index';
+    return null;
   }
 
   return (
     <div className={styles.container}>
       {
-        (type === 'display' && touching && props.hoverIndex !== -1) &&
+        (type === 'display' && touching && props.hoverInterval) &&
         <div className={styles.namesPopup}>
           <div className={styles.head}>
-            <h2>{getTimeByIndex(props.hoverIndex)}</h2>
+            <h2>{intervalTimeString(props.hoverInterval)}</h2>
           </div>
           <div className={styles.names}>
             {
@@ -320,7 +298,9 @@ export default function Calendar(props: Props) {
                 <p
                   className={styleBuilder([
                     styles.name,
-                    [styles.unavailable, !r.availability.includes(props.hoverIndex)]
+                    [styles.unavailable, !r.availability.includes(
+                      props.hoverInterval?.index ?? -1
+                    )]
                   ])}
                   key={i}
                 >
@@ -396,8 +376,8 @@ export default function Calendar(props: Props) {
                       }}
                       onMouseLeave={() => {
                         if (interval.active && type === 'display') {
-                          const { setHoverIndex } = props;
-                          setHoverIndex(-1);
+                          const { setHoverInterval } = props;
+                          setHoverInterval(null);
                         }
                       }}
                       onTouchStart={() => {
@@ -417,16 +397,17 @@ export default function Calendar(props: Props) {
                           setDragEnd([parseInt(dataI), parseInt(dataJ)]);
                         }
                         if (type === 'display') {
-                          const { setHoverIndex } = props;
+                          const { setHoverInterval } = props;
                           const index = dayDiv.getAttribute('data-index');
                           if (index === null) return;
-                          setHoverIndex(parseInt(index));
+                          const iv = getInterval(parseInt(index));
+                          setHoverInterval(iv);
                         }
                       }}
                       onTouchEnd={() => {
                         if (type === 'display') {
-                          const { setHoverIndex } = props;
-                          setHoverIndex(-1);
+                          const { setHoverInterval } = props;
+                          setHoverInterval(null);
                         }
                         finishDrag();
                       }}
