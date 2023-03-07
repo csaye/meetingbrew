@@ -16,6 +16,9 @@
       display: flex;
       align-items: center;
       padding-left: 24px;
+      border-width: 0 0 1px 0;
+      border-style: solid;
+      border-color: var(--light-gray);
 
       >h2 {
         font-family: 'Outfit', sans-serif;
@@ -35,6 +38,14 @@
         &.unavailable {
           color: var(--secondary-text);
           text-decoration-line: line-through;
+        }
+
+        &:first-of-type {
+          margin-top: 0;
+        }
+
+        &:last-of-type {
+          margin-bottom: 0;
         }
       }
     }
