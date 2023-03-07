@@ -4,8 +4,9 @@ import TimezoneSelect from '@/components/TimezoneSelect';
 import styles from '@/styles/pages/MeetingPage.module.scss';
 import { sampleGradient } from '@/util/sampleGradient';
 import { styleBuilder } from '@/util/styles';
+import { intervalTimeString } from '@/util/time';
 import { getCurrentTimezone } from '@/util/timezone';
-import { Meeting, Respondent } from '@/util/types';
+import { Interval, Meeting, Respondent } from '@/util/types';
 import { Checkbox } from '@mui/material';
 import { collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 import Image from 'next/image';
@@ -28,7 +29,7 @@ export default function MeetingPage() {
   const [selectedRespondents, setSelectedRespondents] = useState<string[]>([]);
 
   const [width, setWidth] = useState(0);
-  const [hoverIndex, setHoverIndex] = useState(-1);
+  const [hoverInterval, setHoverInterval] = useState<Interval | null>(null);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -169,10 +170,7 @@ export default function MeetingPage() {
   function respondentInactive(respondent: Respondent) {
     if (inputtingName) return true;
     if (name && name.toLowerCase() !== respondent.name.toLowerCase()) return true;
-    if (hoverIndex !== -1) {
-      if (!respondent.availability.includes(hoverIndex)) return true;
-      if (selectedRespondents.length && !selectedRespondents.includes(respondent.id)) return true;
-    }
+    if (hoverInterval) return !respondent.availability.includes(hoverInterval.index);
     return false;
   }
 
@@ -255,7 +253,7 @@ export default function MeetingPage() {
                 <div className={styles.respondents}>
                   <p className={styleBuilder([[styles.grayedOut, inputtingName]])}>
                     <Image src="/icons/funnel.svg" width="24" height="24" alt="funnel.svg" />
-                    Respondents
+                    {hoverInterval ? intervalTimeString(hoverInterval) : 'Respondents'}
                   </p>
                   {
                     inputtingName &&
@@ -334,8 +332,8 @@ export default function MeetingPage() {
                           type="display"
                           respondents={respondents}
                           selectedRespondents={selectedRespondents}
-                          hoverIndex={hoverIndex}
-                          setHoverIndex={setHoverIndex}
+                          hoverInterval={hoverInterval}
+                          setHoverInterval={setHoverInterval}
                         /> :
                         <Calendar
                           {...meeting}
@@ -344,8 +342,8 @@ export default function MeetingPage() {
                           type="display"
                           respondents={respondents}
                           selectedRespondents={selectedRespondents}
-                          hoverIndex={hoverIndex}
-                          setHoverIndex={setHoverIndex}
+                          hoverInterval={hoverInterval}
+                          setHoverInterval={setHoverInterval}
                         />
                     )
                   }
