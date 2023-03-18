@@ -268,7 +268,7 @@ export default function MeetingPage() {
                     />
                   }
                   {
-                    respondents.length ?
+                    respondents.length || inputtingName ?
                       respondents.map((respondent, i) =>
                         <div
                           className={styleBuilder([
