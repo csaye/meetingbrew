@@ -173,6 +173,7 @@ export default function Index() {
                     let newId = e.target.value;
                     newId = newId.replaceAll(/[^\w -]/g, '');
                     newId = newId.replaceAll(' ', '-');
+                    newId = newId.replaceAll('--', '-');
                     setId(newId);
                   }}
                   placeholder="custom ID (optional)"

@@ -264,36 +264,39 @@ export default function MeetingPage() {
                       onChange={e => setInputName(e.target.value)}
                       onKeyDown={e => { if (e.key === 'Enter') saveName() }}
                       placeholder="Name"
+                      maxLength={50}
                     />
                   }
                   {
-                    respondents.map((respondent, i) =>
-                      <div
-                        className={styleBuilder([
-                          styles.respondent,
-                          [styles.grayedOut, respondentInactive(respondent)]
-                        ])}
-                        key={i}
-                      >
-                        <Checkbox
-                          sx={{
-                            padding: 0, margin: '0 16px 0 24px'
-                          }}
-                          icon={<Image src="/icons/box.svg" width="18" height="18" alt="box.svg" />}
-                          checkedIcon={<Image src="/icons/boxchecked.svg" width="18" height="18" alt="boxchecked.svg" />}
-                          onChange={e => {
-                            // update selected respondents
-                            const newSelectedRespondents = selectedRespondents.slice();
-                            const rIndex = newSelectedRespondents.indexOf(respondent.id);
-                            if (e.target.checked && rIndex === -1) newSelectedRespondents.push(respondent.id);
-                            if (!e.target.checked && rIndex !== -1) newSelectedRespondents.splice(rIndex, 1);
-                            setSelectedRespondents(newSelectedRespondents);
-                          }}
-                          disableRipple
-                        />
-                        <p>{respondent.name}</p>
-                      </div>
-                    )
+                    respondents.length ?
+                      respondents.map((respondent, i) =>
+                        <div
+                          className={styleBuilder([
+                            styles.respondent,
+                            [styles.grayedOut, respondentInactive(respondent)]
+                          ])}
+                          key={i}
+                        >
+                          <Checkbox
+                            sx={{
+                              padding: 0, margin: '0 16px 0 24px'
+                            }}
+                            icon={<Image src="/icons/box.svg" width="18" height="18" alt="box.svg" />}
+                            checkedIcon={<Image src="/icons/boxchecked.svg" width="18" height="18" alt="boxchecked.svg" />}
+                            onChange={e => {
+                              // update selected respondents
+                              const newSelectedRespondents = selectedRespondents.slice();
+                              const rIndex = newSelectedRespondents.indexOf(respondent.id);
+                              if (e.target.checked && rIndex === -1) newSelectedRespondents.push(respondent.id);
+                              if (!e.target.checked && rIndex !== -1) newSelectedRespondents.splice(rIndex, 1);
+                              setSelectedRespondents(newSelectedRespondents);
+                            }}
+                            disableRipple
+                          />
+                          <p>{respondent.name}</p>
+                        </div>
+                      ) :
+                      <p>No respondents yet.</p>
                   }
                 </div>
                 <div className={styles.calendar}>

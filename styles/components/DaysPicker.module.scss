@@ -47,6 +47,10 @@
         background: var(--mb-red);
       }
     }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   >p {

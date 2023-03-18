@@ -140,6 +140,10 @@
             }
           }
 
+          >p:last-child {
+            margin-left: 24px;
+          }
+
           >.nameInput {
             margin: 8px 0 8px 24px;
             color: var(--primary-text);
