@@ -37,8 +37,8 @@ export function sampleGradient(shades: number) {
   const levels = Array(shades + 1).fill(0).map((v, i) => i / shades || 0);
   // convert shade levels to colors
   return levels.map(x => {
-    if (x === 0) return 'var(--light-gray)';
-    if (x < 0.33) return lerpColor('var(--white)BD6', '#FFDE69', progress(0, 0.33, x));
+    if (x === 0) return '#E0E0E0';
+    if (x < 0.33) return lerpColor('#FFFBD6', '#FFDE69', progress(0, 0.33, x));
     if (x < 0.69) return lerpColor('#FFDE69', '#FF9636', progress(0.33, 0.69, x));
     if (x < 0.82) return lerpColor('#FF9636', '#FD7836', progress(0.69, 0.82, x));
     return lerpColor('#FD7836', '#F93636', progress(0.82, 1, x));
