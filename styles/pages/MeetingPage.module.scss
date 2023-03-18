@@ -115,6 +115,13 @@
             &:hover {
               background: var(--light-gray);
             }
+
+            &.copied {
+              >img {
+                margin-right: 4px;
+                margin-left: -2px;
+              }
+            }
           }
         }
 

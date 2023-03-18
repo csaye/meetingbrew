@@ -34,6 +34,7 @@ export default function MeetingPage() {
 
   const [width, setWidth] = useState(0);
   const [hoverInterval, setHoverInterval] = useState<Interval | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -80,7 +81,12 @@ export default function MeetingPage() {
   // copies invite link to clipboard
   async function copyLink() {
     await navigator.clipboard.writeText(`https://meetingbrew.com/${meetingId}`);
-    window.alert('Copied invite to clipboard!');
+    // show copy state
+    if (copied) return;
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
   }
 
   // returns index of respondent by name
@@ -247,12 +253,22 @@ export default function MeetingPage() {
                   <button
                     className={styleBuilder([
                       styles.inviteButton,
+                      [styles.copied, copied],
                       [styles.grayedOut, !!name || inputtingName]
                     ])}
                     onClick={copyLink}
                   >
-                    <Image src="/icons/link.svg" width="24" height="24" alt="link.svg" />
-                    Invite
+                    {
+                      copied ?
+                        <>
+                          <Image src="/icons/checkdark.svg" width="24" height="24" alt="link.svg" />
+                          Copied
+                        </> :
+                        <>
+                          <Image src="/icons/link.svg" width="24" height="24" alt="link.svg" />
+                          Invite
+                        </>
+                    }
                   </button>
                 </div>
                 <Availability className={styles.bigScreen} />
