@@ -66,6 +66,7 @@
         font-weight: 600;
         font-size: 36px;
         max-width: 850px;
+        word-wrap: break-word;
       }
 
       >.options {
@@ -189,7 +190,7 @@
             display: flex;
             align-items: center;
             padding: 8px 0;
-            transition: opacity 0.2s;
+            transition: opacity 0.15s;
 
             >.checkbox {
               transition: opacity 0.2s;
