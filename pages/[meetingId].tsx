@@ -13,6 +13,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+type AvailabilityProps = {
+  className?: string;
+};
+
 export default function MeetingPage() {
   const db = getFirestore();
 
@@ -174,6 +178,37 @@ export default function MeetingPage() {
     return false;
   }
 
+  // returns availability component
+  function Availability(availabilityProps: AvailabilityProps) {
+    const { className } = availabilityProps;
+
+    if (!respondents) return null;
+
+    return (
+      <div className={styleBuilder([
+        [className ?? '', !!className],
+        styles.availability,
+        [styles.grayedOut, !!name || inputtingName]
+      ])}>
+        <p>0/{respondents.length}</p>
+        <div className={styles.shades}>
+          {
+            Array(respondents.length + 1).fill(0).map((v, i) =>
+              <div
+                className={styles.shade}
+                style={{
+                  background: sampleGradient(respondents.length)[i]
+                }}
+                key={i}
+              />
+            )
+          }
+        </div>
+        <p>{respondents.length}/{respondents.length}</p>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <Header width={width} />
@@ -220,26 +255,7 @@ export default function MeetingPage() {
                     Invite
                   </button>
                 </div>
-                <div className={styleBuilder([
-                  styles.availability,
-                  [styles.grayedOut, !!name || inputtingName]
-                ])}>
-                  <p>0/{respondents.length}</p>
-                  <div className={styles.shades}>
-                    {
-                      Array(respondents.length + 1).fill(0).map((v, i) =>
-                        <div
-                          className={styles.shade}
-                          style={{
-                            background: sampleGradient(respondents.length)[i]
-                          }}
-                          key={i}
-                        />
-                      )
-                    }
-                  </div>
-                  <p>{respondents.length}/{respondents.length}</p>
-                </div>
+                <Availability className={styles.bigScreen} />
                 <TimezoneSelect
                   className={styleBuilder([
                     styles.select,
@@ -299,6 +315,7 @@ export default function MeetingPage() {
                       <p>No respondents yet.</p>
                   }
                 </div>
+                <Availability className={styles.smallScreen} />
                 <div className={styles.calendar}>
                   {
                     name &&
