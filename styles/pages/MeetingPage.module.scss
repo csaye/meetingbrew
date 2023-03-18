@@ -191,6 +191,10 @@
             padding: 8px 0;
             transition: opacity 0.2s;
 
+            >.checkbox {
+              transition: opacity 0.2s;
+            }
+
             >p {
               width: 222px;
               margin: 0;

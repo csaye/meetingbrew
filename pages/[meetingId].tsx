@@ -179,7 +179,7 @@ export default function MeetingPage() {
   // returns whether given respondent is inactive
   function respondentInactive(respondent: Respondent) {
     if (inputtingName) return true;
-    if (name && name.toLowerCase() !== respondent.name.toLowerCase()) return true;
+    if (!!name && (name.toLowerCase() !== respondent.name.toLowerCase())) return true;
     if (hoverInterval) return !respondent.availability.includes(hoverInterval.index);
     return false;
   }
@@ -297,6 +297,7 @@ export default function MeetingPage() {
                       onKeyDown={e => { if (e.key === 'Enter') saveName() }}
                       placeholder="Name"
                       maxLength={50}
+                      spellCheck="false"
                     />
                   }
                   {
@@ -313,6 +314,10 @@ export default function MeetingPage() {
                             sx={{
                               padding: 0, margin: '0 16px 0 24px'
                             }}
+                            className={styleBuilder([
+                              styles.checkbox,
+                              [styles.grayedOut, !!name && (name.toLowerCase() === respondent.name.toLowerCase())]
+                            ])}
                             icon={<Image src="/icons/box.svg" width="18" height="18" alt="box.svg" />}
                             checkedIcon={<Image src="/icons/boxchecked.svg" width="18" height="18" alt="boxchecked.svg" />}
                             onChange={e => {
