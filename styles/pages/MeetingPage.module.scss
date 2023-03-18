@@ -44,7 +44,7 @@
             height: 48px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             font-weight: 600;
             font-size: 16px;
             padding: 0 24px 0 18px;
@@ -146,12 +146,17 @@
             font-size: 24px;
             font-weight: 500;
             background: var(--white);
-            width: 178px;
+            width: 232px;
             height: 32px;
             border: 1px solid var(--light-gray);
 
             &::placeholder {
               color: var(--gray);
+            }
+
+            &:focus {
+              border-color: var(--mb-red);
+              outline: none;
             }
           }
 
@@ -161,10 +166,12 @@
             padding: 8px 0;
 
             >p {
+              width: 222px;
               margin: 0;
               color: var(--primary-text);
               font-size: 24px;
               font-weight: 400;
+              word-wrap: break-word;
 
               &.self {
                 font-weight: 600;
@@ -176,7 +183,7 @@
         >.calendar {
           >p {
             color: var(--secondary-text);
-            padding: 0 0 12px 48px;
+            padding: 0 0 12px 72px;
           }
         }
       }

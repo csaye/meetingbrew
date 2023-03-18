@@ -190,8 +190,8 @@ export default function MeetingPage() {
                         className={styles.respondButton}
                         onClick={saveName}
                       >
-                        <Image src="/icons/check.svg" width="24" height="24" alt="check.svg" />
-                        Save
+                        <Image src="/icons/continueArrow.svg" width="24" height="24" alt="check.svg" />
+                        Continue
                       </button> :
                       name ?
                         <button
@@ -199,7 +199,7 @@ export default function MeetingPage() {
                           onClick={saveRespondent}
                         >
                           <Image src="/icons/check.svg" width="24" height="24" alt="check.svg" />
-                          Done
+                          Save
                         </button> :
                         <button
                           className={styles.respondButton}
@@ -262,6 +262,7 @@ export default function MeetingPage() {
                       ref={nameRef}
                       value={inputName}
                       onChange={e => setInputName(e.target.value)}
+                      onKeyDown={e => { if (e.key === 'Enter') saveName() }}
                       placeholder="Name"
                     />
                   }

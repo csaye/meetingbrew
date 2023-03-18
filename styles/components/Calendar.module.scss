@@ -54,6 +54,7 @@
   >.hours {
     width: 48px;
     flex-shrink: 0;
+    margin-left: 24px;
     padding-right: 12px;
     padding-top: calc(80px - 32px / 2);
 
@@ -69,7 +70,7 @@
   }
 
   >.content {
-    max-width: 624px;
+    max-width: 600px;
     overflow-x: auto;
 
     @media (max-width: 1047.98px) {
@@ -119,6 +120,7 @@
             color: var(--primary-text);
             font-weight: 500;
             font-size: 24px;
+            line-height: 32px;
           }
 
           >h2 {
@@ -126,6 +128,7 @@
             color: var(--secondary-text);
             font-weight: 400;
             font-size: 16px;
+            line-height: 24px;
           }
         }
 
