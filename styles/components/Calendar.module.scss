@@ -5,7 +5,7 @@
   >.namesPopup {
     position: fixed;
     inset: 0;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.6);
     pointer-events: none;
     touch-action: none;
     z-index: 100;
@@ -36,7 +36,7 @@
         line-height: 32px;
 
         &.unavailable {
-          color: var(--secondary-text);
+          color: rgba(0, 0, 0, 0.4);
           text-decoration-line: line-through;
         }
 
@@ -193,7 +193,7 @@
             border-top: 0;
           }
 
-          transition: opacity 0.15s;
+          transition: opacity 0.1s;
         }
 
         /* remove the left border for first column intervals */
