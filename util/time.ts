@@ -12,9 +12,11 @@ export function timeString(hour: number, minute?: number) {
 // returns time by interval index
 export function intervalTimeString(interval: Interval) {
   const { hour, minute } = interval;
-  const startTime = timeString(hour, minute);
+  let startTime = timeString(hour, minute);
   const nextMinute = (minute + 15) % 60;
   const nextHour = nextMinute ? hour : (hour + 1) % 24;
-  const endTime = timeString(nextHour, nextMinute);
+  let endTime = timeString(nextHour, nextMinute);
+  startTime = (startTime.length === 7) ? `0${startTime}` : startTime;
+  endTime = (endTime.length === 7) ? `0${endTime}` : endTime;
   return `${startTime} – ${endTime}`;
 }

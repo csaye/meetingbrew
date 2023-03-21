@@ -154,8 +154,10 @@
             align-items: center;
             margin: 0 0 12px 0;
             color: var(--gray);
-            font-weight: 600;
-            font-size: 16px;
+            font-weight: 400;
+            font-size: 18px;
+            font-family: 'Outfit';
+            font-feature-settings: 'tnum' on, 'lnum' on;
 
             >img {
               margin: 0 12px 0 21px;
