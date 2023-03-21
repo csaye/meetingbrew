@@ -32,7 +32,7 @@
         }
 
         &.smallScreen {
-          margin: 0 auto 32px auto;
+          margin: 0 auto 32px 8px;
 
           @media (min-width: 1048px) {
             display: none;
@@ -75,7 +75,7 @@
 
         @media (max-width: 1047.98px) {
           flex-direction: column;
-          align-items: center;
+          align-items: flex-start;
         }
 
         >.buttons {
@@ -152,7 +152,7 @@
           >p {
             display: flex;
             align-items: center;
-            margin: 0 0 8px 0;
+            margin: 0 0 12px 0;
             color: var(--gray);
             font-weight: 600;
             font-size: 16px;
@@ -190,7 +190,7 @@
           >.respondent {
             display: flex;
             align-items: center;
-            padding: 8px 0;
+            padding: 6px 0;
             transition: opacity 0.1s;
 
             >.checkbox {
