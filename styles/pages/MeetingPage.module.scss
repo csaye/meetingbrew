@@ -130,7 +130,8 @@
           width: 336px;
 
           @media (max-width: 1047.98px) {
-            margin-top: 32px;
+            width: 280px;
+            margin-top: 12px;
           }
         }
       }
@@ -146,6 +147,7 @@
           width: 280px;
 
           @media (max-width: 1047.98px) {
+            margin-top: 16px;
             margin-bottom: 32px;
           }
 
@@ -161,6 +163,10 @@
 
             >img {
               margin: 0 12px 0 21px;
+
+              @media (max-width: 1048px) {
+                margin-left: 9px;
+              }
             }
           }
 
@@ -196,6 +202,11 @@
             transition: opacity 0.1s;
 
             >.checkbox {
+
+              @media (max-width: 1048px) {
+                margin-left: 12px;
+              }
+
               transition: opacity 0.2s;
             }
 
