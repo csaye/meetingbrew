@@ -184,6 +184,7 @@
             width: 214px;
             height: 32px;
             border: 1px solid var(--light-gray);
+            border-radius: 0;
 
             &::placeholder {
               color: var(--gray);
