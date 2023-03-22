@@ -363,7 +363,7 @@ export default function Calendar(props: Props) {
                         [styles.selected, interval.active && intervalSelected(i, j, interval.index)],
                         [styles.select, type === 'select'],
                         [styles.display, type === 'display'],
-                        [styles.hovered, isHovered(interval)],
+                        [styles.hovered, type === 'select' && isHovered(interval)],
                         [styles.faded, type === 'display' && intervalFaded(interval)],
                         [styles.gapped, (j > 0 && j % 4 === 0) &&
                           (day.intervals[j].hour - 1 !==
