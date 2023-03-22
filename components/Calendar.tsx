@@ -425,6 +425,7 @@ export default function Calendar(props: Props) {
                     />
                   )
                 }
+                <div className={styles.scroller} />
               </div>
             )
           }

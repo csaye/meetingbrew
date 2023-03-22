@@ -115,10 +115,6 @@
         flex-direction: column;
         text-align: center;
 
-        @media (max-width: 1048px) {
-          border-bottom: 48px solid var(--white);
-        }
-
         >.heading {
           background: var(--white);
           border: 1px solid var(--light-gray);
@@ -215,6 +211,18 @@
         &:first-of-type {
           >.interval {
             border-left: 0;
+          }
+        }
+
+        >.scroller {
+          border-top: 1px solid var(--mid-gray);
+          height: 48px;
+          background-image: url('/img/scroll.svg');
+          background-size: cover;
+          background-position: center center;
+
+          @media (min-width: 1047.98px) {
+            display: none;
           }
         }
       }
