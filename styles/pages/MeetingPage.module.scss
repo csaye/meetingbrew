@@ -145,6 +145,7 @@
 
         >.respondents {
           width: 280px;
+          user-select: none;
 
           @media (max-width: 1047.98px) {
             margin-top: 16px;
@@ -199,11 +200,11 @@
           >.respondent {
             display: flex;
             align-items: center;
-            padding: 6px 0;
             transition: 0.1s;
 
             >.label {
               margin-left: 0;
+              padding: 6px 0px;
 
               &.notouch {
                 pointer-events: none;
