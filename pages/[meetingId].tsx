@@ -32,6 +32,7 @@ export default function MeetingPage() {
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [selectedRespondents, setSelectedRespondents] = useState<string[]>([]);
   const [hoveredRespondent, setHoveredRespondent] = useState<string | null>(null);
+  const [hoveredShade, setHoveredShade] = useState<number | null>(null);
 
   const [width, setWidth] = useState(0);
   const [hoverInterval, setHoverInterval] = useState<Interval | null>(null);
@@ -203,6 +204,8 @@ export default function MeetingPage() {
             Array(respondents.length + 1).fill(0).map((v, i) =>
               <div
                 className={styles.shade}
+                onMouseOver={() => setHoveredShade(i)}
+                onMouseLeave={() => setHoveredShade(null)}
                 style={{
                   background: sampleGradient(respondents.length)[i]
                 }}
@@ -392,6 +395,7 @@ export default function MeetingPage() {
                           respondents={respondents}
                           selectedRespondents={selectedRespondents}
                           hoveredRespondent={hoveredRespondent}
+                          hoveredShade={hoveredShade}
                           hoverInterval={hoverInterval}
                           setHoverInterval={setHoverInterval}
                         /> :
@@ -403,6 +407,7 @@ export default function MeetingPage() {
                           respondents={respondents}
                           selectedRespondents={selectedRespondents}
                           hoveredRespondent={hoveredRespondent}
+                          hoveredShade={hoveredShade}
                           hoverInterval={hoverInterval}
                           setHoverInterval={setHoverInterval}
                         />

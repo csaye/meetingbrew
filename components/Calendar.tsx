@@ -27,6 +27,7 @@ type BaseProps =
     respondents: Respondent[];
     selectedRespondents: string[];
     hoveredRespondent: string | null;
+    hoveredShade: number | null;
     hoverInterval: Interval | null;
     setHoverInterval: Dispatch<Interval | null>;
   };
@@ -228,23 +229,31 @@ export default function Calendar(props: Props) {
     return () => window.removeEventListener('mouseup', finishDrag);
   }, [finishDrag, touching]);
 
+  // returns shade for interval index
+  function getShade(index: number) {
+    if (type !== 'display') throw 'getting color for select calendar';
+    const { respondents } = props;
+    return respondents.filter(r => r.availability.includes(index)).length;
+  }
+
   // returns color for interval index
   function getIntervalColor(index: number) {
     if (type !== 'display') throw 'getting color for select calendar';
     const { respondents } = props;
     const colors = sampleGradient(respondents.length);
-    const shade = respondents.filter(r => r.availability.includes(index)).length;
+    const shade = getShade(index);
     return colors[shade];
   }
 
   // returns whether given interval index is faded
   function intervalFaded(interval: Interval) {
     if (type !== 'display') throw 'getting fade for select calendar';
-    const { respondents, selectedRespondents, hoveredRespondent } = props;
-    if (!selectedRespondents.length && !hoveredRespondent) return false;
+    const { respondents, selectedRespondents, hoveredRespondent, hoveredShade } = props;
+    if (!selectedRespondents.length && hoveredRespondent === null && hoveredShade === null) return false;
     const currRespondents = respondents.filter(r => selectedRespondents.includes(r.id) || r.id === hoveredRespondent);
     const { index, active } = interval;
     if (!active) return true;
+    if (hoveredShade !== null && getShade(interval.index) !== hoveredShade) return true;
     for (const r of currRespondents) {
       if (!r.availability.includes(index)) return true;
     }
