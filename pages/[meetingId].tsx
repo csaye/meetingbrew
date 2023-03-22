@@ -7,7 +7,7 @@ import { styleBuilder } from '@/util/styles';
 import { intervalTimeString } from '@/util/time';
 import { getCurrentTimezone } from '@/util/timezone';
 import { Interval, Meeting, Respondent } from '@/util/types';
-import { Checkbox } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import { collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -301,7 +301,7 @@ export default function MeetingPage() {
                     />
                   }
                   {
-                    respondents.length || inputtingName ?
+                    (respondents.length || inputtingName) ?
                       respondents.map((respondent, i) =>
                         <div
                           className={styleBuilder([
@@ -310,27 +310,41 @@ export default function MeetingPage() {
                           ])}
                           key={i}
                         >
-                          <Checkbox
-                            sx={{
-                              padding: 0, margin: '0 16px 0 24px'
-                            }}
+                          <FormControlLabel
                             className={styleBuilder([
-                              styles.checkbox,
-                              [styles.grayedOut, !!name && (name.toLowerCase() === respondent.name.toLowerCase())]
+                              styles.label,
+                              [styles.notouch, inputtingName || !!name]
                             ])}
-                            icon={<Image src="/icons/box.svg" width="18" height="18" alt="box.svg" />}
-                            checkedIcon={<Image src="/icons/boxchecked.svg" width="18" height="18" alt="boxchecked.svg" />}
-                            onChange={e => {
-                              // update selected respondents
-                              const newSelectedRespondents = selectedRespondents.slice();
-                              const rIndex = newSelectedRespondents.indexOf(respondent.id);
-                              if (e.target.checked && rIndex === -1) newSelectedRespondents.push(respondent.id);
-                              if (!e.target.checked && rIndex !== -1) newSelectedRespondents.splice(rIndex, 1);
-                              setSelectedRespondents(newSelectedRespondents);
+                            sx={{
+                              '.MuiTypography-root': {
+                                fontFamily: "'DM Sans', sans-serif",
+                                fontSize: '24px',
+                                lineHeight: '24px'
+                              }
                             }}
-                            disableRipple
+                            control={
+                              <Checkbox
+                                sx={{
+                                  padding: 0, margin: '0 16px 0 24px'
+                                }}
+                                className={styleBuilder([
+                                  [styles.grayedOut, !!name && (name.toLowerCase() === respondent.name.toLowerCase())]
+                                ])}
+                                icon={<Image src="/icons/box.svg" width="18" height="18" alt="box.svg" />}
+                                checkedIcon={<Image src="/icons/boxchecked.svg" width="18" height="18" alt="boxchecked.svg" />}
+                                onChange={e => {
+                                  // update selected respondents
+                                  const newSelectedRespondents = selectedRespondents.slice();
+                                  const rIndex = newSelectedRespondents.indexOf(respondent.id);
+                                  if (e.target.checked && rIndex === -1) newSelectedRespondents.push(respondent.id);
+                                  if (!e.target.checked && rIndex !== -1) newSelectedRespondents.splice(rIndex, 1);
+                                  setSelectedRespondents(newSelectedRespondents);
+                                }}
+                                disableRipple
+                              />
+                            }
+                            label={respondent.name}
                           />
-                          <p>{respondent.name}</p>
                         </div>
                       ) :
                       <p>No respondents yet.</p>

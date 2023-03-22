@@ -200,27 +200,13 @@
             display: flex;
             align-items: center;
             padding: 6px 0;
-            transition: opacity 0.1s;
+            transition: 0.2s;
 
-            >.checkbox {
+            >.label {
+              margin-left: 0;
 
-              @media (max-width: 1048px) {
-                margin-left: 12px;
-              }
-
-              transition: opacity 0.2s;
-            }
-
-            >p {
-              width: 222px;
-              margin: 0;
-              color: var(--primary-text);
-              font-size: 24px;
-              font-weight: 400;
-              word-wrap: break-word;
-
-              &.self {
-                font-weight: 600;
+              &.notouch {
+                pointer-events: none;
               }
             }
           }
