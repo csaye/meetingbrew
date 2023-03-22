@@ -26,6 +26,7 @@ type BaseProps =
     type: 'display';
     respondents: Respondent[];
     selectedRespondents: string[];
+    hoveredRespondent: string | null;
     hoverInterval: Interval | null;
     setHoverInterval: Dispatch<Interval | null>;
   };
@@ -239,9 +240,9 @@ export default function Calendar(props: Props) {
   // returns whether given interval index is faded
   function intervalFaded(interval: Interval) {
     if (type !== 'display') throw 'getting fade for select calendar';
-    const { respondents, selectedRespondents } = props;
-    if (!selectedRespondents.length) return false;
-    const currRespondents = respondents.filter(r => selectedRespondents.includes(r.id));
+    const { respondents, selectedRespondents, hoveredRespondent } = props;
+    if (!selectedRespondents.length && !hoveredRespondent) return false;
+    const currRespondents = respondents.filter(r => selectedRespondents.includes(r.id) || r.id === hoveredRespondent);
     const { index, active } = interval;
     if (!active) return true;
     for (const r of currRespondents) {

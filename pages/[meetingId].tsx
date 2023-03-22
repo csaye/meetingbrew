@@ -31,6 +31,7 @@ export default function MeetingPage() {
   const [name, setName] = useState<string | null>(null);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [selectedRespondents, setSelectedRespondents] = useState<string[]>([]);
+  const [hoveredRespondent, setHoveredRespondent] = useState<string | null>(null);
 
   const [width, setWidth] = useState(0);
   const [hoverInterval, setHoverInterval] = useState<Interval | null>(null);
@@ -315,6 +316,8 @@ export default function MeetingPage() {
                               styles.label,
                               [styles.notouch, inputtingName || !!name]
                             ])}
+                            onMouseOver={() => setHoveredRespondent(respondent.id)}
+                            onMouseLeave={() => setHoveredRespondent(null)}
                             sx={{
                               '.MuiTypography-root': {
                                 fontFamily: "'DM Sans', sans-serif",
@@ -388,6 +391,7 @@ export default function MeetingPage() {
                           type="display"
                           respondents={respondents}
                           selectedRespondents={selectedRespondents}
+                          hoveredRespondent={hoveredRespondent}
                           hoverInterval={hoverInterval}
                           setHoverInterval={setHoverInterval}
                         /> :
@@ -398,6 +402,7 @@ export default function MeetingPage() {
                           type="display"
                           respondents={respondents}
                           selectedRespondents={selectedRespondents}
+                          hoveredRespondent={hoveredRespondent}
                           hoverInterval={hoverInterval}
                           setHoverInterval={setHoverInterval}
                         />

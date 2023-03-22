@@ -168,6 +168,7 @@
           border-top: 1px solid var(--dim-white);
           border-left: 1px solid var(--dim-white);
           border-top-width: 0;
+          transition: 0.2s;
 
           &.inactive {
             background: var(--gray);
@@ -208,8 +209,6 @@
             margin-top: 32px;
             border-top: 0;
           }
-
-          transition: opacity 0.1s;
         }
 
         /* remove the left border for first column intervals */
