@@ -12,23 +12,29 @@ export default function Header(props: Props) {
 
   return (
     <div className={styles.container}>
-      {
-        !!width &&
-        <div className={styles.innerContainer} style={{ width }}>
-          <Link href="/">
-            {
+      <div
+        className={styles.innerContainer}
+        style={{ width: width ? width : undefined }}
+      >
+        <Link href="/">
+          {
+            width ? (
               width < 576 ?
                 <Image src="/img/logosmall.svg" width="36" height="36" alt="logosmall.svg" /> :
                 <Image src="/img/logo.svg" width="218" height="36" alt="logo.svg" />
-            }
-          </Link>
-          <span style={{ flexGrow: 1 }} />
-          <button onClick={() => Router.push('/')}>
-            <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
-            New Event
-          </button>
-        </div>
-      }
+            ) :
+              <>
+                <Image src="/img/logosmall.svg" width="36" height="36" alt="logosmall.svg" className={styles.logoSmall} />
+                <Image src="/img/logo.svg" width="218" height="36" alt="logo.svg" className={styles.logo} />
+              </>
+          }
+        </Link>
+        <span style={{ flexGrow: 1 }} />
+        <button onClick={() => Router.push('/')}>
+          <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
+          New Event
+        </button>
+      </div>
     </div>
   );
 }
