@@ -37,6 +37,7 @@ export default function MeetingPage() {
   const [width, setWidth] = useState(0);
   const [hoverInterval, setHoverInterval] = useState<Interval | null>(null);
   const [copied, setCopied] = useState(false);
+  const [touching, setTouching] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -319,8 +320,15 @@ export default function MeetingPage() {
                               styles.label,
                               [styles.notouch, inputtingName || !!name]
                             ])}
-                            onMouseOver={() => setHoveredRespondent(respondent.id)}
+                            onMouseOver={() => {
+                              if (touching) return;
+                              setHoveredRespondent(respondent.id);
+                            }}
                             onMouseLeave={() => setHoveredRespondent(null)}
+                            onTouchStart={() => {
+                              setTouching(true);
+                              setHoveredRespondent(null);
+                            }}
                             onTouchEnd={() => setHoveredRespondent(null)}
                             sx={{
                               '.MuiTypography-root': {
