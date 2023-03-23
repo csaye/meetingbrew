@@ -321,6 +321,7 @@ export default function MeetingPage() {
                             ])}
                             onMouseOver={() => setHoveredRespondent(respondent.id)}
                             onMouseLeave={() => setHoveredRespondent(null)}
+                            onTouchEnd={() => setHoveredRespondent(null)}
                             sx={{
                               '.MuiTypography-root': {
                                 fontFamily: "'DM Sans', sans-serif",
