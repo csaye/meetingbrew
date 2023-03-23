@@ -1,11 +1,10 @@
 import '@/styles/globals.scss';
-import { firebaseConfig } from '@/util/firebaseConfig';
-import { getApps, initializeApp } from 'firebase/app';
+import { initializeFirebase } from '@/util/firebaseConfig';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
 // initialize firebase
-if (!getApps().length) initializeApp(firebaseConfig);
+initializeFirebase();
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
