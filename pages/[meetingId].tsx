@@ -10,6 +10,7 @@ import { Interval, Meeting, Respondent } from '@/util/types';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -220,12 +221,22 @@ export default function MeetingPage() {
     );
   }
 
+  // components shown when no meeting found
+  function NoMeeting() {
+    return (
+      <div className={styles.noMeeting}>
+        <h2>No meeting found!</h2>
+        <Link href="/">Go to home</Link>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <Header width={width} />
       <div className={styles.outerContent}>
         {
-          meeting === undefined ? <p>Loading...</p> : !meeting ? <p>No meeting found</p> : !respondents ? <p>Loading...</p> :
+          meeting === undefined ? <h2>Loading...</h2> : !meeting ? <NoMeeting /> : !respondents ? <h2>Loading...</h2> :
             <div className={styles.content} ref={contentRef}>
               <h1>{meeting.title}</h1>
               <div className={styles.options}>

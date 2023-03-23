@@ -8,6 +8,24 @@
     display: flex;
     justify-content: center;
 
+    >.noMeeting {
+      text-align: center;
+
+      >h2 {
+        margin-bottom: 16px;
+      }
+
+      >a {
+        font-size: 20px;
+        text-decoration: underline;
+        color: var(--mb-red);
+
+        &:hover {
+          color: var(--mb-red-hover);
+        }
+      }
+    }
+
     >.content {
       width: fit-content;
 
