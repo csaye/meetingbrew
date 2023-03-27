@@ -69,6 +69,11 @@
       font-weight: 400;
       font-size: 12px;
       font-feature-settings: 'tnum' on, 'lnum' on !important;
+
+      &.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
     }
 
     @media (max-width: 1047.98px) {

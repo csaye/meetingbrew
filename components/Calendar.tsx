@@ -165,6 +165,9 @@ export default function Calendar(props: Props) {
       // skip if no matching hour
       if (!activeIntervals.some(i => parseHour(i) === hour)) continue;
       newHours.push(hour);
+      // duplicate hour if fall back
+      const fallBack = newDays.some(d => d.intervals.filter(i => i.hour === hour).length > 4);
+      if (fallBack) newHours.push(hour);
       // check for time gap start
       if (hour < maxHour &&
         !activeIntervals.some(i => parseHour(i) === hour + 1)) {
@@ -332,7 +335,13 @@ export default function Calendar(props: Props) {
       <div className={styles.hours}>
         {
           hours && hours.map((hour, i) =>
-            <div className={styles.hour} key={i}>
+            <div
+              className={styleBuilder([
+                styles.hour,
+                [styles.hidden, i > 0 && hours[i - 1] === hour]
+              ])}
+              key={i}
+            >
               {timeString(hour)}
             </div>
           )
@@ -374,6 +383,8 @@ export default function Calendar(props: Props) {
                         [styles.hovered, type === 'select' && isHovered(interval)],
                         [styles.faded, type === 'display' && intervalFaded(interval)],
                         [styles.gapped, (j > 0 && j % 4 === 0) &&
+                          (day.intervals[j].hour !==
+                            day.intervals[j - 1].hour) &&
                           (day.intervals[j].hour - 1 !==
                             day.intervals[j - 1].hour)
                         ]
