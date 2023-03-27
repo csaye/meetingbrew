@@ -136,17 +136,24 @@ export default function Calendar(props: Props) {
     for (const date of newDates) {
       const ivs: Interval[] = [];
       for (let hour = minHour; hour <= maxHour; hour++) {
-        // skip if no matching hour
-        if (!activeIntervals.some(i => parseHour(i) === hour)) continue;
-        for (let minute = 0; minute < 60; minute += 15) {
-          // add interval
-          const hourPadded = hour.toString().padStart(2, '0');
-          const minutePadded = minute.toString().padStart(2, '0');
-          const mmt = moment.tz(`${date} ${hourPadded}:${minutePadded}:00`, currentTimezone);
-          const active = mmt.hour() !== hour ? false : // skip invalid dst times
-            activeIntervals.includes(mmt.format('YYYY-MM-DD HH:mm'));
-          ivs.push({ index: active ? index : -1, hour, minute, active });
-          if (active) index++;
+        // skip if no matching active hour
+        const activeHourExists = activeIntervals.some(i => parseHour(i) === hour);
+        if (!activeHourExists) continue;
+        // calculate number of hour iterations by hour interval count for fall back
+        const fallBack = newDates.some(d => activeIntervals.filter(i => i.split(' ')[0] === d && parseHour(i) === hour).length > 4);
+        const selfFallBack = activeIntervals.filter(i => i.split(' ')[0] === date && parseHour(i) === hour).length > 4;
+        for (let i = 0; i < (fallBack ? 2 : 1); i++) {
+          for (let minute = 0; minute < 60; minute += 15) {
+            // add interval
+            const hourPadded = hour.toString().padStart(2, '0');
+            const minutePadded = minute.toString().padStart(2, '0');
+            const mmt = moment.tz(`${date} ${hourPadded}:${minutePadded}:00`, currentTimezone);
+            const active = mmt.hour() !== hour ? false : // skip invalid spring forward
+              (i === 1 && !selfFallBack) ? false : // skip invalid fall back
+                activeIntervals.includes(mmt.format('YYYY-MM-DD HH:mm'));
+            ivs.push({ index: active ? index : -1, hour, minute, active });
+            if (active) index++;
+          }
         }
       }
       const mmt = moment.tz(date, currentTimezone);
