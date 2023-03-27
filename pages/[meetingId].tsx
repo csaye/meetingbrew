@@ -287,7 +287,31 @@ export default function MeetingPage() {
                     }
                   </button>
                 </div>
-                <Availability className={styles.bigScreen} />
+                <div className={styleBuilder([
+                  styles.bigScreen,
+                  styles.availability,
+                  [styles.grayedOut, !!name || inputtingName]
+                ])}>
+                  <p>0/{respondents.length}</p>
+                  <div
+                    className={styles.shades}
+                    onMouseLeave={() => setHoveredShade(null)}
+                  >
+                    {
+                      Array(respondents.length + 1).fill(0).map((v, i) =>
+                        <div
+                          className={styles.shade}
+                          onMouseOver={() => setHoveredShade(i)}
+                          style={{
+                            background: sampleGradient(respondents.length)[i]
+                          }}
+                          key={i}
+                        />
+                      )
+                    }
+                  </div>
+                  <p>{respondents.length}/{respondents.length}</p>
+                </div>
                 <TimezoneSelect
                   className={styleBuilder([
                     styles.select,
@@ -376,7 +400,31 @@ export default function MeetingPage() {
                       <p>No respondents yet.</p>
                   }
                 </div>
-                <Availability className={styles.smallScreen} />
+                <div className={styleBuilder([
+                  styles.smallScreen,
+                  styles.availability,
+                  [styles.grayedOut, !!name || inputtingName]
+                ])}>
+                  <p>0/{respondents.length}</p>
+                  <div
+                    className={styles.shades}
+                    onMouseLeave={() => setHoveredShade(null)}
+                  >
+                    {
+                      Array(respondents.length + 1).fill(0).map((v, i) =>
+                        <div
+                          className={styles.shade}
+                          onMouseOver={() => setHoveredShade(i)}
+                          style={{
+                            background: sampleGradient(respondents.length)[i]
+                          }}
+                          key={i}
+                        />
+                      )
+                    }
+                  </div>
+                  <p>{respondents.length}/{respondents.length}</p>
+                </div>
                 <div className={styles.calendar}>
                   {
                     name &&
