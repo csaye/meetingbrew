@@ -61,22 +61,23 @@ export default function Calendar(props: Props) {
     let minHour, maxHour;
     // get all active intervals
     for (const date of dates) {
-      for (let hour = earliest; hour < latest; hour++) {
-        for (let minute = 0; minute < 60; minute += 15) {
-          // set moment and switch timezone
-          const hourPadded = hour.toString().padStart(2, '0');
-          const minutePadded = minute.toString().padStart(2, '0');
-          let mmt = moment.tz(`${date} ${hourPadded}:${minutePadded}:00`, timezone);
-          mmt = mmt.clone().tz(currentTimezone);
-          // update hour range
-          const hr = mmt.hour();
-          if (minHour === undefined || hr < minHour) minHour = hr;
-          if (maxHour === undefined || hr > maxHour) maxHour = hr;
-          // record date and create interval
-          const newDate = mmt.format('YYYY-MM-DD');
-          if (!newDates.includes(newDate)) newDates.push(newDate);
-          activeIntervals.push(mmt.format('YYYY-MM-DD HH:mm'));
-        }
+      // get start moment for day
+      const hourPadded = earliest.toString().padStart(2, '0');
+      let mmt = moment.tz(`${date} ${hourPadded}:00:00`, timezone);
+      // continue in 15 minute intervals until latest hour reached
+      while (mmt.hour() < latest && mmt.format('YYYY-MM-DD') === date) {
+        // clone moment into current timezone
+        const currentMmt = mmt.clone().tz(currentTimezone);
+        // update hour range
+        const hr = currentMmt.hour();
+        if (minHour === undefined || hr < minHour) minHour = hr;
+        if (maxHour === undefined || hr > maxHour) maxHour = hr;
+        // record date and create interval
+        const newDate = currentMmt.format('YYYY-MM-DD');
+        if (!newDates.includes(newDate)) newDates.push(newDate);
+        activeIntervals.push(currentMmt.format('YYYY-MM-DD HH:mm'));
+        // increment base moment
+        mmt.add(15, 'minutes');
       }
     }
     newDates.sort();
