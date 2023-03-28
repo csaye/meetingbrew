@@ -14,10 +14,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-type AvailabilityProps = {
-  className?: string;
-};
-
 export default function MeetingPage() {
   const db = getFirestore();
 
@@ -39,6 +35,7 @@ export default function MeetingPage() {
   const [hoverInterval, setHoverInterval] = useState<Interval | null>(null);
   const [copied, setCopied] = useState(false);
   const [touching, setTouching] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -178,7 +175,7 @@ export default function MeetingPage() {
     setWidth(contentRef.current.offsetWidth);
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, [meeting, respondents]);
+  }, [meeting, respondents, mounted]);
 
   // returns whether given respondent is inactive
   function respondentInactive(respondent: Respondent) {
@@ -286,6 +283,7 @@ export default function MeetingPage() {
                   ])}
                   timezone={timezone}
                   setTimezone={setTimezone}
+                  onMounted={() => setMounted(true)}
                 />
               </div>
               <div className={styles.content}>

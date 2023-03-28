@@ -6,10 +6,11 @@ type Props = {
   timezone: string;
   setTimezone: Dispatch<string>;
   className?: string;
+  onMounted?: () => void;
 };
 
 export default function TimezoneSelect(props: Props) {
-  const { timezone, setTimezone, className } = props;
+  const { timezone, setTimezone, className, onMounted } = props;
 
   const [mounted, setMounted] = useState(false);
 
@@ -18,8 +19,13 @@ export default function TimezoneSelect(props: Props) {
     setMounted(true);
   }, []);
 
+  // call on mounted function
+  useEffect(() => {
+    if (mounted && onMounted) onMounted();
+  }, [mounted, onMounted]);
+
   // return if not mounted
-  if (!mounted) return <></>;
+  if (!mounted) return <div style={{ width: '336px', height: '48px' }} />;
 
   return (
     <TimezoneSelectBase
