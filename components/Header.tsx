@@ -20,12 +20,12 @@ export default function Header(props: Props) {
           {
             width ? (
               width < 576 ?
-                <Image src="/img/logosmall.svg" width="36" height="36" alt="logosmall.svg" /> :
-                <Image src="/img/logo.svg" width="218" height="36" alt="logo.svg" />
+                <Image src="/img/logosmall.svg" width="36" height="36" alt="logosmall.svg" priority /> :
+                <Image src="/img/logo.svg" width="218" height="36" alt="logo.svg" priority />
             ) :
               <>
-                <Image src="/img/logosmall.svg" width="36" height="36" alt="logosmall.svg" className={styles.logoSmall} />
-                <Image src="/img/logo.svg" width="218" height="36" alt="logo.svg" className={styles.logo} />
+                <Image src="/img/logosmall.svg" width="36" height="36" alt="logosmall.svg" className={styles.logoSmall} priority />
+                <Image src="/img/logo.svg" width="218" height="36" alt="logo.svg" className={styles.logo} priority />
               </>
           }
         </Link>
