@@ -40,6 +40,17 @@ export default function MeetingPage() {
   const nameRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  // open changes will not be saved popup on close
+  useEffect(() => {
+    function onBeforeUnload(e: BeforeUnloadEvent) {
+      if (!name) return;
+      e.preventDefault();
+      return e.returnValue = 'Changes you made may not be saved.';
+    }
+    window.addEventListener('beforeunload', onBeforeUnload);
+    return () => window.removeEventListener('beforeunload', onBeforeUnload);
+  }, [name]);
+
   // retrieve respondents from firebase
   const getRespondents = useCallback(async () => {
     if (typeof meetingId !== 'string') return;
