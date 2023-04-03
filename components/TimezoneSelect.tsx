@@ -25,7 +25,12 @@ export default function TimezoneSelect(props: Props) {
   }, [mounted, onMounted]);
 
   // return if not mounted
-  if (!mounted) return <div style={{ width: '336px', height: '48px' }} />;
+  if (!mounted) return (
+    <div
+      className={className}
+      style={{ width: '336px', height: '48px' }}
+    />
+  );
 
   return (
     <TimezoneSelectBase
