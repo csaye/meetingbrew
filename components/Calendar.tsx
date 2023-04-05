@@ -125,6 +125,8 @@ export default function Calendar(props: Props) {
 
   // update dates or days on info change
   useEffect(() => {
+    // return if calendar already initialized
+    if (hours && calendarDays) return;
     // get interval data
     const intervalData = datesType === 'dates' ? updateDates() : updateDays();
     if (!intervalData) return;
@@ -140,8 +142,10 @@ export default function Calendar(props: Props) {
         const activeHourExists = activeIntervals.some(i => parseHour(i) === hour);
         if (!activeHourExists) continue;
         // calculate number of hour iterations by hour interval count for fall back
-        const fallBack = newDates.some(d => activeIntervals.filter(i => i.split(' ')[0] === d && parseHour(i) === hour).length > 4);
-        const selfFallBack = activeIntervals.filter(i => i.split(' ')[0] === date && parseHour(i) === hour).length > 4;
+        // const fallBack = newDates.some(d => activeIntervals.filter(i => i.split(' ')[0] === d && parseHour(i) === hour).length > 4);
+        // const selfFallBack = activeIntervals.filter(i => i.split(' ')[0] === date && parseHour(i) === hour).length > 4;
+        const fallBack = false;
+        const selfFallBack = false;
         for (let i = 0; i < (fallBack ? 2 : 1); i++) {
           for (let minute = 0; minute < 60; minute += 15) {
             // add interval
@@ -178,7 +182,7 @@ export default function Calendar(props: Props) {
     // update calendar values
     setHours(newHours);
     setCalendarDays(newDays);
-  }, [currentTimezone, datesType, updateDates, updateDays]);
+  }, [currentTimezone, datesType, updateDates, updateDays, hours, calendarDays]);
 
   // returns whether given interval is currently selected
   function intervalSelected(dayIndex: number, intIndex: number, index: number) {
