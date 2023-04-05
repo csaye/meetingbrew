@@ -211,7 +211,7 @@ export default function MeetingPage() {
 
   return (
     <div className={styles.container}>
-      <Header width={width ? width : 952} />
+      <Header width={width ? width : (meeting === null ? 0 : 952)} />
       <div className={styles.outerContent}>
         {
           meeting === undefined ? <h2>Loading...</h2> : !meeting ? <NoMeeting /> : !respondents ? <h2>Loading...</h2> :
@@ -348,7 +348,11 @@ export default function MeetingPage() {
                               '.MuiTypography-root': {
                                 fontFamily: "'DM Sans', sans-serif",
                                 fontSize: '24px',
-                                lineHeight: '24px'
+                                textOverflow: 'ellipsis',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                wordBreak: 'break-word',
+                                maxWidth: '278px'
                               }
                             }}
                             control={
