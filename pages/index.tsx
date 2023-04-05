@@ -64,14 +64,15 @@ export default function Index() {
       window.alert('Must select at least one day.');
       return;
     }
-    const meetingsRef = collection(db, 'meetings');
+    const meetingsRef = collection(db, 'meetings2');
     // check id
     if (id) {
+      const idLower = id.toLowerCase();
       // check id availability
-      const idReserved = reservedIds.includes(id);
+      const idReserved = reservedIds.includes(idLower);
       let idTaken = false;
       if (!idReserved) {
-        const meetingRef = doc(meetingsRef, id);
+        const meetingRef = doc(meetingsRef, idLower);
         const meetingDoc = await getDoc(meetingRef);
         idTaken = meetingDoc.exists();
       }
@@ -82,8 +83,9 @@ export default function Index() {
       }
     }
     // get meeting id
-    const meetingId = id ? id : doc(meetingsRef).id.slice(0, 6);
-    const meetingRef = doc(meetingsRef, meetingId);
+    const meetingId = id ? id : doc(meetingsRef).id.slice(0, 6).toLowerCase();
+    const idLower = meetingId.toLowerCase();
+    const meetingRef = doc(meetingsRef, idLower);
     // create meeting
     const meetingBase = { id: meetingId, title, timezone, earliest, latest, created: Date.now() };
     const meeting: Meeting = datesOption.value === 'dates' ?
