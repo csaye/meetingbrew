@@ -54,7 +54,8 @@ export default function MeetingPage() {
   // retrieve respondents from firebase
   const getRespondents = useCallback(async () => {
     if (typeof meetingId !== 'string') return;
-    const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
+    const idLower = meetingId.toLowerCase();
+    const respondentsRef = collection(db, 'meetings2', idLower, 'respondents');
     const respondentsDocs = (await getDocs(respondentsRef)).docs;
     const respondentsData = respondentsDocs.map(doc => doc.data() as Respondent);
     respondentsData.sort((a, b) => a.created - b.created);
@@ -76,7 +77,8 @@ export default function MeetingPage() {
         return;
       }
       // get meeting data
-      const meetingRef = doc(db, 'meetings', meetingId);
+      const idLower = meetingId.toLowerCase();
+      const meetingRef = doc(db, 'meetings2', idLower);
       const meetingDoc = await getDoc(meetingRef);
       if (!meetingDoc.exists()) {
         setMeeting(null);
@@ -92,7 +94,8 @@ export default function MeetingPage() {
 
   // copies invite link to clipboard
   async function copyLink() {
-    await navigator.clipboard.writeText(`https://meetingbrew.com/${meetingId}`);
+    if (!meeting) return;
+    await navigator.clipboard.writeText(`https://meetingbrew.com/${meeting.id}`);
     // show copy state
     if (copied) return;
     setCopied(true);
@@ -122,7 +125,7 @@ export default function MeetingPage() {
     setName(null);
     // update firebase respondent
     const { id } = newRespondents[rIndex];
-    const respondentDocRef = doc(db, 'meetings', meetingId, 'respondents', id);
+    const respondentDocRef = doc(db, 'meetings2', meetingId, 'respondents', id);
     await updateDoc(respondentDocRef, { availability, updated: Date.now() });
   }
 
@@ -136,7 +139,7 @@ export default function MeetingPage() {
     // return if invalid states
     if (typeof meetingId !== 'string' || !respondents) return;
     // create respondent
-    const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
+    const respondentsRef = collection(db, 'meetings2', meetingId, 'respondents');
     const respondentDoc = doc(respondentsRef);
     const { id } = respondentDoc;
     const respondent: Respondent = {
