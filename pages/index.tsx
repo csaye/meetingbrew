@@ -64,7 +64,7 @@ export default function Index() {
       window.alert('Must select at least one day.');
       return;
     }
-    const meetingsRef = collection(db, 'meetings2');
+    const meetingsRef = collection(db, 'meetings');
     // check id
     if (id) {
       const idLower = id.toLowerCase();
