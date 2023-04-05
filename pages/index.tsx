@@ -8,7 +8,7 @@ import { selectStyles } from '@/util/styles';
 import { getCurrentTimezone } from '@/util/timezone';
 import { Meeting } from '@/util/types';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import { collection, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getFirestore, increment, setDoc, updateDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import Router from 'next/router';
 import { useEffect, useRef, useState } from 'react';
@@ -40,6 +40,13 @@ export default function Index() {
   const [datesOption, setDatesOption] = useState(datesOptions[0]);
   const [dates, setDates] = useState<string[]>([]);
   const [days, setDays] = useState<number[]>([]);
+
+  const [mounted, setMounted] = useState(false);
+
+  // set mounted on start
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // focus title input on start
   useEffect(() => {
@@ -145,11 +152,11 @@ export default function Index() {
                 instanceId="select-dates"
               />
               {
-                datesOption.value === 'dates' &&
+                (datesOption.value === 'dates' && mounted) &&
                 <DatesPicker dates={dates} setDates={setDates} />
               }
               {
-                datesOption.value === 'days' &&
+                (datesOption.value === 'days' && mounted) &&
                 <DaysPicker days={days} setDays={setDays} />
               }
             </div>
