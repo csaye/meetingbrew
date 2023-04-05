@@ -92,6 +92,9 @@ export default function Index() {
       { ...meetingBase, type: 'dates', dates: dates.slice().sort() } :
       { ...meetingBase, type: 'days', days: days.slice().sort() };
     await setDoc(meetingRef, meeting);
+    // increment meeting count
+    const statsRef = doc(db, 'app', 'stats');
+    await updateDoc(statsRef, { meetings: increment(1) });
     Router.push(`/${meetingId}`);
   }
 
