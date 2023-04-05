@@ -31,6 +31,7 @@
 
       @media (max-width: 1047.98px) {
         width: 336px;
+        max-width: 100%;
       }
 
       .grayedOut {
@@ -222,7 +223,6 @@
 
             >.label {
               margin-left: 0;
-              padding: 6px 0px;
 
               &.notouch {
                 pointer-events: none;
