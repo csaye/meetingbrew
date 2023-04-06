@@ -58,6 +58,8 @@ export default function Calendar(props: Props) {
     const { dates } = props;
     const activeIntervals: string[] = [];
     const newDates: string[] = [];
+    const fallBackHours: number[] = [];
+    const fallBackDates: string[] = [];
     let minHour, maxHour;
     // get all active intervals
     for (const date of dates) {
@@ -75,13 +77,19 @@ export default function Calendar(props: Props) {
         // record date and create interval
         const newDate = currentMmt.format('YYYY-MM-DD');
         if (!newDates.includes(newDate)) newDates.push(newDate);
-        activeIntervals.push(currentMmt.format('YYYY-MM-DD HH:mm'));
+        const dateTime = currentMmt.format('YYYY-MM-DD HH:mm');
+        // save if fall back hour or date
+        if (activeIntervals.includes(dateTime)) {
+          if (!fallBackHours.includes(hr)) fallBackHours.push(hr);
+          if (!fallBackDates.includes(newDate)) fallBackDates.push(newDate);
+        }
+        activeIntervals.push(dateTime);
         // increment base moment
         mmt.add(15, 'minutes');
       }
     }
     newDates.sort();
-    return { minHour, maxHour, newDates, activeIntervals };
+    return { minHour, maxHour, newDates, activeIntervals, fallBackHours, fallBackDates };
   }, [currentTimezone, datesType, earliest, latest, props, timezone]);
 
   // updates days on calendar
@@ -90,6 +98,8 @@ export default function Calendar(props: Props) {
     const { days } = props;
     const activeIntervals: string[] = [];
     const newDates: string[] = [];
+    const fallBackHours: number[] = [];
+    const fallBackDates: string[] = [];
     let minHour, maxHour;
     // get all active intervals
     for (const day of days) {
@@ -115,7 +125,7 @@ export default function Calendar(props: Props) {
       }
     }
     newDates.sort();
-    return { minHour, maxHour, newDates, activeIntervals };
+    return { minHour, maxHour, newDates, activeIntervals, fallBackHours, fallBackDates };
   }, [currentTimezone, datesType, earliest, latest, props, timezone]);
 
   // returns hour parsed from YYYY-MM-DD HH:mm string
@@ -130,22 +140,19 @@ export default function Calendar(props: Props) {
     // get interval data
     const intervalData = datesType === 'dates' ? updateDates() : updateDays();
     if (!intervalData) return;
-    const { minHour, maxHour, newDates, activeIntervals } = intervalData;
+    const { minHour, maxHour, newDates, activeIntervals, fallBackHours, fallBackDates } = intervalData;
     if (minHour === undefined || maxHour === undefined) throw 'undefined hours';
     // set up days
     let index = 0;
     const newDays: CalendarDay[] = [];
     for (const date of newDates) {
       const ivs: Interval[] = [];
+      const selfFallBack = fallBackDates.includes(date);
       for (let hour = minHour; hour <= maxHour; hour++) {
         // skip if no matching active hour
         const activeHourExists = activeIntervals.some(i => parseHour(i) === hour);
         if (!activeHourExists) continue;
-        // calculate number of hour iterations by hour interval count for fall back
-        // const fallBack = newDates.some(d => activeIntervals.filter(i => i.split(' ')[0] === d && parseHour(i) === hour).length > 4);
-        // const selfFallBack = activeIntervals.filter(i => i.split(' ')[0] === date && parseHour(i) === hour).length > 4;
-        const fallBack = false;
-        const selfFallBack = false;
+        const fallBack = fallBackHours.includes(hour);
         for (let i = 0; i < (fallBack ? 2 : 1); i++) {
           for (let minute = 0; minute < 60; minute += 15) {
             // add interval
