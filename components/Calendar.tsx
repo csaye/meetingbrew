@@ -55,7 +55,7 @@ export default function Calendar(props: Props) {
   // updates dates on calendar
   const updateDates = useCallback(() => {
     if (datesType !== 'dates') return;
-    const { dates } = props;
+    const dates = props.dates;
     const activeIntervals: string[] = [];
     const newDates: string[] = [];
     const fallBackHours: number[] = [];
@@ -90,12 +90,12 @@ export default function Calendar(props: Props) {
     }
     newDates.sort();
     return { minHour, maxHour, newDates, activeIntervals, fallBackHours, fallBackDates };
-  }, [currentTimezone, datesType, earliest, latest, props, timezone]);
+  }, [currentTimezone, datesType, earliest, latest, props.dates, timezone]);
 
   // updates days on calendar
   const updateDays = useCallback(() => {
     if (datesType !== 'days') return {};
-    const { days } = props;
+    const days = props.days;
     const activeIntervals: string[] = [];
     const newDates: string[] = [];
     const fallBackHours: number[] = [];
@@ -126,7 +126,7 @@ export default function Calendar(props: Props) {
     }
     newDates.sort();
     return { minHour, maxHour, newDates, activeIntervals, fallBackHours, fallBackDates };
-  }, [currentTimezone, datesType, earliest, latest, props, timezone]);
+  }, [currentTimezone, datesType, earliest, latest, props.days, timezone]);
 
   // returns hour parsed from YYYY-MM-DD HH:mm string
   function parseHour(date: string) {
@@ -135,8 +135,6 @@ export default function Calendar(props: Props) {
 
   // update dates or days on info change
   useEffect(() => {
-    // return if calendar already initialized
-    if (hours && calendarDays) return;
     // get interval data
     const intervalData = datesType === 'dates' ? updateDates() : updateDays();
     if (!intervalData) return;
@@ -189,7 +187,7 @@ export default function Calendar(props: Props) {
     // update calendar values
     setHours(newHours);
     setCalendarDays(newDays);
-  }, [currentTimezone, datesType, updateDates, updateDays, hours, calendarDays]);
+  }, [currentTimezone, datesType, updateDates, updateDays]);
 
   // returns whether given interval is currently selected
   function intervalSelected(dayIndex: number, intIndex: number, index: number) {
