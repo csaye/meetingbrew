@@ -66,6 +66,11 @@ export default function Index() {
       window.alert('Must select at least one date.');
       return;
     }
+    // if too many dates selected
+    if (datesOption.value === 'dates' && dates.length > 31) {
+      window.alert('Too many dates selected. Maximum is 31.');
+      return;
+    }
     // if no days selected
     if (datesOption.value === 'days' && !days.length) {
       window.alert('Must select at least one day.');
