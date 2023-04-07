@@ -1,19 +1,21 @@
+import { styleBuilder } from '@/util/styles';
 import Image from 'next/image';
 import Link from 'next/link';
 import Router from 'next/router';
 import styles from '../styles/components/Header.module.scss';
 
 type Props = {
+  className: string;
   width: number;
 };
 
 export default function Header(props: Props) {
-  const { width } = props;
+  const { className, width } = props;
 
   return (
     <div className={styles.container}>
       <div
-        className={styles.innerContainer}
+        className={styleBuilder([className, styles.innerContainer])}
         style={{ width: width ? width : undefined }}
       >
         <Link href="/">
