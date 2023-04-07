@@ -124,7 +124,7 @@ export default function Index() {
 
   return (
     <div className={styles.container}>
-      <Header width={width ? width : 720} />
+      <Header className={styles.header} width={width} />
       <div className={styles.outerContent}>
         <div className={styles.content} ref={contentRef}>
           <TextareaAutosize

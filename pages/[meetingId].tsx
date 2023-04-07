@@ -211,7 +211,7 @@ export default function MeetingPage() {
 
   return (
     <div className={styles.container}>
-      <Header width={width ? width : (meeting === null ? 0 : 952)} />
+      <Header className={styles.header} width={width} />
       <div className={styles.outerContent}>
         {
           meeting === undefined ? <h2>Loading...</h2> : !meeting ? <NoMeeting /> : !respondents ? <h2>Loading...</h2> :
