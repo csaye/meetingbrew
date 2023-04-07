@@ -1,4 +1,12 @@
 .container {
+  .header {
+    width: 336px;
+
+    @media (min-width: 816px) {
+      width: 720px;
+    }
+  }
+
   >.outerContent {
     min-height: calc(100vh - 96px);
     padding: 48px;
