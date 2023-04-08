@@ -32,6 +32,9 @@ export default function Header(props: Props) {
           }
         </Link>
         <span style={{ flexGrow: 1 }} />
+        <Link href="/about">
+          About
+        </Link>
         <button onClick={() => Router.push('/')}>
           <Image src="/icons/add.svg" width="24" height="24" alt="add.svg" />
           New Event
