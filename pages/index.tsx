@@ -29,7 +29,6 @@ export default function Index() {
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
   const [title, setTitle] = useState('');
   const [id, setId] = useState('');
-  const [width, setWidth] = useState(0);
 
   const [timeRange, setTimeRange] = useState<number[]>([9, 17]);
   const [earliest, latest] = timeRange;
@@ -110,21 +109,9 @@ export default function Index() {
     Router.push(`/${meetingId}`);
   }
 
-  // set up content resize listener
-  useEffect(() => {
-    function onResize() {
-      if (!contentRef.current) return;
-      setWidth(contentRef.current.offsetWidth);
-    }
-    if (!contentRef.current) return;
-    setWidth(contentRef.current.offsetWidth);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-
   return (
     <div className={styles.container}>
-      <Header className={styles.header} width={width} />
+      <Header className={styles.header} />
       <div className={styles.outerContent}>
         <div className={styles.content} ref={contentRef}>
           <TextareaAutosize
