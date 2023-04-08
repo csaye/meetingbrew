@@ -31,11 +31,9 @@ export default function MeetingPage() {
   const [hoveredRespondent, setHoveredRespondent] = useState<string | null>(null);
   const [hoveredShade, setHoveredShade] = useState<number | null>(null);
 
-  const [width, setWidth] = useState(0);
   const [hoverInterval, setHoverInterval] = useState<Interval | null>(null);
   const [copied, setCopied] = useState(false);
   const [touching, setTouching] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -179,18 +177,6 @@ export default function MeetingPage() {
     }
   }
 
-  // set up content resize listener
-  useEffect(() => {
-    function onResize() {
-      if (!contentRef.current) return;
-      setWidth(contentRef.current.offsetWidth);
-    }
-    if (!contentRef.current) return;
-    setWidth(contentRef.current.offsetWidth);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, [meeting, respondents, mounted]);
-
   // returns whether given respondent is inactive
   function respondentInactive(respondent: Respondent) {
     if (inputtingName) return true;
@@ -211,7 +197,7 @@ export default function MeetingPage() {
 
   return (
     <div className={styles.container}>
-      <Header className={styles.header} width={width} />
+      <Header className={styles.header} />
       <div className={styles.outerContent}>
         {
           meeting === undefined ? <h2>Loading...</h2> : !meeting ? <NoMeeting /> : !respondents ? <h2>Loading...</h2> :
@@ -297,7 +283,6 @@ export default function MeetingPage() {
                   ])}
                   timezone={timezone}
                   setTimezone={setTimezone}
-                  onMounted={() => setMounted(true)}
                 />
               </div>
               <div className={styles.content}>
