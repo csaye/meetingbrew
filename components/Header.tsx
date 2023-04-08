@@ -6,30 +6,17 @@ import styles from '../styles/components/Header.module.scss';
 
 type Props = {
   className: string;
-  width: number;
 };
 
 export default function Header(props: Props) {
-  const { className, width } = props;
+  const { className } = props;
 
   return (
     <div className={styles.container}>
-      <div
-        className={styleBuilder([className, styles.innerContainer])}
-        style={{ width: width ? width : undefined }}
-      >
+      <div className={styleBuilder([className, styles.innerContainer])} >
         <Link href="/">
-          {
-            width ? (
-              width < 576 ?
-                <Image src="/img/logosmall.svg" width="36" height="36" alt="logosmall.svg" priority /> :
-                <Image src="/img/logo.svg" width="218" height="36" alt="logo.svg" priority />
-            ) :
-              <>
-                <Image src="/img/logosmall.svg" width="36" height="36" alt="logosmall.svg" className={styles.logoSmall} priority />
-                <Image src="/img/logo.svg" width="218" height="36" alt="logo.svg" className={styles.logo} priority />
-              </>
-          }
+          <Image src="/img/logosmall.svg" width="36" height="36" alt="logosmall.svg" className={styles.logoSmall} priority />
+          <Image src="/img/logo.svg" width="218" height="36" alt="logo.svg" className={styles.logo} priority />
         </Link>
         <span style={{ flexGrow: 1 }} />
         <Link href="/about">
