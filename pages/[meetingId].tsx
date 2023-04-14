@@ -197,6 +197,9 @@ export default function MeetingPage() {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>{meeting ? meeting.title : 'MeetingBrew'}</title>
+      </Head>
       <Header className={styles.header} />
       <div className={styles.outerContent}>
         {
