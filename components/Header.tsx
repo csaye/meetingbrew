@@ -15,8 +15,8 @@ export default function Header(props: Props) {
     <div className={styles.container}>
       <div className={styleBuilder([className, styles.innerContainer])} >
         <Link href="/">
-          <Image src="/img/logosmall.svg" width="36" height="36" alt="logosmall.svg" className={styles.logoSmall} priority />
-          <Image src="/img/logo.svg" width="218" height="36" alt="logo.svg" className={styles.logo} priority />
+          <Image src="/img/logo.svg" width="218" height="36" alt="logo.svg" priority />
+          <Image src="/img/logosmall.svg" width="36" height="36" alt="logosmall.svg" priority />
         </Link>
         <span style={{ flexGrow: 1 }} />
         <Link href="/about">

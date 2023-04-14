@@ -27,21 +27,9 @@
       }
     }
 
-    .logo {
-      @media (max-width: 815.98px) {
-        display: none;
-      }
-    }
-
-    .logoSmall {
-      @media (min-width: 816px) {
-        display: none;
-      }
-    }
-
     >a {
       color: var(--secondary-text);
-      width: 96px;
+      margin-right: 32px;
 
       &:hover {
         text-decoration: underline;
