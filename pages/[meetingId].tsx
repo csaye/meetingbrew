@@ -9,18 +9,40 @@ import { getCurrentTimezone } from '@/util/timezone';
 import { Interval, Meeting, Respondent } from '@/util/types';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
+import { NextApiRequest } from 'next';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export default function MeetingPage() {
+export async function getServerSideProps(props: NextApiRequest) {
+  const db = getFirestore();
+  const noMeeting = { props: { meeting: null } };
+
+  // get meetingId from router
+  const { meetingId } = props.query;
+  if (!meetingId || typeof meetingId !== 'string') return noMeeting;
+
+  // get meeting data
+  const idLower = meetingId.toLowerCase();
+  const meetingRef = doc(db, 'meetings', idLower);
+  const meetingDoc = await getDoc(meetingRef);
+  if (!meetingDoc.exists()) return noMeeting;
+  const meeting = meetingDoc.data() as Meeting;
+
+  // return meeting data
+  return { props: { meeting } };
+}
+
+type Props = {
+  meeting: Meeting | null;
+};
+
+export default function MeetingPage(props: Props) {
+  const { meeting } = props;
+
   const db = getFirestore();
 
-  const router = useRouter();
-  const { meetingId } = router.query;
-
-  const [meeting, setMeeting] = useState<Meeting | null>();
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
   const [respondents, setRespondents] = useState<Respondent[]>();
   const [inputtingName, setInputtingName] = useState(false);
