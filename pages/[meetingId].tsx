@@ -87,31 +87,6 @@ export default function MeetingPage(props: Props) {
     getRespondents();
   }, [getRespondents]);
 
-  // get meeting on start
-  useEffect(() => {
-    async function getMeeting() {
-      // handle invalid meeting id
-      if (!meetingId) return;
-      if (typeof meetingId !== 'string') {
-        setMeeting(null);
-        return;
-      }
-      // get meeting data
-      const idLower = meetingId.toLowerCase();
-      const meetingRef = doc(db, 'meetings', idLower);
-      const meetingDoc = await getDoc(meetingRef);
-      if (!meetingDoc.exists()) {
-        setMeeting(null);
-        return;
-      }
-      const meetingData = meetingDoc.data() as Meeting;
-      setMeeting(meetingData);
-      // set document title
-      document.title = `MeetingBrew - ${meetingData.title}`;
-    }
-    getMeeting();
-  }, [meetingId, db]);
-
   // copies invite link to clipboard
   async function copyLink() {
     if (!meeting) return;
@@ -225,7 +200,7 @@ export default function MeetingPage(props: Props) {
       <Header className={styles.header} />
       <div className={styles.outerContent}>
         {
-          meeting === undefined ? <h2>Loading...</h2> : !meeting ? <NoMeeting /> : !respondents ? <h2>Loading...</h2> :
+          !meeting ? <NoMeeting /> : !respondents ? <h2>Loading...</h2> :
             <div className={styles.content} ref={contentRef}>
               <h1>{meeting.title}</h1>
               <div className={styles.options}>
