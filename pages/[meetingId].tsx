@@ -77,22 +77,6 @@ export default function MeetingPage(props: Props) {
     return () => window.removeEventListener('beforeunload', onBeforeUnload);
   }, [name]);
 
-  // retrieve respondents from firebase
-  const getRespondents = useCallback(async () => {
-    if (!meeting) return;
-    const meetingId = meeting.id.toLowerCase();
-    const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
-    const respondentsDocs = (await getDocs(respondentsRef)).docs;
-    const respondentsData = respondentsDocs.map(doc => doc.data() as Respondent);
-    respondentsData.sort((a, b) => a.created - b.created);
-    setRespondents(respondentsData);
-  }, [meeting, db]);
-
-  // get respondents on start
-  useEffect(() => {
-    getRespondents();
-  }, [getRespondents]);
-
   // copies invite link to clipboard
   async function copyLink() {
     if (!meeting) return;
@@ -208,7 +192,7 @@ export default function MeetingPage(props: Props) {
       <Header className={styles.header} />
       <div className={styles.outerContent}>
         {
-          !meeting ? <NoMeeting /> : !respondents ? <h2>Loading...</h2> :
+          (!meeting || !respondents) ? <NoMeeting /> :
             <div className={styles.content} ref={contentRef}>
               <h1>{meeting.title}</h1>
               <div className={styles.options}>
