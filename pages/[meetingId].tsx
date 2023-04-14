@@ -13,29 +13,35 @@ import { NextApiRequest } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export async function getServerSideProps(props: NextApiRequest) {
   const db = getFirestore();
-  const noMeeting = { props: { meeting: null } };
+  const noMeeting = { props: { meeting: null, respondents: null } };
 
   // get meetingId from router
-  const { meetingId } = props.query;
+  let { meetingId } = props.query;
   if (!meetingId || typeof meetingId !== 'string') return noMeeting;
 
   // get meeting data
-  const idLower = meetingId.toLowerCase();
-  const meetingRef = doc(db, 'meetings', idLower);
+  meetingId = meetingId.toLowerCase();
+  const meetingRef = doc(db, 'meetings', meetingId);
   const meetingDoc = await getDoc(meetingRef);
   if (!meetingDoc.exists()) return noMeeting;
   const meeting = meetingDoc.data() as Meeting;
 
+  const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
+  const respondentsDocs = (await getDocs(respondentsRef)).docs;
+  const respondents = respondentsDocs.map(doc => doc.data() as Respondent);
+  respondents.sort((a, b) => a.created - b.created);
+
   // return meeting data
-  return { props: { meeting } };
+  return { props: { meeting, respondents } };
 }
 
 type Props = {
   meeting: Meeting | null;
+  respondents: Respondent[] | null;
 };
 
 export default function MeetingPage(props: Props) {
@@ -44,7 +50,7 @@ export default function MeetingPage(props: Props) {
   const db = getFirestore();
 
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
-  const [respondents, setRespondents] = useState<Respondent[]>();
+  const [respondents, setRespondents] = useState<Respondent[] | null>(props.respondents);
   const [inputtingName, setInputtingName] = useState(false);
   const [inputName, setInputName] = useState('');
   const [name, setName] = useState<string | null>(null);
