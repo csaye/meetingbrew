@@ -15,42 +15,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
-export async function getServerSideProps(props: NextApiRequest) {
-  const db = getFirestore();
-  const noMeeting = { props: { meeting: null, respondents: null } };
-
-  // get meetingId from router
-  let { meetingId } = props.query;
-  if (!meetingId || typeof meetingId !== 'string') return noMeeting;
-
-  // get meeting data
-  meetingId = meetingId.toLowerCase();
-  const meetingRef = doc(db, 'meetings', meetingId);
-  const meetingDoc = await getDoc(meetingRef);
-  if (!meetingDoc.exists()) return noMeeting;
-  const meeting = meetingDoc.data() as Meeting;
-
-  const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
-  const respondentsDocs = (await getDocs(respondentsRef)).docs;
-  const respondents = respondentsDocs.map(doc => doc.data() as Respondent);
-  respondents.sort((a, b) => a.created - b.created);
-
-  // return meeting data
-  return { props: { meeting, respondents } };
+export function getServerSideProps(props: NextApiRequest) {
+  const { meetingId } = props.query;
+  if (!meetingId || typeof meetingId !== 'string') {
+    return { props: { meetingId: null } };
+  }
+  return { props: { meetingId: meetingId.toLowerCase() } };
 }
 
 type Props = {
-  meeting: Meeting | null;
-  respondents: Respondent[] | null;
+  meetingId: string | null;
 };
 
 export default function MeetingPage(props: Props) {
-  const { meeting } = props;
+  const { meetingId } = props;
 
   const db = getFirestore();
 
+  const [meeting, setMeeting] = useState<Meeting | null>();
+  const [respondents, setRespondents] = useState<Respondent[] | null>();
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
-  const [respondents, setRespondents] = useState<Respondent[] | null>(props.respondents);
   const [inputtingName, setInputtingName] = useState(false);
   const [inputName, setInputName] = useState('');
   const [name, setName] = useState<string | null>(null);
@@ -65,6 +49,34 @@ export default function MeetingPage(props: Props) {
 
   const nameRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // get meeting and respondents on start
+  useEffect(() => {
+    async function getMeeting() {
+      // return if invalid meeting id
+      if (!meetingId) {
+        setMeeting(null);
+        setRespondents(null);
+        return;
+      }
+      // get meeting data
+      const meetingRef = doc(db, 'meetings', meetingId);
+      const meetingDoc = await getDoc(meetingRef);
+      if (!meetingDoc.exists()) {
+        setMeeting(null);
+        setRespondents(null);
+        return;
+      };
+      setMeeting(meetingDoc.data() as Meeting);
+      // get respondents
+      const respondentsRef = collection(meetingRef, 'respondents');
+      const respondentsDocs = (await getDocs(respondentsRef)).docs;
+      const newRespondents = respondentsDocs.map(doc => doc.data() as Respondent);
+      newRespondents.sort((a, b) => a.created - b.created);
+      setRespondents(newRespondents);
+    }
+    getMeeting();
+  }, [meetingId, db]);
 
   // open changes will not be saved popup on close
   useEffect(() => {
