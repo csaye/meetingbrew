@@ -24,7 +24,7 @@ type BaseProps =
   } |
   BaseBaseProps & {
     type: 'display';
-    respondents: Respondent[];
+    respondents: Respondent[] | undefined;
     selectedRespondents: string[];
     hoveredRespondent: string | null;
     hoveredShade: number | null;
@@ -253,6 +253,7 @@ export default function Calendar(props: Props) {
   function getShade(index: number) {
     if (type !== 'display') throw 'getting color for select calendar';
     const { respondents } = props;
+    if (!respondents) return 0;
     return respondents.filter(r => r.availability.includes(index)).length;
   }
 
@@ -260,6 +261,7 @@ export default function Calendar(props: Props) {
   function getIntervalColor(index: number) {
     if (type !== 'display') throw 'getting color for select calendar';
     const { respondents } = props;
+    if (!respondents) return '#e0e0e0';
     const colors = sampleGradient(respondents.length);
     const shade = getShade(index);
     return colors[shade];
@@ -269,6 +271,7 @@ export default function Calendar(props: Props) {
   function intervalFaded(interval: Interval) {
     if (type !== 'display') throw 'getting fade for select calendar';
     const { respondents, selectedRespondents, hoveredRespondent, hoveredShade } = props;
+    if (!respondents) return false;
     if (!selectedRespondents.length && hoveredRespondent === null && hoveredShade === null) return false;
     const currRespondents = respondents.filter(r => selectedRespondents.includes(r.id) || r.id === hoveredRespondent);
     const { index, active } = interval;
@@ -324,19 +327,20 @@ export default function Calendar(props: Props) {
           </div>
           <div className={styles.names}>
             {
-              props.respondents.map((r, i) =>
-                <p
-                  className={styleBuilder([
-                    styles.name,
-                    [styles.unavailable, !r.availability.includes(
-                      props.hoverInterval?.index ?? -1
-                    )]
-                  ])}
-                  key={i}
-                >
-                  {r.name}
-                </p>
-              )
+              !props.respondents ? <p className={styles.name}>Loading...</p> :
+                props.respondents.map((r, i) =>
+                  <p
+                    className={styleBuilder([
+                      styles.name,
+                      [styles.unavailable, !r.availability.includes(
+                        props.hoverInterval?.index ?? -1
+                      )]
+                    ])}
+                    key={i}
+                  >
+                    {r.name}
+                  </p>
+                )
             }
           </div>
         </div>
