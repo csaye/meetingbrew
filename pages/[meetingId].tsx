@@ -204,7 +204,7 @@ export default function MeetingPage(props: Props) {
       <Header className={styles.header} />
       <div className={styles.outerContent}>
         {
-          (!meeting || !respondents) ? <NoMeeting /> :
+          (meeting === null || respondents === null) ? <NoMeeting /> : !meeting ? <h2>Loading...</h2> :
             <div className={styles.content} ref={contentRef}>
               <h1>{meeting.title}</h1>
               <div className={styles.options}>
@@ -260,12 +260,13 @@ export default function MeetingPage(props: Props) {
                   styles.availability,
                   [styles.grayedOut, !!name || inputtingName]
                 ])}>
-                  <p>0/{respondents.length}</p>
+                  <p>{respondents ? `0/${respondents.length}` : '...'}</p>
                   <div
                     className={styles.shades}
                     onMouseLeave={() => setHoveredShade(null)}
                   >
                     {
+                      respondents &&
                       Array(respondents.length + 1).fill(0).map((v, i) =>
                         <div
                           className={styles.shade}
@@ -278,7 +279,7 @@ export default function MeetingPage(props: Props) {
                       )
                     }
                   </div>
-                  <p>{respondents.length}/{respondents.length}</p>
+                  <p>{respondents ? `${respondents.length}/${respondents.length}` : '...'}</p>
                 </div>
                 <TimezoneSelect
                   className={styleBuilder([
@@ -309,7 +310,7 @@ export default function MeetingPage(props: Props) {
                     />
                   }
                   {
-                    (respondents.length || inputtingName) ?
+                    !respondents ? <p>Loading...</p> : (!respondents.length && !inputtingName) ? <p>No respondents yet.</p> :
                       respondents.map((respondent, i) =>
                         <div
                           className={styleBuilder([
@@ -368,8 +369,7 @@ export default function MeetingPage(props: Props) {
                             label={respondent.name}
                           />
                         </div>
-                      ) :
-                      <p>No respondents yet.</p>
+                      )
                   }
                 </div>
                 <div className={styleBuilder([
@@ -377,12 +377,13 @@ export default function MeetingPage(props: Props) {
                   styles.availability,
                   [styles.grayedOut, !!name || inputtingName]
                 ])}>
-                  <p>0/{respondents.length}</p>
+                  <p>{respondents ? `0/${respondents.length}` : '...'}</p>
                   <div
                     className={styles.shades}
                     onMouseLeave={() => setHoveredShade(null)}
                   >
                     {
+                      respondents &&
                       Array(respondents.length + 1).fill(0).map((v, i) =>
                         <div
                           className={styles.shade}
@@ -395,7 +396,7 @@ export default function MeetingPage(props: Props) {
                       )
                     }
                   </div>
-                  <p>{respondents.length}/{respondents.length}</p>
+                  <p>{respondents ? `${respondents.length}/${respondents.length}` : '...'}</p>
                 </div>
                 <div className={styles.calendar}>
                   {
