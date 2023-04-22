@@ -93,6 +93,8 @@
           display: flex;
           margin: 0 12px;
           width: 192px;
+          height: 48px;
+          background: var(--light-gray);
 
           >.shade {
             flex-grow: 1;
