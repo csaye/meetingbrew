@@ -30,16 +30,15 @@ export async function getServerSideProps(props: NextApiRequest) {
 }
 
 type Props = {
-  meetingId: string | null;
+  meeting: Meeting | null;
 };
 
 export default function MeetingPage(props: Props) {
-  const { meetingId } = props;
+  const { meeting } = props;
 
   const db = getFirestore();
 
-  const [meeting, setMeeting] = useState<Meeting | null>();
-  const [respondents, setRespondents] = useState<Respondent[] | null>();
+  const [respondents, setRespondents] = useState<Respondent[]>();
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
   const [inputtingName, setInputtingName] = useState(false);
   const [inputName, setInputName] = useState('');
@@ -198,7 +197,7 @@ export default function MeetingPage(props: Props) {
       <Header className={styles.header} />
       <div className={styles.outerContent}>
         {
-          (meeting === null || respondents === null) ? <NoMeeting /> : !meeting ? <h2>Loading...</h2> :
+          (meeting === null) ? <NoMeeting /> :
             <div className={styles.content} ref={contentRef}>
               <h1>{meeting.title}</h1>
               <div className={styles.options}>
