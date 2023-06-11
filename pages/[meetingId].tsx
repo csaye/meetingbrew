@@ -286,16 +286,20 @@ export default function MeetingPage(props: Props) {
                   </p>
                   {
                     inputtingName &&
-                    <input
-                      className={styles.nameInput}
-                      ref={nameRef}
-                      value={inputName}
-                      onChange={e => setInputName(e.target.value)}
-                      onKeyDown={e => { if (e.key === 'Enter') saveName() }}
-                      placeholder="Name"
-                      maxLength={50}
-                      spellCheck="false"
-                    />
+                    <div className={styles.nameInput}>
+                      <input
+                        ref={nameRef}
+                        value={inputName}
+                        onChange={e => setInputName(e.target.value)}
+                        onKeyDown={e => { if (e.key === 'Enter') saveName() }}
+                        placeholder="Name"
+                        maxLength={50}
+                        spellCheck="false"
+                      />
+                      <button onClick={() => saveName()}>
+                        <Image src="/icons/check.svg" width="24" height="24" alt="check.svg" />
+                      </button>
+                    </div>
                   }
                   {
                     !respondents ? <p>Loading...</p> : (!respondents.length && !inputtingName) ? <p>No respondents yet.</p> :
