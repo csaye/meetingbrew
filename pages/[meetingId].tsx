@@ -83,13 +83,13 @@ export default function MeetingPage(props: Props) {
   // open changes will not be saved popup on close
   useEffect(() => {
     function onBeforeUnload(e: BeforeUnloadEvent) {
-      if (!name) return;
+      if (saved) return;
       e.preventDefault();
       return e.returnValue = 'Changes you made may not be saved.';
     }
     window.addEventListener('beforeunload', onBeforeUnload);
     return () => window.removeEventListener('beforeunload', onBeforeUnload);
-  }, [name]);
+  }, [saved]);
 
   // copies invite link to clipboard
   async function copyLink() {
