@@ -150,11 +150,24 @@
             }
           }
 
+          >.savingSpan {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            color: var(--gray);
+            font-weight: bold;
+          }
+
+          >.savingSpan,
+          >.inviteButton,
+          >.inviteButtonPlaceholder {
+            width: 122px;
+          }
+
           >.inviteButton {
             background: var(--dark-white);
             border: 1px solid var(--mid-gray);
             color: var(--secondary-text);
-            width: 122px;
 
             &:hover {
               background: var(--light-gray);
