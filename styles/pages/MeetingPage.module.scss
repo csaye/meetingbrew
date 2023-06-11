@@ -219,24 +219,46 @@
           }
 
           >.nameInput {
-            margin: 8px 0 8px 52px;
-            padding: 1px 6px;
-            color: var(--primary-text);
-            font-size: 24px;
-            font-weight: 500;
-            background: var(--white);
-            width: 214px;
-            height: 32px;
-            border: 1px solid var(--light-gray);
-            border-radius: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
 
-            &::placeholder {
-              color: var(--gray);
+            >input {
+              margin: 8px 0 8px 52px;
+              padding: 1px 6px;
+              color: var(--primary-text);
+              font-size: 24px;
+              font-weight: 500;
+              background: var(--white);
+              width: 214px;
+              height: 32px;
+              border: 1px solid var(--light-gray);
+              border-radius: 0;
+
+              &::placeholder {
+                color: var(--gray);
+              }
+
+              &:focus {
+                border-color: var(--mb-red);
+                outline: none;
+              }
             }
 
-            &:focus {
-              border-color: var(--mb-red);
-              outline: none;
+            >button {
+              flex-shrink: 0;
+              padding: 0;
+              width: 32px;
+              height: 32px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: var(--mb-red);
+              border: 0;
+
+              &:hover {
+                background: var(--mb-red-hover);
+              }
             }
           }
 
