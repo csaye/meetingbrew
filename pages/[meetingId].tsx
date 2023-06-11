@@ -169,7 +169,7 @@ export default function MeetingPage(props: Props) {
       return;
     }
     // create respondent
-    const rIndex = respondentIndex(inputName);
+    const rIndex = respondents.findIndex(r => r.name.toLowerCase() === inputName.toLowerCase());
     if (rIndex === -1) createRespondent();
     else {
       setSelectedIndices(respondents[rIndex].availability);
