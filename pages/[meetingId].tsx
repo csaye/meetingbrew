@@ -104,24 +104,34 @@ export default function MeetingPage(props: Props) {
   }
 
   // saves respondent in firebase
-  async function saveRespondent() {
+  const saveRespondent = useCallback(async (done?: boolean) => {
+
     // return if invalid states
-    if (!meeting || !respondents || !name) return;
-    // get respondent data
-    const rIndex = respondentIndex(name);
-    if (rIndex === -1) throw 'saving respondent with invalid name';
+    if (!meeting || !name) throw new Error('saving in invalid state');
     const availability = selectedIndices.slice();
+
     // update local respondent
-    const newRespondents = respondents.slice();
-    newRespondents[rIndex].availability = availability;
-    setRespondents(newRespondents);
-    setName(null);
+    setRespondents(respondents => {
+      if (!respondents) throw new Error('saving with undefined respondents');
+      const newRespondents = respondents.slice();
+      const rIndex = respondents.findIndex(r => r.name.toLowerCase() === name.toLowerCase());
+      if (rIndex === -1) throw new Error('saving respondent with invalid name');
+      newRespondents[rIndex].availability = availability;
+      saveRespondentFirebase(newRespondents[rIndex].id);
+      if (done) setName(null);
+      return newRespondents
+    });
+
     // update firebase respondent
-    const { id } = newRespondents[rIndex];
-    const meetingId = meeting.id.toLowerCase();
-    const respondentDocRef = doc(db, 'meetings', meetingId, 'respondents', id);
-    await updateDoc(respondentDocRef, { availability, updated: Date.now() });
-  }
+    async function saveRespondentFirebase(id: string) {
+      if (!meeting) throw new Error('saving in invalid state');
+      const meetingId = meeting.id.toLowerCase();
+      const respondentDocRef = doc(db, 'meetings', meetingId, 'respondents', id);
+      await updateDoc(respondentDocRef, { availability, updated: Date.now() });
+      setSaved(true);
+    }
+
+  }, [db, meeting, name, selectedIndices]);
 
   // handle autosave
   useEffect(() => {
