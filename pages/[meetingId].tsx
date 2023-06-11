@@ -15,18 +15,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
-export async function getServerSideProps(props: NextApiRequest) {
-  // get meeting id
-  let { meetingId } = props.query;
-  const noMeeting = { props: { meeting: null } };
-  if (!meetingId || typeof meetingId !== 'string') return noMeeting;
-  meetingId = meetingId.toLowerCase();
-  // get meeting
-  const db = getFirestore();
-  const meetingRef = doc(db, 'meetings', meetingId);
-  const meetingDoc = await getDoc(meetingRef);
-  if (!meetingDoc.exists()) return noMeeting;
-  return { props: { meeting: meetingDoc.data() as Meeting } };
+export function getServerSideProps(props: NextApiRequest) {
+  const { meetingId } = props.query;
+  if (!meetingId || typeof meetingId !== 'string') {
+    return { props: { meetingId: null } };
+  }
+  return { props: { meetingId: meetingId.toLowerCase() } };
 }
 
 type Props = {
