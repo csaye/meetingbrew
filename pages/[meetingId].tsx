@@ -105,6 +105,7 @@ export default function MeetingPage(props: Props) {
 
   // saves respondent in firebase
   const saveRespondent = useCallback(async (done?: boolean) => {
+    setSaved(true);
 
     // return if invalid states
     if (!meeting || !name) throw new Error('saving in invalid state');
@@ -128,7 +129,6 @@ export default function MeetingPage(props: Props) {
       const meetingId = meeting.id.toLowerCase();
       const respondentDocRef = doc(db, 'meetings', meetingId, 'respondents', id);
       await updateDoc(respondentDocRef, { availability, updated: Date.now() });
-      setSaved(true);
     }
 
   }, [db, meeting, name, selectedIndices]);
