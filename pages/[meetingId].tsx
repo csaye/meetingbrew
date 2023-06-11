@@ -103,12 +103,6 @@ export default function MeetingPage(props: Props) {
     }, 2000);
   }
 
-  // returns index of respondent by name
-  function respondentIndex(name: string) {
-    if (!respondents) return -1;
-    return respondents.findIndex(r => r.name.toLowerCase() === name.toLowerCase());
-  }
-
   // saves respondent in firebase
   async function saveRespondent() {
     // return if invalid states
