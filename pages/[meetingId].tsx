@@ -129,6 +129,14 @@ export default function MeetingPage(props: Props) {
     await updateDoc(respondentDocRef, { availability, updated: Date.now() });
   }
 
+  // handle autosave
+  useEffect(() => {
+    if (!name) return;
+    setSaved(false);
+    const saveTimeout = setTimeout(saveRespondent, 1000);
+    return () => clearTimeout(saveTimeout);
+  }, [selectedIndices, name, saveRespondent]);
+
   // focus name input on response start
   useEffect(() => {
     if (inputtingName) nameRef.current?.focus();
