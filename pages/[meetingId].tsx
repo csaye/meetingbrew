@@ -206,7 +206,7 @@ export default function MeetingPage(props: Props) {
       <Header className={styles.header} />
       <div className={styles.outerContent}>
         {
-          (meeting === null) ? <NoMeeting /> :
+          (meeting === null || respondents === null) ? <NoMeeting /> : !meeting ? <h2>Loading...</h2> :
             <div className={styles.content} ref={contentRef}>
               <h1>{meeting.title}</h1>
               <div className={styles.options}>
