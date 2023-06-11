@@ -236,26 +236,33 @@ export default function MeetingPage(props: Props) {
                           Respond
                         </button>
                   }
-                  <button
-                    className={styleBuilder([
-                      styles.inviteButton,
-                      [styles.copied, copied],
-                      [styles.grayedOut, !!name || inputtingName]
-                    ])}
-                    onClick={copyLink}
-                  >
-                    {
-                      copied ?
-                        <>
-                          <Image src="/icons/checkdark.svg" width="24" height="24" alt="link.svg" />
-                          Copied
-                        </> :
-                        <>
-                          <Image src="/icons/link.svg" width="24" height="24" alt="link.svg" />
-                          Invite
-                        </>
-                    }
-                  </button>
+                  {
+                    !!name ?
+                      <span className={styles.savingSpan}>
+                        {saved ? 'Saved' : 'Saving...'}
+                      </span> :
+                      inputtingName ?
+                        <span className={styles.inviteButtonPlaceholder} /> :
+                        <button
+                          className={styleBuilder([
+                            styles.inviteButton,
+                            [styles.copied, copied]
+                          ])}
+                          onClick={copyLink}
+                        >
+                          {
+                            copied ?
+                              <>
+                                <Image src="/icons/checkdark.svg" width="24" height="24" alt="link.svg" />
+                                Copied
+                              </> :
+                              <>
+                                <Image src="/icons/link.svg" width="24" height="24" alt="link.svg" />
+                                Invite
+                              </>
+                          }
+                        </button>
+                  }
                 </div>
                 <div className={styleBuilder([
                   styles.bigScreen,
