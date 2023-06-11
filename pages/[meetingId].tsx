@@ -13,7 +13,7 @@ import { NextApiRequest } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function getServerSideProps(props: NextApiRequest) {
   const { meetingId } = props.query;
@@ -24,15 +24,16 @@ export function getServerSideProps(props: NextApiRequest) {
 }
 
 type Props = {
-  meeting: Meeting | null;
+  meetingId: string | null;
 };
 
 export default function MeetingPage(props: Props) {
-  const { meeting } = props;
+  const { meetingId } = props;
 
   const db = getFirestore();
 
-  const [respondents, setRespondents] = useState<Respondent[]>();
+  const [meeting, setMeeting] = useState<Meeting | null>();
+  const [respondents, setRespondents] = useState<Respondent[] | null>();
   const [timezone, setTimezone] = useState<string>(getCurrentTimezone());
   const [inputtingName, setInputtingName] = useState(false);
   const [inputName, setInputName] = useState('');
