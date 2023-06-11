@@ -9,28 +9,17 @@ import { getCurrentTimezone } from '@/util/timezone';
 import { Interval, Meeting, Respondent } from '@/util/types';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
-import { NextApiRequest } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export function getServerSideProps(props: NextApiRequest) {
-  const { meetingId } = props.query;
-  if (!meetingId || typeof meetingId !== 'string') {
-    return { props: { meetingId: null } };
-  }
-  return { props: { meetingId: meetingId.toLowerCase() } };
-}
-
-type Props = {
-  meetingId: string | null;
-};
-
-export default function MeetingPage(props: Props) {
-  const { meetingId } = props;
-
+export default function MeetingPage() {
   const db = getFirestore();
+
+  const router = useRouter();
+  const { meetingId } = router.query;
 
   const [meeting, setMeeting] = useState<Meeting | null>();
   const [respondents, setRespondents] = useState<Respondent[] | null>();
@@ -55,8 +44,9 @@ export default function MeetingPage(props: Props) {
   // get meeting and respondents on start
   useEffect(() => {
     async function getMeeting() {
-      // return if invalid meeting id
-      if (!meetingId) {
+      if (meetingId === undefined) return;
+      // invalid meeting id
+      if (typeof meetingId !== 'string') {
         setMeeting(null);
         setRespondents(null);
         return;
