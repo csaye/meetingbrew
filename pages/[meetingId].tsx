@@ -50,21 +50,35 @@ export default function MeetingPage(props: Props) {
   const nameRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // get respondents on start
+  const [saved, setSaved] = useState(true);
+
+  // get meeting and respondents on start
   useEffect(() => {
-    async function getRespondents() {
-      // return if invalid meeting
-      if (!meeting) return;
+    async function getMeeting() {
+      // return if invalid meeting id
+      if (!meetingId) {
+        setMeeting(null);
+        setRespondents(null);
+        return;
+      }
+      // get meeting data
+      const meetingRef = doc(db, 'meetings', meetingId);
+      const meetingDoc = await getDoc(meetingRef);
+      if (!meetingDoc.exists()) {
+        setMeeting(null);
+        setRespondents(null);
+        return;
+      };
+      setMeeting(meetingDoc.data() as Meeting);
       // get respondents
-      const meetingId = meeting.id.toLowerCase();
-      const respondentsRef = collection(db, 'meetings', meetingId, 'respondents');
+      const respondentsRef = collection(meetingRef, 'respondents');
       const respondentsDocs = (await getDocs(respondentsRef)).docs;
       const newRespondents = respondentsDocs.map(doc => doc.data() as Respondent);
       newRespondents.sort((a, b) => a.created - b.created);
       setRespondents(newRespondents);
     }
-    getRespondents();
-  }, [meeting, db]);
+    getMeeting();
+  }, [meetingId, db]);
 
   // open changes will not be saved popup on close
   useEffect(() => {
