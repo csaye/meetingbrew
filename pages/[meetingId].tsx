@@ -325,7 +325,10 @@ export default function MeetingPage(props: Props) {
                         ref={nameRef}
                         value={inputName}
                         onChange={e => setInputName(e.target.value)}
-                        onKeyDown={e => { if (e.key === 'Enter') saveName() }}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter') saveName();
+                          if (e.key === 'Escape') setInputtingName(false);
+                        }}
                         placeholder="Name"
                         maxLength={50}
                         spellCheck="false"
