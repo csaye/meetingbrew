@@ -215,11 +215,12 @@ export default function MeetingPage(props: Props) {
                     inputtingName ?
                       <button
                         className={styles.respondButton}
-                        onClick={saveName}
+                        onClick={() => setInputtingName(false)}
                       >
-                        <Image src="/icons/continueArrow.svg" width="24" height="24" alt="check.svg" />
-                        Continue
-                      </button> :
+                        <Image src="/icons/backArrow.svg" width="24" height="24" alt="backArrow.svg" />
+                        Cancel
+                      </button>
+                      :
                       name ?
                         <button
                           className={styles.respondButton}
