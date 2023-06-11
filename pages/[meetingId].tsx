@@ -224,10 +224,10 @@ export default function MeetingPage(props: Props) {
                       name ?
                         <button
                           className={styles.respondButton}
-                          onClick={saveRespondent}
+                          onClick={() => saveRespondent(true)}
                         >
                           <Image src="/icons/check.svg" width="24" height="24" alt="check.svg" />
-                          Save
+                          Done
                         </button> :
                         <button
                           className={styles.respondButton}
