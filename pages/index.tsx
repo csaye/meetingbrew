@@ -106,7 +106,7 @@ export default function Index() {
     // increment meeting count
     const statsRef = doc(db, 'app', 'stats');
     await updateDoc(statsRef, { meetings: increment(1) });
-    Router.push(`/${meetingId.toLowerCase()}`);
+    Router.push(`/${meetingId}`);
   }
 
   return (

@@ -52,7 +52,7 @@ export default function MeetingPage() {
         return;
       }
       // get meeting data
-      const meetingRef = doc(db, 'meetings', meetingId);
+      const meetingRef = doc(db, 'meetings', meetingId.toLowerCase());
       const meetingDoc = await getDoc(meetingRef);
       if (!meetingDoc.exists()) {
         setMeeting(null);
