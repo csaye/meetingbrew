@@ -6,7 +6,7 @@
       width: 720px;
     }
 
-    >a:first-of-type img {
+    > a:first-of-type img {
       &:nth-of-type(1) {
         @media (max-width: 815.98px) {
           display: none;
@@ -21,14 +21,14 @@
     }
   }
 
-  >.outerContent {
+  > .outerContent {
     min-height: calc(100vh - 96px);
     padding: 48px;
     display: flex;
     justify-content: center;
     background: var(--dim-white);
 
-    >.content {
+    > .content {
       width: 336px;
       max-width: 100%;
 
@@ -36,25 +36,20 @@
         width: 720px;
       }
 
-      >h1 {
+      > h1 {
         color: var(--primary-text);
       }
 
-      >p {
+      > p {
         color: var(--secondary-text);
         margin: 12px 0;
         line-height: 32px;
       }
 
-      >.contact {
-        >p {
-          margin-bottom: 4px;
-        }
-
-        line-height: 32px;
-
-        a:hover {
+      > .contact {
+        a {
           text-decoration: underline;
+          font-weight: 400;
         }
       }
     }
