@@ -47,9 +47,13 @@
       }
 
       > .contact {
-        a {
-          text-decoration: underline;
-          font-weight: 400;
+        > p {
+          line-height: 32px;
+
+          > a {
+            text-decoration: underline;
+            font-weight: 400;
+          }
         }
       }
     }

@@ -18,6 +18,12 @@ export default function About() {
               Contact us:{' '}
               <a href='mailto:hi@meetingbrew.com'>hi@meetingbrew.com</a>
             </p>
+            <p>
+              Star MeetingBrew on GitHub:{' '}
+              <a href='https://github.com/csaye/meetingbrew' target='_blank' rel='noopener noreferrer'>
+                github.com/csaye/meetingbrew
+              </a>
+            </p>
           </div>
         </div>
       </div>

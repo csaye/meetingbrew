@@ -34,6 +34,12 @@
       &:hover {
         text-decoration: underline;
       }
+
+      &.bigLink {
+        @media (max-width: 815.98px) {
+          display: none;
+        }
+      }
     }
 
     > button {
