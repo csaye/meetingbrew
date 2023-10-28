@@ -6,7 +6,7 @@
       width: 720px;
     }
 
-    >a:first-of-type img {
+    > a:first-of-type img {
       &:nth-of-type(1) {
         @media (max-width: 815.98px) {
           display: none;
@@ -21,19 +21,19 @@
     }
   }
 
-  >.outerContent {
+  > .outerContent {
     min-height: calc(100vh - 96px);
     padding: 48px;
     display: flex;
     justify-content: center;
     background: var(--dim-white);
 
-    >.content {
+    > .content {
       display: flex;
       flex-direction: column;
       width: fit-content;
 
-      >.titleInput {
+      > .titleInput {
         height: 48px;
         margin: 0 0 36px 0;
         padding: 0;
@@ -51,7 +51,7 @@
         }
 
         &::placeholder {
-          color: var(--gray)
+          color: var(--gray);
         }
 
         &:focus {
@@ -59,52 +59,52 @@
         }
       }
 
-      >.datesTimes {
+      > .datesTimes {
         display: flex;
         flex-direction: column;
 
         @media (min-width: 816px) {
           flex-direction: row;
 
-          >.dates {
+          > .dates {
             margin-right: 48px;
           }
         }
 
-        >.dates,
-        >.times {
+        > .dates,
+        > .times {
           width: 336px;
           margin-bottom: 48px;
 
-          >h2 {
+          > h2 {
             margin-bottom: 12px;
           }
 
-          >p {
+          > p {
             color: var(--secondary-text);
           }
 
-          >.select {
+          > .select {
             margin-bottom: 24px;
           }
         }
       }
 
-      >.options {
+      > .options {
         width: 336px;
 
-        >.idSection {
+        > .idSection {
           margin-bottom: 48px;
 
-          >.idInput {
+          > .idInput {
             margin-bottom: 12px;
 
-            >p {
+            > p {
               font-weight: 600;
               display: inline;
             }
 
-            >input {
+            > input {
               flex-grow: 1;
               height: 32px;
               padding: 4px 6px;
@@ -117,7 +117,7 @@
               background: var(--white);
 
               &::placeholder {
-                color: var(--gray)
+                color: var(--gray);
               }
 
               &:focus {
@@ -127,12 +127,12 @@
             }
           }
 
-          >p {
+          > p {
             color: var(--secondary-text);
           }
         }
 
-        >button {
+        > button {
           height: 48px;
           display: flex;
           align-items: center;
@@ -144,7 +144,7 @@
           font-size: 16px;
           padding: 0 24px 0 18px;
 
-          >img {
+          > img {
             margin-right: 6px;
           }
 

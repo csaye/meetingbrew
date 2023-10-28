@@ -2,7 +2,7 @@
   user-select: none;
   display: flex;
 
-  >.namesPopup {
+  > .namesPopup {
     position: fixed;
     inset: 0;
     background: rgba(255, 255, 255, 0.8);
@@ -10,7 +10,7 @@
     touch-action: none;
     z-index: 100;
 
-    >.head {
+    > .head {
       height: var(--header);
       background: var(--white);
       display: flex;
@@ -20,7 +20,7 @@
       border-style: solid;
       border-color: var(--light-gray);
 
-      >h2 {
+      > h2 {
         font-family: 'Outfit', sans-serif;
         font-weight: 300;
         font-feature-settings: 'tnum' on, 'lnum' on;
@@ -28,12 +28,12 @@
       }
     }
 
-    >.names {
+    > .names {
       padding: 18px 24px;
       display: flex;
       flex-wrap: wrap;
 
-      >.name {
+      > .name {
         width: 50%;
         font-size: 24px;
         margin: 6px 0;
@@ -50,14 +50,14 @@
     }
   }
 
-  >.hours {
+  > .hours {
     width: 48px;
     flex-shrink: 0;
     margin-left: 24px;
     padding-right: 12px;
     padding-top: calc(80px - 32px / 2);
 
-    >.hour {
+    > .hour {
       color: var(--secondary-text);
       height: 32px;
       display: flex;
@@ -79,7 +79,7 @@
     }
   }
 
-  >.content {
+  > .content {
     max-width: 600px;
     overflow-x: auto;
 
@@ -98,7 +98,6 @@
     &::-webkit-scrollbar-track {
       background: var(--light-gray);
       border-radius: 10px;
-
     }
 
     &::-webkit-scrollbar-thumb {
@@ -110,15 +109,15 @@
       }
     }
 
-    >.days {
+    > .days {
       display: flex;
 
-      >.day {
+      > .day {
         display: flex;
         flex-direction: column;
         text-align: center;
 
-        >.heading {
+        > .heading {
           background: var(--white);
           border: 1px solid var(--light-gray);
           border-right-width: 0;
@@ -130,7 +129,7 @@
           align-items: center;
           justify-content: center;
 
-          >h1 {
+          > h1 {
             margin: 0;
             color: var(--primary-text);
             font-weight: 500;
@@ -138,7 +137,7 @@
             line-height: 32px;
           }
 
-          >h2 {
+          > h2 {
             margin: 0;
             color: var(--secondary-text);
             font-weight: 400;
@@ -154,12 +153,12 @@
         /* add right borders for last column and gapped headings */
         &:last-of-type,
         &.gapped {
-          >.heading {
+          > .heading {
             border-right-width: 1px;
           }
         }
 
-        >.interval {
+        > .interval {
           touch-action: none;
           background: var(--light-gray);
           width: 80px;
@@ -200,7 +199,7 @@
           }
 
           /* interval hour dividers */
-          &:nth-of-type(4n+6) {
+          &:nth-of-type(4n + 6) {
             border-top-width: 1px;
           }
 
@@ -212,12 +211,12 @@
 
         /* remove the left border for first column intervals */
         &:first-of-type {
-          >.interval {
+          > .interval {
             border-left: 0;
           }
         }
 
-        >.scroller {
+        > .scroller {
           border-top: 1px solid var(--white);
           height: 48px;
           background-image: url('/img/scroll.svg');
@@ -231,7 +230,7 @@
       }
 
       /* remove the left border for intervals after a day gap */
-      >.day.gapped+.day>.interval {
+      > .day.gapped + .day > .interval {
         border-left: 0;
       }
     }

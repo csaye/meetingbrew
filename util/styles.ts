@@ -1,18 +1,18 @@
-import { CSSObjectWithLabel } from "react-select";
+import { CSSObjectWithLabel } from 'react-select'
 
 // returns class name built with given style data
 export function styleBuilder(styles: (string | [string, boolean])[]) {
-  const usedStyles: string[] = [];
+  const usedStyles: string[] = []
   for (const style of styles) {
-    if (typeof style === 'string') usedStyles.push(style);
-    else if (style[1]) usedStyles.push(style[0]);
+    if (typeof style === 'string') usedStyles.push(style)
+    else if (style[1]) usedStyles.push(style[0])
   }
-  return usedStyles.join(' ');
+  return usedStyles.join(' ')
 }
 
 // styles applied to react select component
 export const selectStyles = {
-  control: (baseStyles: CSSObjectWithLabel, state: { isFocused: boolean; }) => ({
+  control: (baseStyles: CSSObjectWithLabel, state: { isFocused: boolean }) => ({
     ...baseStyles,
     height: '48px',
     borderRadius: 0,
@@ -22,23 +22,29 @@ export const selectStyles = {
     boxShadow: 'none',
     '&:hover': {
       borderColor: 'var(--gray)',
-    }
+    },
   }),
   menu: (baseStyles: CSSObjectWithLabel) => ({
     ...baseStyles,
-    borderRadius: 0
+    borderRadius: 0,
   }),
   menuList: (baseStyles: CSSObjectWithLabel) => ({
     ...baseStyles,
-    padding: 0
+    padding: 0,
   }),
-  option: (baseStyles: CSSObjectWithLabel, state: { isSelected: boolean; isFocused: boolean; }) => ({
+  option: (
+    baseStyles: CSSObjectWithLabel,
+    state: { isSelected: boolean; isFocused: boolean }
+  ) => ({
     ...baseStyles,
     backgroundColor: 'var(--white)',
-    background: state.isSelected ? 'var(--mb-red)' :
-      state.isFocused ? 'rgba(250, 56, 56, 0.2)' : undefined,
+    background: state.isSelected
+      ? 'var(--mb-red)'
+      : state.isFocused
+      ? 'rgba(250, 56, 56, 0.2)'
+      : undefined,
     '&:active': {
-      background: 'rgba(250, 56, 56, 0.33)'
-    }
-  })
-};
+      background: 'rgba(250, 56, 56, 0.33)',
+    },
+  }),
+}

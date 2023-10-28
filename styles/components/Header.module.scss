@@ -16,7 +16,7 @@
     align-items: center;
     width: 100%;
 
-    >a.link {
+    > a.link {
       margin: 0 36px 0 24px;
       color: var(--secondary-text);
       font-size: 16px;
@@ -27,7 +27,7 @@
       }
     }
 
-    >a {
+    > a {
       color: var(--secondary-text);
       margin-right: 32px;
 
@@ -36,7 +36,7 @@
       }
     }
 
-    >button {
+    > button {
       height: 48px;
       display: flex;
       flex-shrink: 0;
@@ -49,7 +49,7 @@
       font-size: 16px;
       padding: 0 24px 0 18px;
 
-      >img {
+      > img {
         margin-right: 6px;
       }
 

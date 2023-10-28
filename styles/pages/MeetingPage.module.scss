@@ -8,7 +8,7 @@
       width: 952px;
     }
 
-    >a:first-of-type img {
+    > a:first-of-type img {
       &:nth-of-type(1) {
         @media (max-width: 1047.98px) {
           display: none;
@@ -23,21 +23,21 @@
     }
   }
 
-  >.outerContent {
+  > .outerContent {
     min-height: calc(100% - var(--header));
     padding: 48px;
     background: var(--dim-white);
     display: flex;
     justify-content: center;
 
-    >.noMeeting {
+    > .noMeeting {
       text-align: center;
 
-      >h2 {
+      > h2 {
         margin-bottom: 16px;
       }
 
-      >a {
+      > a {
         font-size: 20px;
         text-decoration: underline;
         color: var(--mb-red);
@@ -48,7 +48,7 @@
       }
     }
 
-    >.content {
+    > .content {
       width: fit-content;
 
       @media (max-width: 1047.98px) {
@@ -80,7 +80,7 @@
           }
         }
 
-        >p {
+        > p {
           color: var(--secondary-text);
           font-weight: 500;
           font-size: 16px;
@@ -89,21 +89,21 @@
           text-align: center;
         }
 
-        >.shades {
+        > .shades {
           display: flex;
           margin: 0 12px;
           width: 192px;
           height: 48px;
           background: var(--light-gray);
 
-          >.shade {
+          > .shade {
             flex-grow: 1;
             height: 48px;
           }
         }
       }
 
-      >h1 {
+      > h1 {
         margin: 0;
         color: var(--primary-text);
         font-weight: 600;
@@ -112,7 +112,7 @@
         word-wrap: break-word;
       }
 
-      >.options {
+      > .options {
         display: flex;
         margin: 24px 0;
 
@@ -121,10 +121,10 @@
           align-items: flex-start;
         }
 
-        >.buttons {
+        > .buttons {
           display: flex;
 
-          >button {
+          > button {
             height: 48px;
             display: flex;
             align-items: center;
@@ -133,12 +133,12 @@
             font-size: 16px;
             padding: 0 24px 0 18px;
 
-            >img {
+            > img {
               margin-right: 12px;
             }
           }
 
-          >.respondButton {
+          > .respondButton {
             background: var(--mb-red);
             border: 0;
             color: var(--white);
@@ -150,7 +150,7 @@
             }
           }
 
-          >.savingSpan {
+          > .savingSpan {
             height: 100%;
             display: flex;
             align-items: center;
@@ -158,13 +158,13 @@
             font-weight: bold;
           }
 
-          >.savingSpan,
-          >.inviteButton,
-          >.inviteButtonPlaceholder {
+          > .savingSpan,
+          > .inviteButton,
+          > .inviteButtonPlaceholder {
             width: 122px;
           }
 
-          >.inviteButton {
+          > .inviteButton {
             background: var(--dark-white);
             border: 1px solid var(--mid-gray);
             color: var(--secondary-text);
@@ -174,7 +174,7 @@
             }
 
             &.copied {
-              >img {
+              > img {
                 margin-right: 4px;
                 margin-left: -2px;
               }
@@ -182,7 +182,7 @@
           }
         }
 
-        >.select {
+        > .select {
           width: 336px;
 
           @media (max-width: 1047.98px) {
@@ -192,14 +192,14 @@
         }
       }
 
-      >.content {
+      > .content {
         display: flex;
 
         @media (max-width: 1047.98px) {
           flex-direction: column;
         }
 
-        >.respondents {
+        > .respondents {
           width: 280px;
           user-select: none;
 
@@ -208,7 +208,7 @@
             margin-bottom: 32px;
           }
 
-          >p {
+          > p {
             display: flex;
             align-items: center;
             margin: 0 0 12px 0;
@@ -218,7 +218,7 @@
             font-family: 'Outfit';
             font-feature-settings: 'tnum' on, 'lnum' on;
 
-            >img {
+            > img {
               margin: 0 12px 0 21px;
 
               @media (max-width: 1048px) {
@@ -227,16 +227,16 @@
             }
           }
 
-          >p:last-child {
+          > p:last-child {
             margin-left: 24px;
           }
 
-          >.nameInput {
+          > .nameInput {
             display: flex;
             align-items: center;
             gap: 8px;
 
-            >input {
+            > input {
               margin: 8px 0 8px 52px;
               padding: 1px 6px;
               color: var(--primary-text);
@@ -258,7 +258,7 @@
               }
             }
 
-            >button {
+            > button {
               flex-shrink: 0;
               padding: 0;
               width: 32px;
@@ -275,12 +275,12 @@
             }
           }
 
-          >.respondent {
+          > .respondent {
             display: flex;
             align-items: center;
             transition: 0.1s;
 
-            >.label {
+            > .label {
               margin-left: 0;
 
               &.notouch {
@@ -290,8 +290,8 @@
           }
         }
 
-        >.calendar {
-          >p {
+        > .calendar {
+          > p {
             color: var(--secondary-text);
             padding: 0 0 12px 72px;
           }

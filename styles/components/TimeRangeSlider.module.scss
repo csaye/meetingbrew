@@ -1,16 +1,16 @@
 .container {
-  >.timeRange {
+  > .timeRange {
     color: var(--primary-text);
     font-size: 24px;
     font-weight: 500;
 
-    >span {
+    > span {
       font-size: 16px;
       font-weight: 600;
     }
   }
 
-  >p {
+  > p {
     color: var(--secondary-text);
   }
 }

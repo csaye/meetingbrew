@@ -1,5 +1,5 @@
-import Header from "@/components/Header";
-import styles from "../styles/pages/About.module.scss";
+import Header from '@/components/Header'
+import styles from '../styles/pages/About.module.scss'
 
 export default function About() {
   return (
@@ -15,12 +15,12 @@ export default function About() {
           </p>
           <div className={styles.contact}>
             <p>
-              Contact us:{" "}
-              <a href="mailto:hi@meetingbrew.com">hi@meetingbrew.com</a>
+              Contact us:{' '}
+              <a href='mailto:hi@meetingbrew.com'>hi@meetingbrew.com</a>
             </p>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
