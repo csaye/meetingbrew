@@ -114,7 +114,7 @@
 
       > .options {
         display: flex;
-        margin: 24px 0;
+        margin-top: 24px;
 
         @media (max-width: 1047.98px) {
           flex-direction: column;
@@ -190,6 +190,11 @@
             margin-top: 12px;
           }
         }
+      }
+
+      > .info {
+        margin: 12px 0 16px 0;
+        font-size: 14px;
       }
 
       > .content {

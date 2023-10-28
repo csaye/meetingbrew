@@ -365,6 +365,9 @@ export default function MeetingPage() {
                 setTimezone={setTimezone}
               />
             </div>
+            <p className={styles.info}>
+              ⓘ If returning, enter same name to edit response
+            </p>
             <div className={styles.content}>
               <div className={styles.respondents}>
                 <p
