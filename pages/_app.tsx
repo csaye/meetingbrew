@@ -17,6 +17,7 @@ export default function App(props: AppProps) {
           name='description'
           content='A modern way to schedule your meetings.'
         />
+        <meta property='og:image' content='/img/meetingBrew.png' />
         <link rel='icon' href='/favicons/favicon.ico' />
         <link
           rel='apple-touch-icon'
