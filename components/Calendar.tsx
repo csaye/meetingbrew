@@ -3,8 +3,9 @@ import { styleBuilder } from '@/util/styles'
 import { intervalTimeString, timeString } from '@/util/time'
 import { Interval, Respondent } from '@/util/types'
 import moment, { Moment } from 'moment-timezone'
-import { Dispatch, useCallback, useEffect, useState } from 'react'
+import { Dispatch, useCallback, useRef, useEffect, useState } from 'react'
 import styles from '../styles/components/Calendar.module.scss'
+import debounce from 'lodash/debounce';
 
 type BaseBaseProps = {
   timezone: string
@@ -40,6 +41,9 @@ type CalendarDay = {
   intervals: Interval[]
 }
 
+const defaultWidth = 80;
+
+
 export default function Calendar(props: Props) {
   const { timezone, currentTimezone, earliest, latest, type, datesType } = props
 
@@ -50,6 +54,10 @@ export default function Calendar(props: Props) {
   const [dragStart, setDragStart] = useState<number[] | null>(null)
   const [dragEnd, setDragEnd] = useState<number[] | null>(null)
   const [touching, setTouching] = useState(false)
+
+  const daysDiv = useRef<HTMLDivElement | null>(null);
+  const [width, setWidth] = useState<number>(defaultWidth);
+  const widthStyle = { width: `${width}px` };
 
   // updates dates on calendar
   const updateDates = useCallback(() => {
@@ -372,6 +380,44 @@ export default function Calendar(props: Props) {
     return null
   }
 
+  // Function to calculate the adapted column width based on the area width and column count
+  function adaptColumnWidth(areaWidth: number, columnCount: number) {
+    let nFloor = Math.floor(areaWidth / defaultWidth);
+    
+    if (columnCount * defaultWidth > areaWidth && nFloor > 1) {
+      // Increase the width of the columns such that the last column shown only fits halfway
+      return areaWidth / (nFloor - 0.5);
+    }
+    return defaultWidth;
+  }
+
+  // Function to fix the width of columns based on the container's size and number of columns
+  function fixWidth() {
+    if (daysDiv.current) {
+      const areaWidth = daysDiv.current.getBoundingClientRect().width;
+      const columnCount = daysDiv.current.children.length;
+
+      setWidth(adaptColumnWidth(areaWidth, columnCount));
+    }  
+  } 
+  
+  // Debounce the resize handler
+  const debouncedFixWidth = useCallback(debounce(fixWidth, 100), [fixWidth]);
+
+  useEffect(() => {
+    // Call fixWidth once on mount
+    fixWidth();
+
+    // Add resize event listener with debounced function
+    window.addEventListener('resize', debouncedFixWidth);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', debouncedFixWidth);
+      debouncedFixWidth.cancel(); // Cancel any pending debounced calls
+    };
+  }, [debouncedFixWidth]);
+
   return (
     <div className={styles.container}>
       {type === 'display' && touching && props.hoverInterval && (
@@ -418,7 +464,7 @@ export default function Calendar(props: Props) {
           ))}
       </div>
       <div className={styles.content}>
-        <div className={styles.days}>
+        <div className={styles.days} ref={daysDiv}>
           {calendarDays.map((day, i) => (
             <div
               className={styleBuilder([
@@ -432,7 +478,7 @@ export default function Calendar(props: Props) {
               ])}
               key={i}
             >
-              <div className={styles.heading}>
+              <div className={styles.heading} style={widthStyle}>
                 <h1>{day.moment.format('ddd')}</h1>
                 {datesType === 'dates' && <h2>{day.moment.format('MMM D')}</h2>}
               </div>
@@ -441,6 +487,7 @@ export default function Calendar(props: Props) {
                   data-index={interval.index}
                   data-i={i}
                   data-j={j}
+                  style={widthStyle}
                   className={styleBuilder([
                     styles.interval,
                     [styles.inactive, !interval.active],
