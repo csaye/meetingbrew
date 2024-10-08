@@ -63,7 +63,9 @@ export default function Calendar(props: Props) {
     let minHour, maxHour
     // get all active intervals
     for (const date of dates) {
-      const [earliest, latest] = timeRanges[date] ?? [9, 17]
+      if( earliest === undefined || latest === undefined) {
+        const [earliest, latest] = timeRanges[date] ?? [9, 17]
+      }
       // get start moment for day
       const hourPadded = earliest.toString().padStart(2, '0')
       let mmt = moment.tz(`${date} ${hourPadded}:00:00`, timezone)
@@ -111,7 +113,9 @@ export default function Calendar(props: Props) {
     let minHour, maxHour
     // get all active intervals
     for (const day of days) {
+      if( earliest === undefined || latest === undefined) {
         const [earliest, latest] = timeRanges[day.toString()] ?? [9, 17]
+      }
       for (let hour = earliest; hour < latest; hour++) {
         for (let minute = 0; minute < 60; minute += 15) {
           // set moment and switch timezone
