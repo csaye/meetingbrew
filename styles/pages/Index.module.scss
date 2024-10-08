@@ -160,3 +160,40 @@
     }
   }
 }
+
+.timeRange {
+  display: flex;
+  margin-bottom: 1em;
+}
+
+.calendarIcon {
+  display: flex;
+  flex-direction: column;
+  width: 80px;
+  height: 80px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  flex: 1 0 auto;
+  margin: 0 15px;
+}
+
+.month {
+  background-color: var(--mb-red);
+  color: white;
+  font-weight: bold;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  padding: 5px 0;
+  font-size: 14px;
+}
+
+.day {
+  font-size: 36px;
+  color: #333;
+  line-height: 50px;
+  flex: 1 1 auto;
+  align-content: center;
+}
