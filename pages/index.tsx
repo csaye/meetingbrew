@@ -160,6 +160,8 @@ const updateTimeRange = (day: string, newRange: number[]) => {
     const meetingId = id ? id : doc(meetingsRef).id.slice(0, 6).toLowerCase()
     const idLower = meetingId.toLowerCase()
     const meetingRef = doc(meetingsRef, idLower)
+    const earliest = -1
+    const latest = -1
     // create meeting
     const meetingBase = {
       id: meetingId,
