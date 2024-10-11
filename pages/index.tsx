@@ -235,7 +235,7 @@ return (
               timezone={timezone}
               setTimezone={setTimezone}
             />
-            <TimeRanges timeRanges={timeRanges} updateTimeRange={updateTimeRange} />
+            <TimeRanges timeRanges={timeRanges} updateTimeRange={updateTimeRange} datesOption={datesOption}/>
           </div>
         </div>
         <div className={styles.options}>
