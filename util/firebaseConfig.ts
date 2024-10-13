@@ -3,7 +3,7 @@ import { getApps, initializeApp } from 'firebase/app'
 
 // firebase web app config data
 const firebaseConfig = {
-  apiKey: 'AIzaSyD-ls3eXVDkiZf5VVG0nHn66-pMBfER0ao',
+  apiKey: 'FIREBASE_API_KEY',
   authDomain: 'meetingbrew.firebaseapp.com',
   projectId: 'meetingbrew',
   storageBucket: 'meetingbrew.appspot.com',
