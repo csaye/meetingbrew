@@ -3,8 +3,7 @@ import TimeRangeSlider from "@/components/TimeRangeSlider";
 
 type Props = {
     timeRanges: { [day: string]: number[] },
-    updateTimeRange: (day: string, newRange: number[]) => void,
-    datesOption?: { label: string; value: string } | { label: string; value: string }
+    updateTimeRange: (day: string, newRange: number[]) => void
 };
 
 
@@ -14,9 +13,14 @@ function DayCard(props: { day: string }) {
     let month = null;
     let date = null;
 
+
     if (day.length > 1) {
-        month = new Date(day).toLocaleString('default', {month: 'short'});
-        date = new Date(day).getDate();
+        const utcDate = new Date(day)
+        const localDate = new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000)
+
+        month = localDate.toLocaleString('default', { month: 'short' });
+        date = localDate.toLocaleString('default', { day: 'numeric' });
+
     } else {
         const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         date = daysOfWeek[Number(day)];
