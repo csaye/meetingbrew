@@ -121,7 +121,6 @@
           background: var(--white);
           border: 1px solid var(--light-gray);
           border-right-width: 0;
-          width: 80px;
           height: 80px;
           text-align: center;
           display: flex;
@@ -161,7 +160,6 @@
         > .interval {
           touch-action: none;
           background: var(--light-gray);
-          width: 80px;
           height: 8px;
           border-top: 1px solid var(--dim-white);
           border-left: 1px solid var(--dim-white);
