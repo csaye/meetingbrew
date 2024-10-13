@@ -115,6 +115,14 @@ const updateTimeRange = (day: string, newRange: number[]) => {
     titleInput.current?.focus()
   }, [])
 
+  useEffect( () => {
+    if(datesOption.value === 'days'){
+      setDaysAndManageTimeRanges(days);
+    }else{
+        setDatesAndManageTimeRanges(dates);
+    }
+  },[datesOption])
+
   // creates a new meeting in firebase
   async function createMeeting() {
     // if no title given
@@ -235,7 +243,7 @@ return (
               timezone={timezone}
               setTimezone={setTimezone}
             />
-            <TimeRanges timeRanges={timeRanges} updateTimeRange={updateTimeRange} datesOption={datesOption}/>
+            <TimeRanges timeRanges={timeRanges} updateTimeRange={updateTimeRange} />
           </div>
         </div>
         <div className={styles.options}>
