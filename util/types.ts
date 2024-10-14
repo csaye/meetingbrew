@@ -4,6 +4,7 @@ type BaseMeeting = {
   timezone: string
   earliest: number
   latest: number
+  timeRanges: { [day: string]: number[] }
   created: number
 }
 

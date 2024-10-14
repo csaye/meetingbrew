@@ -13,6 +13,7 @@ type BaseBaseProps = {
   days?: number[]
   earliest: number
   latest: number
+  timeRanges: { [day: string]: number[] }
 }
 
 type BaseProps =
@@ -41,7 +42,7 @@ type CalendarDay = {
 }
 
 export default function Calendar(props: Props) {
-  const { timezone, currentTimezone, earliest, latest, type, datesType } = props
+  const { timezone, currentTimezone, earliest, latest,timeRanges, type, datesType } = props
 
   const [calendarDays, setCalendarDays] = useState<CalendarDay[]>([])
   const [hours, setHours] = useState<number[]>()
@@ -62,11 +63,18 @@ export default function Calendar(props: Props) {
     let minHour, maxHour
     // get all active intervals
     for (const date of dates) {
+      let dateEarliest, dateLatest
+      if (timeRanges !== undefined) {
+        [dateEarliest, dateLatest] = timeRanges[date] ?? [9, 17]
+      } else {
+        dateEarliest = earliest
+        dateLatest = latest
+      }
       // get start moment for day
-      const hourPadded = earliest.toString().padStart(2, '0')
+      const hourPadded = dateEarliest.toString().padStart(2, '0')
       let mmt = moment.tz(`${date} ${hourPadded}:00:00`, timezone)
       // continue in 15 minute intervals until latest hour reached
-      while (mmt.hour() < latest && mmt.format('YYYY-MM-DD') === date) {
+      while (mmt.hour() < dateLatest && mmt.format('YYYY-MM-DD') === date) {
         // clone moment into current timezone
         const currentMmt = mmt.clone().tz(currentTimezone)
         // update hour range
@@ -96,7 +104,7 @@ export default function Calendar(props: Props) {
       fallBackHours,
       fallBackDates,
     }
-  }, [currentTimezone, datesType, earliest, latest, props.dates, timezone])
+  }, [currentTimezone, datesType, earliest, latest, timeRanges, props.dates, timezone])
 
   // updates days on calendar
   const updateDays = useCallback(() => {
@@ -109,7 +117,14 @@ export default function Calendar(props: Props) {
     let minHour, maxHour
     // get all active intervals
     for (const day of days) {
-      for (let hour = earliest; hour < latest; hour++) {
+      let dateEarliest, dateLatest
+      if (timeRanges !== undefined) {
+        [dateEarliest, dateLatest] =  timeRanges[day.toString()] ?? [9, 17]
+      } else {
+        dateEarliest = earliest
+        dateLatest = latest
+      }
+      for (let hour = dateEarliest; hour < dateLatest; hour++) {
         for (let minute = 0; minute < 60; minute += 15) {
           // set moment and switch timezone
           const dayPadded = (day + 1).toString().padStart(2, '0')
@@ -142,7 +157,7 @@ export default function Calendar(props: Props) {
       fallBackHours,
       fallBackDates,
     }
-  }, [currentTimezone, datesType, earliest, latest, props.days, timezone])
+  }, [currentTimezone, datesType, earliest, latest, timeRanges, props.days, timezone])
 
   // returns hour parsed from YYYY-MM-DD HH:mm string
   function parseHour(date: string) {

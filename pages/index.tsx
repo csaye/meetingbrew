@@ -1,7 +1,7 @@
 import DatesPicker from '@/components/DatesPicker'
 import DaysPicker from '@/components/DaysPicker'
 import Header from '@/components/Header'
-import TimeRangeSlider from '@/components/TimeRangeSlider'
+import TimeRanges from '@/components/TimeRanges'
 import TimezoneSelect from '@/components/TimezoneSelect'
 import styles from '@/styles/pages/Index.module.scss'
 import { selectStyles } from '@/util/styles'
@@ -41,12 +41,67 @@ export default function Index() {
   const [timeRange, setTimeRange] = useState<number[]>([9, 17])
   const [earliest, latest] = timeRange
 
+  // Update state to store time ranges for each day
+const [timeRanges, setTimeRanges] = useState<{ [day: string]: number[] }>({})
+
+// Function to add a new time range for a new day
+const addTimeRange = (day: string) => {
+  setTimeRanges({ ...timeRanges, [day]: [9, 17] })
+}
+
+// Function to remove a time range for a specific day
+const removeTimeRange = (day: string) => {
+  const { [day]: _, ...rest } = timeRanges
+  setTimeRanges(rest)
+}
+
+// Function to update a specific time range for a day
+const updateTimeRange = (day: string, newRange: number[]) => {
+  setTimeRanges({ ...timeRanges, [day]: newRange })
+}
+
   const titleInput = useRef<HTMLTextAreaElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
   const [datesOption, setDatesOption] = useState(datesOptions[0])
   const [dates, setDates] = useState<string[]>([])
   const [days, setDays] = useState<number[]>([])
+
+  // Function to set days and manage time ranges
+  const setDatesAndManageTimeRanges = (newDates: string[]) => {
+    setDates(newDates)
+    console.log(newDates)
+    const newTimeRanges: { [day: string]: number[] } = {}
+    newDates.forEach((day) => {
+      if (!timeRanges[day]) {
+        newTimeRanges[day] = [9, 17]
+      } else {
+        newTimeRanges[day] = timeRanges[day]
+      }
+    })
+    // sort the time range keys
+    const sortedTimeRanges: { [day: string]: number[] } = {}
+    Object.keys(newTimeRanges)
+      .sort()
+      .forEach((key) => {
+        sortedTimeRanges[key] = newTimeRanges[key]
+      })
+    setTimeRanges(sortedTimeRanges)
+  }
+
+  const setDaysAndManageTimeRanges = (newDays: number[]) => {
+    setDays(newDays)
+    const newTimeRanges: { [day: string]: number[] } = {}
+    newDays.forEach((day) => {
+      const dayString = day.toString()
+      if (!timeRanges[dayString]) {
+        newTimeRanges[dayString] = [9, 17]
+      } else {
+        newTimeRanges[dayString] = timeRanges[dayString]
+      }
+    })
+    setTimeRanges(newTimeRanges)
+  }
 
   const [mounted, setMounted] = useState(false)
 
@@ -59,6 +114,14 @@ export default function Index() {
   useEffect(() => {
     titleInput.current?.focus()
   }, [])
+
+  useEffect( () => {
+    if(datesOption.value === 'days'){
+      setDaysAndManageTimeRanges(days);
+    }else{
+        setDatesAndManageTimeRanges(dates);
+    }
+  },[datesOption])
 
   // creates a new meeting in firebase
   async function createMeeting() {
@@ -105,6 +168,8 @@ export default function Index() {
     const meetingId = id ? id : doc(meetingsRef).id.slice(0, 6).toLowerCase()
     const idLower = meetingId.toLowerCase()
     const meetingRef = doc(meetingsRef, idLower)
+    const earliest = -1
+    const latest = -1
     // create meeting
     const meetingBase = {
       id: meetingId,
@@ -112,6 +177,7 @@ export default function Index() {
       timezone,
       earliest,
       latest,
+      timeRanges,
       created: Date.now(),
     }
     const meeting: Meeting =
@@ -125,97 +191,95 @@ export default function Index() {
     Router.push(`/${meetingId}`)
   }
 
-  return (
-    <div className={styles.container}>
-      <Header className={styles.header} />
-      <div className={styles.outerContent}>
-        <div className={styles.content} ref={contentRef}>
-          <TextareaAutosize
-            className={styles.titleInput}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder='Event Title'
-            ref={titleInput}
-            wrap='hard'
-            maxLength={100}
-            onKeyDown={(e) => {
-              // prevent enter key
-              if (e.key === 'Enter') e.preventDefault()
-            }}
-            spellCheck='false'
-            data-gramm='false'
-          />
-          <div className={styles.datesTimes}>
-            <div className={styles.dates}>
-              <h2>Which dates?</h2>
-              <p>Date Type</p>
-              <Select
-                className={styles.select}
-                value={datesOption}
-                onChange={(val) => {
-                  if (val) setDatesOption(val)
+// Render multiple TimeRangeSliders based on selected days
+return (
+  <div className={styles.container}>
+    <Header className={styles.header} />
+    <div className={styles.outerContent}>
+      <div className={styles.content} ref={contentRef}>
+        <TextareaAutosize
+          className={styles.titleInput}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder='Event Title'
+          ref={titleInput}
+          wrap='hard'
+          maxLength={100}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') e.preventDefault()
+          }}
+          spellCheck='false'
+          data-gramm='false'
+        />
+        <div className={styles.datesTimes}>
+          <div className={styles.dates}>
+            <h2>Which dates?</h2>
+            <p>Date Type</p>
+            <Select
+              className={styles.select}
+              value={datesOption}
+              onChange={(val) => {
+                if (val) setDatesOption(val)
+              }}
+              options={datesOptions}
+              styles={selectStyles}
+              instanceId='select-dates'
+            />
+            {datesOption.value === 'dates' && mounted && (
+              <DatesPicker dates={dates} setDates={setDatesAndManageTimeRanges} />
+            )}
+            {datesOption.value === 'days' && mounted && (
+              <DaysPicker
+                days={days}
+                setDays={setDaysAndManageTimeRanges}
+              />
+            )}
+          </div>
+          <div className={styles.times}>
+            <h2>Which times?</h2>
+            <p>Timezone</p>
+            <TimezoneSelect
+              className={styles.select}
+              timezone={timezone}
+              setTimezone={setTimezone}
+            />
+            <TimeRanges timeRanges={timeRanges} updateTimeRange={updateTimeRange} />
+          </div>
+        </div>
+        <div className={styles.options}>
+          <div className={styles.idSection}>
+            <div className={styles.idInput}>
+              <p>MeetingBrew.com/ </p>
+              <input
+                value={id}
+                onChange={(e) => {
+                  let newId = e.target.value
+                  newId = newId.replaceAll(/[^\w -]/g, '')
+                  newId = newId.replaceAll(' ', '-')
+                  newId = newId.replaceAll('--', '-')
+                  setId(newId)
                 }}
-                options={datesOptions}
-                styles={selectStyles}
-                instanceId='select-dates'
-              />
-              {datesOption.value === 'dates' && mounted && (
-                <DatesPicker dates={dates} setDates={setDates} />
-              )}
-              {datesOption.value === 'days' && mounted && (
-                <DaysPicker days={days} setDays={setDays} />
-              )}
-            </div>
-            <div className={styles.times}>
-              <h2>Which times?</h2>
-              <p>Timezone</p>
-              <TimezoneSelect
-                className={styles.select}
-                timezone={timezone}
-                setTimezone={setTimezone}
-              />
-              <TimeRangeSlider
-                timeRange={timeRange}
-                setTimeRange={setTimeRange}
+                placeholder='custom ID (optional)'
+                maxLength={100}
+                spellCheck='false'
               />
             </div>
+            <p>
+              You can optionally set a custom id that will appear in the link
+              of your MeetingBrew.
+            </p>
           </div>
-          <div className={styles.options}>
-            <div className={styles.idSection}>
-              <div className={styles.idInput}>
-                <p>MeetingBrew.com/ </p>
-                <input
-                  value={id}
-                  onChange={(e) => {
-                    // clean up input id
-                    let newId = e.target.value
-                    newId = newId.replaceAll(/[^\w -]/g, '')
-                    newId = newId.replaceAll(' ', '-')
-                    newId = newId.replaceAll('--', '-')
-                    setId(newId)
-                  }}
-                  placeholder='custom ID (optional)'
-                  maxLength={100}
-                  spellCheck='false'
-                />
-              </div>
-              <p>
-                You can optionally set a custom id that will appear in the link
-                of your MeetingBrew.
-              </p>
-            </div>
-            <button onClick={createMeeting}>
-              <Image
-                src='/icons/add.svg'
-                width='24'
-                height='24'
-                alt='add.svg'
-              />
-              Create Event
-            </button>
-          </div>
+          <button onClick={createMeeting}>
+            <Image
+              src='/icons/add.svg'
+              width='24'
+              height='24'
+              alt='add.svg'
+            />
+            Create Event
+          </button>
         </div>
       </div>
     </div>
-  )
-}
+  </div>
+)}
